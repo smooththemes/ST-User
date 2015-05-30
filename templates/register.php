@@ -1,5 +1,5 @@
 <div id="st-signup"> <!-- sign up form -->
-    <form class="st-form">
+    <form class="st-form" action="<?php echo get_permalink(); ?>" method="post">
         <p class="fieldset">
             <label class="image-replace st-username" for="signup-username">Username</label>
             <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">

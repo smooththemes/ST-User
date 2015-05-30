@@ -89,8 +89,8 @@ class ST_User_Shortcodes{
     function login_button( $atts ){
         $atts = shortcode_atts(array(
             'class' => '' ,
-            'login_text' => __('Login', 'sa-plugin'),
-            'logout_text' => __("Logout", 'sa-plugin'),
+            'login_text' => __('Login', 'st-user'),
+            'logout_text' => __("Logout", 'st-user'),
         ), $atts );
         extract(  $atts );
         $atts['class'].=' st-login-btn';
@@ -110,7 +110,7 @@ class ST_User_Shortcodes{
         $atts = shortcode_atts(array(
             'class' => '' ,
             'hide_when_logged' =>  'true' ,
-            'text' => __('Singup', 'sa-plugin'),
+            'text' => __('Singup', 'st-user'),
             'ajax'=> 'true'
         ), $atts );
         extract(  $atts );

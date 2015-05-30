@@ -1,3 +1,45 @@
+//
+// Use internal $.serializeArray to get list of form elements which is
+// consistent with $.serialize
+//
+// From version 2.0.0, $.serializeObject will stop converting [name] values
+// to camelCase format. This is *consistent* with other serialize methods:
+//
+//   - $.serialize
+//   - $.serializeArray
+//
+// If you require camel casing, you can either download version 1.0.4 or map
+// them yourself.
+//
+
+(function($){
+    $.fn.serializeObject = function () {
+        "use strict";
+
+        var result = {};
+        var extend = function (i, element) {
+            var node = result[element.name];
+
+            // If node with same name exists already, need to convert it to an array as it
+            // is a multi-value field (i.e., checkboxes)
+
+            if ('undefined' !== typeof node && node !== null) {
+                if ($.isArray(node)) {
+                    node.push(element.value);
+                } else {
+                    result[element.name] = [node, element.value];
+                }
+            } else {
+                result[element.name] = element.value;
+            }
+        };
+
+        $.each(this.serializeArray(), extend);
+        return result;
+    };
+})(jQuery);
+
+
 jQuery(document).ready(function($){
 
     $('.st-user-wrapper').each(function(){
@@ -10,16 +52,25 @@ jQuery(document).ready(function($){
             type: 'GET',
             success: function(  html ){
                 w.html( html );
+                __init();
             }
         });
     });
 
     // load singup modal
 
-    $('.st-singup-btn').click( function( event ){
+    $('.st-singup-btn, .st-login-btn').click( function( event ){
+        var target = $( event.target );
+        var is_login = target.is('.st-login-btn');
+
         if($('.st-user-modal').length > 0 ){
             $('.st-user-modal').addClass('is-visible');
-            signup_selected();
+            if( is_login ){
+                $('body').trigger('login_selected');
+            }else{
+                $('body').trigger('signup_selected');
+            }
+
         }else{
             var data = { action :'st_user_ajax', 'act' : 'modal-template' };
             $.ajax({
@@ -30,13 +81,23 @@ jQuery(document).ready(function($){
                     $('body').append( html );
                     __init();
                     $('.st-user-modal').addClass('is-visible');
-                    signup_selected();
+                    if( is_login ){
+                        $('body').trigger('login_selected');
+                    }else{
+                        $('body').trigger('signup_selected');
+                    }
                 }
             });
         }
-
+        if( is_login  ){
+            if( target.data('is-logged') ){
+                return true;
+            }
+        }
         return false;
     } );
+
+
     __init();
 	function __init(){
 
@@ -52,8 +113,8 @@ jQuery(document).ready(function($){
             $main_nav = $('.main-nav');
 
         //open modal
+        /*
         $main_nav.on('click', function(event){
-
             if( $(event.target).is($main_nav) ) {
                 // on mobile open the submenu
                 $(this).children('ul').toggleClass('is-visible');
@@ -65,8 +126,19 @@ jQuery(document).ready(function($){
                 //show the selected form
                 ( $(event.target).is('.st-signup') ) ? signup_selected() : login_selected();
             }
-
         });
+        */
+
+        $('body').on('signup_selected', function(){
+            signup_selected();
+        });
+        $('body').on('login_selected', function(){
+            login_selected();
+        });
+        $('body').on('forgot_password_selected', function(){
+            forgot_password_selected();
+        });
+
 
         //close modal
         $('.st-user-modal').on('click', function(event){
@@ -132,15 +204,27 @@ jQuery(document).ready(function($){
             $form_forgot_password.addClass('is-selected');
         }
 
+        // form login submit
+        $('.st-login-form').submit(  function(){
+            var formData = $(this).serializeObject();
+            console.debug(formData);
+            console.debug('ok');
+            return false;
+        } );
+
         //REMOVE THIS - it's just to show error messages
+        /*
         $form_login.find('input[type="submit"]').on('click', function(event){
             event.preventDefault();
+
+
             $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
         });
         $form_signup.find('input[type="submit"]').on('click', function(event){
             event.preventDefault();
             $form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
         });
+        */
 
 
         //IE9 placeholder fallback
