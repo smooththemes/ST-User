@@ -138,8 +138,6 @@ jQuery(document).ready(function($){
         $('body').on('forgot_password_selected', function(){
             forgot_password_selected();
         });
-
-
         //close modal
         $('.st-user-modal').on('click', function(event){
             if( $(event.target).is($form_modal) || $(event.target).is('.st-close-form') ) {
@@ -204,11 +202,51 @@ jQuery(document).ready(function($){
             $form_forgot_password.addClass('is-selected');
         }
 
+        //
+        $('.st-form .fieldset input').click( function( ){
+            if( $(this).hasClass('has-error') ){
+                var p = $(this).parents('.fieldset');
+                $(this).removeClass('has-error');
+                p.find('span').removeClass('is-visible');
+            }
+        });
+
         // form login submit
         $('.st-login-form').submit(  function(){
-            var formData = $(this).serializeObject();
-            console.debug(formData);
-            console.debug('ok');
+            var form = $(this);
+            var formData = form.serializeObject();
+            formData.action = 'st_user_ajax';
+            formData.act = 'do_login';
+            $.ajax({
+                url: ST_User.ajax_url,
+                data: formData,
+                type: 'POST',
+                success: function( response ){
+                    if( response === 'logged_success' ){
+                        var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : window.location;
+                        window.location = redirect_url;
+                    }else{
+                        var res = JSON.parse( response);
+                        if( typeof res !== 'undefined' ){
+                            if( typeof res.incorrect_password !== 'undefined' ){
+                                var  p = $('.st-pwd', form );
+                                $('.st-error-message', p).html( res.incorrect_password );
+                                p.find('input[name="st_pwd"]').toggleClass('has-error');
+                                p.find('span').toggleClass('is-visible');
+                            }
+
+                            if( typeof res.invalid_username !== 'undefined' ){
+                                var  p = $('.st-username', form );
+                                $('.st-error-message', p).html( res.invalid_username );
+                                p.find('input[name="st_username"]').toggleClass('has-error');
+                                p.find('span').toggleClass('is-visible');
+                            }
+
+                        }
+                    }
+
+                }
+            });
             return false;
         } );
 

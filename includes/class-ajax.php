@@ -8,7 +8,7 @@ class ST_User_Ajax{
     }
 
     function ajax(){
-        $act = $_GET['act'];
+        $act = $_REQUEST['act'];
         switch( $act ){
             case 'login-template':
                 echo st_user_get_content( st_user_get_template('login.php') );
@@ -28,9 +28,11 @@ class ST_User_Ajax{
             case 'modal-template':
                 echo st_user_get_content( st_user_get_template('modal.php') );
                 break;
+            case 'do_login':
+                ST_User_Action::do_login();
+                break;
         }
-
-        die();
+        exit();
     }
 }
 new ST_User_Ajax;

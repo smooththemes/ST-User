@@ -9,6 +9,7 @@ class ST_User_Frontend{
 
     function js(){
         wp_enqueue_script('jquery');
+        wp_enqueue_script('json2');
         wp_enqueue_script('modernizr', ST_User::$url.'templates/js/modernizr.js',array('jquery'), '2.7.1',  true  );
         wp_enqueue_script('st-user', ST_User::$url.'templates/js/st-user.js',array('jquery'), '1.0',  true  );
 
