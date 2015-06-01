@@ -29,7 +29,10 @@ class ST_User_Ajax{
                 echo st_user_get_content( st_user_get_template('modal.php') );
                 break;
             case 'do_login':
-                ST_User_Action::do_login();
+                echo ST_User_Action::do_login();
+                break;
+            case 'do_register':
+                echo ST_User_Action::do_register();
                 break;
         }
         exit();

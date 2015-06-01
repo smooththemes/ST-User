@@ -51,8 +51,9 @@ jQuery(document).ready(function($){
             url: ST_User.ajax_url,
             type: 'GET',
             success: function(  html ){
+                html = $( html );
                 w.html( html );
-                __init();
+                __init( html  );
             }
         });
     });
@@ -65,6 +66,7 @@ jQuery(document).ready(function($){
 
         if($('.st-user-modal').length > 0 ){
             $('.st-user-modal').addClass('is-visible');
+            $('body').trigger('st_user_before_open');
             if( is_login ){
                 $('body').trigger('login_selected');
             }else{
@@ -78,8 +80,10 @@ jQuery(document).ready(function($){
                 url: ST_User.ajax_url,
                 type: 'GET',
                 success: function(  html ){
+                    html = $( html );
                     $('body').append( html );
-                    __init();
+                    __init( html );
+                    $('body').trigger('st_user_before_open');
                     $('.st-user-modal').addClass('is-visible');
                     if( is_login ){
                         $('body').trigger('login_selected');
@@ -99,36 +103,24 @@ jQuery(document).ready(function($){
 
 
     __init();
-	function __init(){
-
-        var $form_modal = $('.st-user-modal'),
+	function __init( w ){
+        if( typeof w === 'undefined' ){
+            w = $('body');
+        }
+        var $form_modal = ( $('.st-user-modal' , w).length >0 )  ?  $('.st-user-modal' , w) :  $('.st-user-modal'),
             $form_login = $form_modal.find('#st-login'),
-            $form_signup = $form_modal.find('#st-signup'),
+            $form_signup = $form_modal.find('#st-signup'  ),
             $form_forgot_password = $form_modal.find('#st-reset-password'),
-            $form_modal_tab = $('.st-switcher'),
+            $form_modal_tab = $('.st-switcher', w ),
             $tab_login = $form_modal_tab.children('li').eq(0).children('a'),
             $tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
             $forgot_password_link = $form_login.find('.st-form-bottom-message a'),
-            $back_to_login_link = $form_forgot_password.find('.st-form-bottom-message a'),
-            $main_nav = $('.main-nav');
+            $back_to_login_link = $form_forgot_password.find('.st-form-bottom-message a');
 
-        //open modal
-        /*
-        $main_nav.on('click', function(event){
-            if( $(event.target).is($main_nav) ) {
-                // on mobile open the submenu
-                $(this).children('ul').toggleClass('is-visible');
-            } else {
-                // on mobile close submenu
-                $main_nav.children('ul').removeClass('is-visible');
-                //show modal layer
-                $form_modal.addClass('is-visible');
-                //show the selected form
-                ( $(event.target).is('.st-signup') ) ? signup_selected() : login_selected();
-            }
+
+        $('body').on('st_user_before_open', function(){
+            hide_all_errors();
         });
-        */
-
         $('body').on('signup_selected', function(){
             signup_selected();
         });
@@ -155,6 +147,7 @@ jQuery(document).ready(function($){
         $form_modal_tab.on('click', function(event) {
             event.preventDefault();
             ( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
+            return false;
         });
 
         //hide or show password
@@ -166,18 +159,21 @@ jQuery(document).ready(function($){
             ( 'Hide' == $this.text() ) ? $this.text('Show') : $this.text('Hide');
             //focus and move cursor to the end of input field
             $password_field.putCursorAtEnd();
+            return false;
         });
 
         //show forgot-password form
         $forgot_password_link.on('click', function(event){
             event.preventDefault();
             forgot_password_selected();
+            return false;
         });
 
         //back to login from the forgot-password form
         $back_to_login_link.on('click', function(event){
             event.preventDefault();
             login_selected();
+            return false;
         });
 
         function login_selected(){
@@ -202,17 +198,28 @@ jQuery(document).ready(function($){
             $form_forgot_password.addClass('is-selected');
         }
 
-        //
-        $('.st-form .fieldset input').click( function( ){
-            if( $(this).hasClass('has-error') ){
-                var p = $(this).parents('.fieldset');
-                $(this).removeClass('has-error');
+        function hide_all_errors(){
+            // hide all errors fields when load
+            $('.st-form .fieldset' ).click( function( ){
+                var p = $(this);
+                p.find('input').removeClass('has-error');
                 p.find('span').removeClass('is-visible');
-            }
+            });
+        }
+
+
+        // hide error of input field
+        $('.st-form .fieldset input', w ).click( function( ){
+            var p = $(this).parents('.fieldset');
+            $(this).removeClass('has-error');
+            p.find('span').removeClass('is-visible');
         });
 
-        // form login submit
-        $('.st-login-form').submit(  function(){
+
+        //-------------------------------------------------
+        //  Login form submit
+
+        $('.st-login-form', w ).submit( function(){
             var form = $(this);
             var formData = form.serializeObject();
             formData.action = 'st_user_ajax';
@@ -225,6 +232,7 @@ jQuery(document).ready(function($){
                     if( response === 'logged_success' ){
                         var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : window.location;
                         window.location = redirect_url;
+                        return ;
                     }else{
                         var res = JSON.parse( response);
                         if( typeof res !== 'undefined' ){
@@ -241,7 +249,6 @@ jQuery(document).ready(function($){
                                 p.find('input[name="st_username"]').toggleClass('has-error');
                                 p.find('span').toggleClass('is-visible');
                             }
-
                         }
                     }
 
@@ -250,19 +257,63 @@ jQuery(document).ready(function($){
             return false;
         } );
 
-        //REMOVE THIS - it's just to show error messages
-        /*
-        $form_login.find('input[type="submit"]').on('click', function(event){
-            event.preventDefault();
+        // Register Form submit
+        //console.debug(  $('.st-register-form' , w ) );
+        $('.st-register-form' , w ).submit( function(){
+            var form = $(this);
+            //alert('ok');
+            var formData = form.serializeObject();
+            formData.action = 'st_user_ajax';
+            formData.act = 'do_register';
+            $.ajax({
+                url: ST_User.ajax_url,
+                data: formData,
+                type: 'POST',
+                success: function( response ){
+                    if(  !isNaN( response ) ){ // success - user created.
+                        var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : window.location;
+                        window.location = redirect_url;
+                        return ;
+                    }else{
 
+                        var res = JSON.parse( response );
+                        if( typeof res !== 'undefined' ){
+                            if( typeof res.incorrect_email !== 'undefined'  ||  typeof res.existing_user_email !== 'undefined'){
+                                var  p = $('.st-email', form );
+                                var msg = res.incorrect_password || res.existing_user_email;
+                                $('.st-error-message', p).html( msg );
+                                p.find('input[name="st_signup_email"]').toggleClass('has-error');
+                                p.find('span').toggleClass('is-visible');
+                            }
 
-            $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-        });
-        $form_signup.find('input[type="submit"]').on('click', function(event){
-            event.preventDefault();
-            $form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-        });
-        */
+                            if(
+                                typeof res.invalidate_username !== 'undefined'
+                                || typeof res.empty_user_login !== 'undefined'
+                                || typeof res.existing_user_login !== 'undefined'
+
+                            ){
+                                var  p = $('.st-username', form );
+                                var msg = res.invalidate_username
+                                    || res.empty_user_login
+                                    || res.existing_user_login;
+                                $('.st-error-message', p).html( msg );
+                                p.find('input[name="st_username"]').toggleClass('has-error');
+                                p.find('span').toggleClass('is-visible');
+                            }
+
+                            if( typeof res.incorrect_password !== 'undefined' ){
+                                var  p = $('.st-password', form );
+                                $('.st-error-message', p).html( res.incorrect_password );
+                                p.find('input[name="st_signup_password"]').toggleClass('has-error');
+                                p.find('span').toggleClass('is-visible');
+                            }
+                        }
+                    }
+                }
+            });
+            return false;
+        } );
+        //-------------------------------------------------
 
 
         //IE9 placeholder fallback
@@ -295,18 +346,18 @@ jQuery(document).ready(function($){
 
 
 //credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
-jQuery.fn.putCursorAtEnd = function() {
+jQuery.fn.putCursorAtEnd = function(  ) {
 	return this.each(function() {
     	// If this function exists...
     	if (this.setSelectionRange) {
       		// ... then use it (Doesn't work in IE)
       		// Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
-      		var len = $(this).val().length * 2;
+      		var len = jQuery(this).val().length * 2;
       		this.setSelectionRange(len, len);
     	} else {
     		// ... otherwise replace the contents with itself
     		// (Doesn't work in Google Chrome)
-      		$(this).val($(this).val());
+            jQuery(this).val(jQuery(this).val());
     	}
 	});
 };

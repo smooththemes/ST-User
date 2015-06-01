@@ -1,5 +1,5 @@
 <div id="st-login"> <!-- log in form -->
-    <form class="st-form st-login-form" action="<?php echo get_permalink(); ?>" method="post">
+    <form class="st-form st-login-form" action="<?php echo 'index.php'; ?>" method="post">
         <p class="fieldset st-username">
             <label class="image-replace st-email" for="signin-username"><?php _e('Username','st-user'); ?></label>
             <input name="st_username" class="full-width has-padding has-border" id="signin-username" type="text" placeholder="<?php echo esc_attr( __('Username', 'st-login')); ?>">
