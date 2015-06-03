@@ -250,13 +250,35 @@ class ST_User_Action{
      * @return string
      */
     static function  reset_pass(){
-        $rp_key = $_REQUEST['key'];
-        $rp_login = $_REQUEST['login'];
+        $rp_key =  isset( $_REQUEST['key'] ) ?  $_REQUEST['key'] : null;
+        $rp_login = isset( $_REQUEST['login'] ) ?  $_REQUEST['login'] :  null;
+
+        // check if not request change in modal
+        if( empty( $rp_key ) || empty ( $rp_login ) ){
+            $current_url = $_REQUEST['current_url'];
+            $current_url =explode('?', $current_url );
+            if( count(  $current_url ) > 1 ){
+                $current_url = $current_url[1];
+            }
+            $data = wp_parse_args( $current_url , array(
+                'key' =>'',
+                'login' =>'',
+            ) );
+            $rp_key =  $data['key'];
+            $rp_login =  $data['login'];
+        }
+
         $errors =  array();
-        $user = check_password_reset_key( $rp_key, $rp_login );
+
         if ( !isset( $_REQUEST['st_pwd'] )  || $_REQUEST['st_pwd']  == '' ) {
             $errors['pass1'] =  __( 'Please enter your password' ,'st-user');
         }
+
+        if ( isset($_REQUEST['st_pwd']) && $_REQUEST['st_pwd'] != $_REQUEST['st_pwd2'] ){
+            $errors['pass2'] =  __( 'The passwords do not match.' ,'st-user');
+        }
+
+        $user = check_password_reset_key( $rp_key, $rp_login );
 
         if ( ! $user || is_wp_error( $user ) ) {
             if ( $user && $user->get_error_code() === 'expired_key' )
@@ -264,10 +286,6 @@ class ST_User_Action{
             else
                 $errors['error'] =  __( 'Your key is invalid' ,'st-user');
 
-        }
-
-        if ( isset($_REQUEST['st_pwd']) && $_REQUEST['st_pwd'] != $_REQUEST['st_pwd2'] ){
-            $errors['pass2'] =  __( 'The passwords do not match.' ,'st-user');
         }
 
         /**

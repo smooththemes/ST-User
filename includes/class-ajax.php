@@ -36,6 +36,9 @@ class ST_User_Ajax{
             case 'reset-template':
                 echo $this->instance->get_template_content('reset.php') ;
                 break;
+            case 'change-pwd-template':
+                echo $this->instance->get_template_content('change-password.php') ;
+                break;
             case 'profile-template':
                 echo $this->instance->get_template_content('profile.php') ;
                 break;

@@ -57,7 +57,8 @@ jQuery(document).ready(function($){
     $('.st-user-wrapper').each(function(){
         var w = $(this);
         var _act = w.data('action');
-        var data = { action :'st_user_ajax', 'act' : _act };
+
+        var data = { action :'st_user_ajax', 'act' : _act,  'current_url' : ST_User.current_url  };
         $.ajax({
             data: data,
             url: ST_User.ajax_url,
@@ -275,7 +276,6 @@ jQuery(document).ready(function($){
                             }
                         }
                     }
-
                 }
             });
             return false;

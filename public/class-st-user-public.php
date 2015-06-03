@@ -125,6 +125,7 @@ class ST_User_Public {
                 'current_action' => $this->current_action,
                 'hide_txt' => __('Hide','st-user'),
                 'show_txt' => __('Show','st-user'),
+                'current_url' => $_SERVER['REQUEST_URI'],
             )
         );
 

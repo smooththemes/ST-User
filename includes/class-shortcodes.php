@@ -22,6 +22,7 @@ class ST_User_Shortcodes{
         add_shortcode( 'st_user_register', array( $this , 'register' ) );
         add_shortcode( 'st_user_lost_password', array( $this, 'lost_password' ) );
         add_shortcode( 'st_user_reset_password', array($this , 'reset_password' ) );
+        add_shortcode( 'st_user_change_password', array($this , 'change_password' ) );
         add_shortcode( 'st_user_profile', array( $this , 'profile' ) );
         add_shortcode( 'st_login_btn', array( $this , 'login_button' ) );
         add_shortcode( 'st_singup_btn', array( $this, 'singup_button' ) );
@@ -82,28 +83,6 @@ class ST_User_Shortcodes{
 
     /**
      * Lost password Shortcode: Display reset pwd form
-     * @usage [st_user_lost_password ajax_load="true"]
-     * @since 1.0
-     *
-     * @param $atts
-     * @param string $content
-     * @return string
-     */
-    /*
-    function lost_password( $atts, $content = "" ){
-
-        $atts = shortcode_atts(array(
-            'ajax_load' => 'true' ,
-        ), $atts );
-        $atts['action'] = 'lostpwd-template';
-        extract(  $atts );
-
-        return '<div class="st-user-wrapper st-lost-password" '.st_user_array_to_html_atts( $atts ).'>ST USER lost_password</div>';
-    }
-    */
-
-    /**
-     * Lost password Shortcode: Display reset pwd form
      * @usage [st_user_reset_password ajax_load="true"]
      * @since 1.0
      *
@@ -127,6 +106,33 @@ class ST_User_Shortcodes{
         }
 
         return '<div class="st-user-wrapper st-reset-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
+    }
+
+    /**
+     * Change Password Shortcode: Display change pwd form
+     * @usage [st_user_change_password ajax_load="true"]
+     * @since 1.0
+     *
+     * @param $atts
+     * @param string $content
+     * @return string
+     */
+    function change_password( $atts, $content = "" ){
+
+        $atts = shortcode_atts(array(
+            'ajax_load' => 'true' ,
+            'redirect' => '', // page id or url
+        ), $atts );
+        $atts['action'] = 'change-pwd-template';
+        extract(  $atts );
+        $content ='';
+        if(  st_is_true ( $atts['ajax_load'] ) ){
+            // leave content empty and load it via ajax
+        }else{
+            $content =  $this->instance->get_template_content('change-password.php') ;
+        }
+
+        return '<div class="st-user-wrapper st-change-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
     /**

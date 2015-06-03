@@ -364,7 +364,7 @@ xsigin/signup popup
 #st-login, #st-signup, #st-reset-password , .st-user-msg , #st-change-password {
     display: none;
 }
-.st-login-wrapper #st-login, .st-register-wrapper #st-signup, .st-reset-password-wrapper #st-reset-password{
+.st-login-wrapper #st-login, .st-register-wrapper #st-signup, .st-reset-password-wrapper #st-reset-password,  .st-change-password-wrapper #st-change-password{
     display: block;
 }
 
