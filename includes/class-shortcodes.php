@@ -1,10 +1,41 @@
 <?php
+
+/**
+ * Shortcode of plugins
+ *
+ * @class ST_User_Shortcodes
+ * @since 1.0
+ */
 class ST_User_Shortcodes{
 
-    function __construct(){
+    /**
+     * Instance class ST_User
+     * @since 1.0
+     * @var ST_User
+     */
+    private  $instance;
 
+    function __construct( $instance ){
+        $this->instance = $instance;
+
+        add_shortcode( 'st_user_login', array( $this, 'login' ) );
+        add_shortcode( 'st_user_register', array( $this , 'register' ) );
+        add_shortcode( 'st_user_lost_password', array( $this, 'lost_password' ) );
+        add_shortcode( 'st_user_reset_password', array($this , 'reset_password' ) );
+        add_shortcode( 'st_user_profile', array( $this , 'profile' ) );
+        add_shortcode( 'st_login_btn', array( $this , 'login_button' ) );
+        add_shortcode( 'st_singup_btn', array( $this, 'singup_button' ) );
     }
 
+    /**
+     * Login shortcode: Display Login form
+     *
+     * @usage: [st_user_login ajax_load="true" redirect=""]
+     * @since 1.0
+     * @param (array) $atts
+     * @param string $content
+     * @return string
+     */
     function login( $atts, $content = "" ){
         $atts = shortcode_atts(array(
             'ajax_load' => 'true' ,
@@ -16,12 +47,21 @@ class ST_User_Shortcodes{
         if(  st_is_true ( $atts['ajax_load'] ) ){
              // leave content empty and load it via ajax
         }else{
-            $content =  st_user_get_content( st_user_get_template('login.php') );
+            $content =  $this->instance->get_template_content('login.php') ;
         }
         $html = '<div '.st_user_array_to_html_atts( $atts ).' class="st-user-wrapper st-login-wrapper">'.$content.'</div>';
         return $html;
     }
 
+    /**
+     * Register Shortcode: Display Register form
+     * @usage: [st_user_register ajax_load="true" redirect=""]
+     * @since 1.0
+     *
+     * @param $atts
+     * @param string $content
+     * @return string
+     */
     function register( $atts, $content = "" ){
 
         $atts = shortcode_atts(array(
@@ -34,12 +74,22 @@ class ST_User_Shortcodes{
         if(  st_is_true ( $atts['ajax_load'] ) ){
             // leave content empty and load it via ajax
         }else{
-            $content =  st_user_get_content( st_user_get_template('register.php') );
+            $content = $this->instance->get_template_content('register.php') ;
         }
 
         return '<div class="st-user-wrapper st-register-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
+    /**
+     * Lost password Shortcode: Display reset pwd form
+     * @usage [st_user_lost_password ajax_load="true"]
+     * @since 1.0
+     *
+     * @param $atts
+     * @param string $content
+     * @return string
+     */
+    /*
     function lost_password( $atts, $content = "" ){
 
         $atts = shortcode_atts(array(
@@ -50,7 +100,17 @@ class ST_User_Shortcodes{
 
         return '<div class="st-user-wrapper st-lost-password" '.st_user_array_to_html_atts( $atts ).'>ST USER lost_password</div>';
     }
+    */
 
+    /**
+     * Lost password Shortcode: Display reset pwd form
+     * @usage [st_user_reset_password ajax_load="true"]
+     * @since 1.0
+     *
+     * @param $atts
+     * @param string $content
+     * @return string
+     */
     function reset_password( $atts, $content = "" ){
 
         $atts = shortcode_atts(array(
@@ -63,17 +123,25 @@ class ST_User_Shortcodes{
         if(  st_is_true ( $atts['ajax_load'] ) ){
             // leave content empty and load it via ajax
         }else{
-            $content =  st_user_get_content( st_user_get_template('reset.php') );
+            $content =  $this->instance->get_template_content('reset.php') ;
         }
 
         return '<div class="st-user-wrapper st-reset-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
+    /**
+     *  User profile Shortcode: Display user profile
+     * @usage [st_user_reset_password ajax_load="true"]
+     * @since 1.0
+     *
+     * @param $atts
+     * @param string $content
+     * @return string
+     */
     function profile( $atts, $content = "" ){
 
         $atts = shortcode_atts(array(
             'ajax_load' => 'true' ,
-            'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'profile-template';
         extract(  $atts );
@@ -81,11 +149,22 @@ class ST_User_Shortcodes{
         if(  st_is_true ( $atts['ajax_load'] ) ){
             // leave content empty and load it via ajax
         }else{
-            $content =  st_user_get_content( st_user_get_template('reset.php') );
+            $content =  $this->instance->get_template_content('reset.php') ;
         }
         return '<div class="st-user-wrapper st-profile-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
+    /**
+     * Login button shortcode
+     *
+     * @description Display a button/link if user logged in it will be logout button else it's login button
+     *
+     * @usage: [st_login_btn class="" login_text="" logout_text="" ]
+     * @since 1.0
+     *
+     * @param $atts
+     * @return string
+     */
     function login_button( $atts ){
         $atts = shortcode_atts(array(
             'class' => '' ,
@@ -94,19 +173,34 @@ class ST_User_Shortcodes{
         ), $atts );
         extract(  $atts );
         $atts['class'].=' st-login-btn';
-        $url = get_permalink();
+
         if( is_user_logged_in() ){
+            $url = apply_filters( 'st_user_logout_url', '#' );
             $atts['is_logged'] = 'true';
             $url =  wp_logout_url( $url );
             $text = $logout_text;
         }else{
+            $url =  apply_filters( 'st_user_login_url', '#' );
             $atts['is_logged'] = 'false';
             $text = $login_text;
         }
         return  '<a href="'.$url.'" '.st_user_array_to_html_atts( $atts ).'>'.$text.'</a>';
     }
 
+    /**
+     *  Display a singup button/link
+     *
+     * @description call a singup modal form
+     * @since 1.0
+     *
+     * @param $atts
+     * @return string
+     */
     function singup_button( $atts ){
+        // disable when user logged in
+        if( is_user_logged_in() ){
+            return '';
+        }
         $atts = shortcode_atts(array(
             'class' => '' ,
             'hide_when_logged' =>  'true' ,
@@ -127,10 +221,3 @@ class ST_User_Shortcodes{
 
 }
 
-add_shortcode( 'st_user_login', array( 'ST_User_Shortcodes', 'login' ) );
-add_shortcode( 'st_user_register', array( 'ST_User_Shortcodes', 'register' ) );
-add_shortcode( 'st_user_lost_password', array( 'ST_User_Shortcodes', 'lost_password' ) );
-add_shortcode( 'st_user_reset_password', array( 'ST_User_Shortcodes', 'reset_password' ) );
-add_shortcode( 'st_user_profile', array( 'ST_User_Shortcodes', 'profile' ) );
-add_shortcode( 'st_login_btn', array( 'ST_User_Shortcodes', 'login_button' ) );
-add_shortcode( 'st_singup_btn', array( 'ST_User_Shortcodes', 'singup_button' ) );

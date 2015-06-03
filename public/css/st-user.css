@@ -62,7 +62,9 @@ xsigin/signup popup
     display: table;
     clear: both;
 }
-
+.st-user-modal-container .st-switcher {
+    margin-bottom: 0px;
+}
 .st-user-modal-container .st-switcher li {
     width: 50%;
     float: left;
@@ -312,7 +314,7 @@ xsigin/signup popup
 
 @media only screen and (min-width: 600px) {
     .st-form-message {
-        padding: 2em 2em 0;
+        padding: 0 2em 0;
     }
 }
 
@@ -326,11 +328,19 @@ xsigin/signup popup
     font-size: 0.875rem;
 }
 
+.st-user-msg {
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+}
+
 .st-form-bottom-message a {
     color: #FFF;
     text-decoration: underline;
 }
-
+.st-form-bottom-message a:hover {
+    color: #ffffff;
+}
 .st-close-form {
     /* form X button on top right */
     display: block;
@@ -351,13 +361,15 @@ xsigin/signup popup
     }
 }
 
-#st-login, #st-signup, #st-reset-password {
+#st-login, #st-signup, #st-reset-password , .st-user-msg , #st-change-password {
     display: none;
 }
 .st-login-wrapper #st-login, .st-register-wrapper #st-signup, .st-reset-password-wrapper #st-reset-password{
     display: block;
 }
 
-#st-login.is-selected, #st-signup.is-selected, #st-reset-password.is-selected {
+#st-login.is-selected, #st-signup.is-selected, #st-reset-password.is-selected, #st-change-password.is-selected {
     display: block;
 }
+
+.st-errors-msg { color: #ff0000; }

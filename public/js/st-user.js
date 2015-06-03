@@ -42,6 +42,18 @@
 
 jQuery(document).ready(function($){
 
+    __init();
+
+
+    // forec reset password form
+    if( ST_User.current_action == 'rp' ){
+        $('.st-user-modal').addClass('is-visible');
+        $('body').trigger('st_user_before_open');
+        $('body').trigger('login_selected');
+        $('#st-login').removeClass('is-selected');
+        $('#st-change-password').addClass('is-selected');
+    }
+
     $('.st-user-wrapper').each(function(){
         var w = $(this);
         var _act = w.data('action');
@@ -63,6 +75,12 @@ jQuery(document).ready(function($){
     $('.st-singup-btn, .st-login-btn').click( function( event ){
         var target = $( event.target );
         var is_login = target.is('.st-login-btn');
+
+        if( is_login  ){
+            if( target.data('is-logged') ){
+                return true;
+            }
+        }
 
         if($('.st-user-modal').length > 0 ){
             $('.st-user-modal').addClass('is-visible');
@@ -93,29 +111,28 @@ jQuery(document).ready(function($){
                 }
             });
         }
-        if( is_login  ){
-            if( target.data('is-logged') ){
-                return true;
-            }
-        }
+
         return false;
     } );
 
 
-    __init();
+
 	function __init( w ){
         if( typeof w === 'undefined' ){
             w = $('body');
         }
-        var $form_modal = ( $('.st-user-modal' , w).length >0 )  ?  $('.st-user-modal' , w) :  $('.st-user-modal'),
+        var $form_modal = ( $('.st-user-modal' , w).not('.st-loaded').length >0 )  ?  $('.st-user-modal' , w).not('.st-loaded') :  $('.st-user-modal').not('.st-loaded'),
             $form_login = $form_modal.find('#st-login'),
             $form_signup = $form_modal.find('#st-signup'  ),
             $form_forgot_password = $form_modal.find('#st-reset-password'),
+            $form_change_password = $form_modal.find('#st-change-password'),
             $form_modal_tab = $('.st-switcher', w ),
             $tab_login = $form_modal_tab.children('li').eq(0).children('a'),
             $tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
             $forgot_password_link = $form_login.find('.st-form-bottom-message a'),
-            $back_to_login_link = $form_forgot_password.find('.st-form-bottom-message a');
+            $back_to_login_link = $form_modal.find('.st-back-to-login');
+
+        $form_modal.addClass('st-loaded');
 
 
         $('body').on('st_user_before_open', function(){
@@ -151,12 +168,18 @@ jQuery(document).ready(function($){
         });
 
         //hide or show password
-        $('.hide-password').on('click', function(){
+        $('.fieldset .hide-password' , w ).on('click', function(){
             var $this= $(this),
-                $password_field = $this.prev('input');
+                p= $this.parent(),
+                $password_field = $('input', p );
 
-            ( 'password' == $password_field.attr('type') ) ? $password_field.attr('type', 'text') : $password_field.attr('type', 'password');
-            ( 'Hide' == $this.text() ) ? $this.text('Show') : $this.text('Hide');
+            if( 'password' == $password_field.attr('type') ){
+                $password_field.attr('type', 'text');
+                $this.text( ST_User.hide_txt );
+            }else{
+                $password_field.attr('type', 'password');
+                $this.text( ST_User.show_txt );
+            }
             //focus and move cursor to the end of input field
             $password_field.putCursorAtEnd();
             return false;
@@ -171,7 +194,6 @@ jQuery(document).ready(function($){
 
         //back to login from the forgot-password form
         $back_to_login_link.on('click', function(event){
-            event.preventDefault();
             login_selected();
             return false;
         });
@@ -180,6 +202,7 @@ jQuery(document).ready(function($){
             $form_login.addClass('is-selected');
             $form_signup.removeClass('is-selected');
             $form_forgot_password.removeClass('is-selected');
+            $form_change_password.removeClass('is-selected');
             $tab_login.addClass('selected');
             $tab_signup.removeClass('selected');
         }
@@ -188,6 +211,7 @@ jQuery(document).ready(function($){
             $form_login.removeClass('is-selected');
             $form_signup.addClass('is-selected');
             $form_forgot_password.removeClass('is-selected');
+            $form_change_password.removeClass('is-selected');
             $tab_login.removeClass('selected');
             $tab_signup.addClass('selected');
         }
@@ -195,6 +219,7 @@ jQuery(document).ready(function($){
         function forgot_password_selected(){
             $form_login.removeClass('is-selected');
             $form_signup.removeClass('is-selected');
+            $form_change_password.removeClass('is-selected');
             $form_forgot_password.addClass('is-selected');
         }
 
@@ -206,7 +231,6 @@ jQuery(document).ready(function($){
                 p.find('span').removeClass('is-visible');
             });
         }
-
 
         // hide error of input field
         $('.st-form .fieldset input', w ).click( function( ){
@@ -259,23 +283,49 @@ jQuery(document).ready(function($){
 
         // Register Form submit
         //console.debug(  $('.st-register-form' , w ) );
+
+        if( $('.st-register-form' , w ).hasClass('in-st-modal') ){
+            $('.st-login-link', w ).click(function(){
+                login_selected();
+                return false;
+            });
+        }
+
         $('.st-register-form' , w ).submit( function(){
             var form = $(this);
-            //alert('ok');
             var formData = form.serializeObject();
             formData.action = 'st_user_ajax';
             formData.act = 'do_register';
+
+            if( $('input[name="st_accept_terms"]:checked', form ).length == 0  ){
+                $('.accept-terms .st-error-message' , form ).toggleClass('is-visible');
+            }
+
+            var submit_btn =  $('.st-submit', form);
+            var txt = submit_btn.val();
+            submit_btn.data('default-text',  txt );
+            if( submit_btn.data('loading-text') !== '' ){
+                submit_btn.val( submit_btn.data('loading-text') ) ;
+                submit_btn.attr('disabled', 'disabled');
+            }
+
             $.ajax({
                 url: ST_User.ajax_url,
                 data: formData,
                 type: 'POST',
                 success: function( response ){
+                    submit_btn.val( submit_btn.data('default-text') ) ;
+                    submit_btn.removeAttr('disabled');
+
                     if(  !isNaN( response ) ){ // success - user created.
-                        var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : window.location;
-                        window.location = redirect_url;
+                        var redirect_url = ( typeof formData.st_redirect_to !== 'undefined'  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : window.location;
+
+                        $('input[type=text], input[type=email], input[type=password], input[type=number]',form).val('');
+                        $('input[type=checkbox]',form).removeAttr('checked');
+
+                        $('.st-user-msg',form).show(0);
                         return ;
                     }else{
-
                         var res = JSON.parse( response );
                         if( typeof res !== 'undefined' ){
                             if( typeof res.incorrect_email !== 'undefined'  ||  typeof res.existing_user_email !== 'undefined'){
@@ -313,6 +363,95 @@ jQuery(document).ready(function($){
             });
             return false;
         } );
+
+        // lost pwd form
+        $('.st-form-reset-password', w ).submit( function(){
+            var form = $(this);
+            var formData = form.serializeObject();
+            formData.action = 'st_user_ajax';
+            formData.act = 'retrieve_password';
+
+            var submit_btn =  $('.st-submit', form);
+            var txt = submit_btn.val();
+            submit_btn.data('default-text',  txt );
+            if( submit_btn.data('loading-text') !== '' ){
+                submit_btn.val( submit_btn.data('loading-text') ) ;
+                submit_btn.attr('disabled', 'disabled');
+            }
+
+            $.ajax({
+                url: ST_User.ajax_url,
+                data: formData,
+                type: 'POST',
+                success: function( response ) {
+                    submit_btn.val( submit_btn.data('default-text') ) ;
+                    submit_btn.removeAttr('disabled');
+                    if( response == 'sent' ){
+                        $('input[type=text], input[type=email], input[type=password], input[type=number]',form).val('');
+                        $('input[type=checkbox]',form).removeAttr('checked');
+                        $('.st-user-msg', form).show(100);
+                    }else{
+                        var res = JSON.parse( response );
+                        $('.st-error-message', form ).html( res.invalid_combo).toggleClass('is-visible');
+                        $('input[name="st_user_login"]', form ).toggleClass('has-error');
+                    }
+                }
+            });
+
+            return false;
+        } );
+
+
+        // change pwd form submit
+        $('.st-form-change-password', w).submit(  function(){
+
+            var form = $(this);
+            var formData = form.serializeObject();
+            formData.action = 'st_user_ajax';
+            formData.act = 'do_reset_pass';
+
+            var submit_btn =  $('.st-submit', form);
+            var txt = submit_btn.val();
+            submit_btn.data('default-text',  txt );
+            if( submit_btn.data('loading-text') !== '' ){
+                submit_btn.val( submit_btn.data('loading-text') ) ;
+                submit_btn.attr('disabled', 'disabled');
+            }
+
+            $('.st-user-msg', form).hide(1);
+
+            $.ajax({
+                url: ST_User.ajax_url,
+                data: formData,
+                type: 'POST',
+                success: function( response ) {
+
+                    submit_btn.val( submit_btn.data('default-text') ) ;
+                    submit_btn.removeAttr('disabled');
+
+                    if( response == 'changed' ){
+                        $('input[type=text], input[type=email], input[type=password], input[type=number]',form).val('');
+                        $('.st-user-msg', form).show(1);
+                    }else{
+                        var res = JSON.parse( response );
+                        $('.st-user-msg', form).hide(1);
+                       if( typeof res.error !== 'undefined'  && res.error !=='' ){
+                           $('.st-errors-msg', form).html(res.error).show(1);
+                       }
+                        $.each( res, function ( key, value ){
+                            var  p = $('.' + key, form );
+                            $('.st-error-message', p).html( value ).toggleClass('is-visible');
+                            p.find('.input').toggleClass('has-error');
+                        } );
+
+                    }
+                }
+            });
+
+            return false;
+        } );
+
+
         //-------------------------------------------------
 
 

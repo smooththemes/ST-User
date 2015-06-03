@@ -1,32 +1,46 @@
 <?php
 
+/**
+ * Class ST_User_Ajax
+ * Handle ajax requests class
+ * @since 1.0
+ */
 class ST_User_Ajax{
+    /**
+     * Instance class ST_User
+     * @since 1.0
+     * @var ST_User
+     */
+    private  $instance;
 
-    function __construct(){
-        add_action( 'wp_ajax_st_user_ajax',  array(  $this, 'ajax' ) );
-        add_action( 'wp_ajax_nopriv_st_user_ajax', array(  $this, 'ajax' ) );
+    function __construct(  $instance ){
+        $this->instance = $instance;
     }
+    /**
+     * Handle ajax requests
+     * @since 1.0
+     */
+    public function  ajax( ){
 
-    function ajax(){
         $act = $_REQUEST['act'];
         switch( $act ){
             case 'login-template':
-                echo st_user_get_content( st_user_get_template('login.php') );
+                echo $this->instance->get_template_content('login.php');
                 break;
             case 'register-template':
-                echo st_user_get_content( st_user_get_template('register.php') );
+                echo $this->instance->get_template_content('register.php') ;
                 break;
             case 'lostpwd-template':
-                echo st_user_get_content( st_user_get_template('lost-password.php') );
+                echo $this->instance->get_template_content('lost-password.php') ;
                 break;
             case 'reset-template':
-                echo st_user_get_content( st_user_get_template('reset.php') );
+                echo $this->instance->get_template_content('reset.php') ;
                 break;
             case 'profile-template':
-                echo st_user_get_content( st_user_get_template('profile.php') );
+                echo $this->instance->get_template_content('profile.php') ;
                 break;
             case 'modal-template':
-                echo st_user_get_content( st_user_get_template('modal.php') );
+                echo $this->instance->get_template_content('modal.php') ;
                 break;
             case 'do_login':
                 echo ST_User_Action::do_login();
@@ -34,8 +48,13 @@ class ST_User_Ajax{
             case 'do_register':
                 echo ST_User_Action::do_register();
                 break;
+            case 'retrieve_password':
+                echo ST_User_Action::retrieve_password();
+                break;
+            case 'do_reset_pass':
+                echo ST_User_Action::reset_pass();
+                break;
         }
         exit();
     }
 }
-new ST_User_Ajax;
