@@ -18,7 +18,7 @@ class ST_User_Action{
         $creds = array();
         $creds['user_login'] = $_POST['st_username'];
         $creds['user_password'] = $_POST['st_pwd'];
-
+        $secure_cookie = '';
         $msgs = array();
         if( trim( $creds['user_login'] ) == '' ){
             $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username.', 'st-user');
@@ -33,7 +33,20 @@ class ST_User_Action{
         }
 
         $creds['remember'] = isset( $_POST['st_rememberme'] )  && $_POST['st_rememberme'] !='' ? true :  false;
-        $user = wp_signon( $creds, true );
+
+        // If the user wants ssl but the session is not ssl, force a secure cookie.
+        if ( !empty($creds['user_login']) && !force_ssl_admin() ) {
+            $user_name = sanitize_user($creds['user_login']);
+            if ( $user = get_user_by('login', $user_name) ) {
+                if ( get_user_option('use_ssl', $user->ID) ) {
+                    $secure_cookie = true;
+                    force_ssl_admin(true);
+                }
+            }
+        }
+        
+        $user = wp_signon( $creds, $secure_cookie );
+
         if ( is_wp_error($user) ){
             $codes = $user->get_error_codes();
 

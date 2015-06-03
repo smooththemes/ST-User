@@ -3,9 +3,9 @@
  * The Template for displaying Lost Password form
  *
  * Override template in your theme by copying it to:
- * YOUR_THEME_DIR/templates/lost-password.php
- * or YOUR_THEME_DIR/templates/st-user/lost-password.php
- * or YOUR_THEME_DIR/st-user/lost-password.php
+ * YOUR_THEME_DIR/templates/change-password.php
+ * or YOUR_THEME_DIR/templates/st-user/change-password.php
+ * or YOUR_THEME_DIR/st-user/change-password.php
  *
  * @package 	ST-User/Templates
  * @version     1.0

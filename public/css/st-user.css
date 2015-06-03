@@ -160,6 +160,9 @@ xsigin/signup popup
 .st-form label.st-password {
     background-image: url("../img/st-icon-password.svg");
 }
+.st-form label.st-website{
+    background-image: url("../img/st-icon-website.svg");
+}
 
 .st-form input {
     margin: 0;
@@ -373,3 +376,4 @@ xsigin/signup popup
 }
 
 .st-errors-msg { color: #ff0000; }
+.st-user-wrapper .st-form-bottom-message { display: none; }

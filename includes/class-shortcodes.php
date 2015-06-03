@@ -155,7 +155,7 @@ class ST_User_Shortcodes{
         if(  st_is_true ( $atts['ajax_load'] ) ){
             // leave content empty and load it via ajax
         }else{
-            $content =  $this->instance->get_template_content('reset.php') ;
+            $content =  $this->instance->get_template_content('profile.php') ;
         }
         return '<div class="st-user-wrapper st-profile-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
