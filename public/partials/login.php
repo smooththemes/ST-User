@@ -63,7 +63,7 @@ if( ! is_user_logged_in() ){
                  <div class="logged-info">
                      <p><?php
                      echo sprintf(
-                         __('Logged in as <a href="%1$s">%2$s</strong>'),
+                         __('Logged in as <a href="%1$s"><strong>%2$s</strong></a>'),
                          apply_filters('st_user_url', '#'),
                          $user->user_login
                          );
