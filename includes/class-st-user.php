@@ -86,6 +86,14 @@ class ST_User {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+        add_action('set_current_user', 'csstricks_hide_admin_bar');
+
+        // disable admin toolbar
+        if (!current_user_can('edit_posts')) {
+            show_admin_bar(false);
+        }
+
+
 	}
 
 	/**
