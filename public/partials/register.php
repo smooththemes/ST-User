@@ -16,8 +16,10 @@ if( !isset( $in_modal ) ){
     $in_modal = false;
 }
 ?>
-<div id="st-signup"> <!-- sign up form -->
-
+<div id="st-signup" class="st-form-w"> <!-- sign up form -->
+    <?php if( !$in_modal ){ ?>
+        <h3><?php _e('Singup','st-user'); ?></h3>
+    <?php } ?>
     <form class="st-form st-register-form<?php echo $in_modal ? ' in-st-modal' : ''; ?>"  action="<?php echo site_url('/'); ?>" method="post">
         <p class="st-user-msg">
             <?php echo sprintf( __('Registration complete ! <a class="st-login-link" href="%1$s" title="Login">Click here to login</a> ', 'st-user'), apply_filters('st_login_url', '#') ); ?>

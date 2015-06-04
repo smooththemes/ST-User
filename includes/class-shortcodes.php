@@ -17,7 +17,7 @@ class ST_User_Shortcodes{
 
     function __construct( $instance ){
         $this->instance = $instance;
-
+        add_shortcode( 'st_user', array( $this, 'user' ) );
         add_shortcode( 'st_user_login', array( $this, 'login' ) );
         add_shortcode( 'st_user_register', array( $this , 'register' ) );
         add_shortcode( 'st_user_lost_password', array( $this, 'lost_password' ) );
@@ -64,6 +64,10 @@ class ST_User_Shortcodes{
      * @return string
      */
     function register( $atts, $content = "" ){
+        // do not display the form when user loggin
+        if( is_user_logged_in() ){
+            return '';
+        }
 
         $atts = shortcode_atts(array(
             'ajax_load' => 'true' ,
@@ -92,6 +96,11 @@ class ST_User_Shortcodes{
      */
     function reset_password( $atts, $content = "" ){
 
+        // do not display the form when user loggin
+        if( is_user_logged_in() ){
+            return '';
+        }
+
         $atts = shortcode_atts(array(
             'ajax_load' => 'true' ,
             'redirect' => '', // page id or url
@@ -119,6 +128,11 @@ class ST_User_Shortcodes{
      */
     function change_password( $atts, $content = "" ){
 
+        // do not display the form when user loggin user profile form instead
+        if( is_user_logged_in() ){
+            return '';
+        }
+
         $atts = shortcode_atts(array(
             'ajax_load' => 'true' ,
             'redirect' => '', // page id or url
@@ -144,7 +158,8 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    function profile( $atts, $content = "" ){
+    public function profile( $atts, $content = "" ){
+        // if user not logged in display login form instead
         if( !is_user_logged_in() ){
             return self::login( $atts, $content );
         }
@@ -174,7 +189,7 @@ class ST_User_Shortcodes{
      * @param $atts
      * @return string
      */
-    function login_button( $atts ){
+    public   function login_button( $atts ){
         $atts = shortcode_atts(array(
             'class' => '' ,
             'login_text' => __('Login', 'st-user'),
@@ -205,7 +220,7 @@ class ST_User_Shortcodes{
      * @param $atts
      * @return string
      */
-    function singup_button( $atts ){
+    public  function singup_button( $atts ){
         // disable when user logged in
         if( is_user_logged_in() ){
             return '';
@@ -226,6 +241,23 @@ class ST_User_Shortcodes{
             $url ='#';
         }
         return  '<a href="'.$url.'" '.st_user_array_to_html_atts( $atts ).'>'.$text.'</a>';
+    }
+
+    /**
+     * Main Plugin shortcode
+     * @since 1.0
+     * @see login
+     * @see profile
+     * @param $atts array that containers all attributes of other ST User shortcode
+     * @param string $content
+     * @return string
+     */
+    public  function user(  $atts, $content ='' ){
+        if( is_user_logged_in() ){
+            return $this->profile( $atts , $content );
+        }else{
+            return $this->login($atts, $content );
+        }
     }
 
 }

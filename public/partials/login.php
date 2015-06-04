@@ -10,10 +10,16 @@
  * @package 	ST-User/Templates
  * @version     1.0
  */
+if( !isset( $in_modal ) ){
+    $in_modal = false;
+}
 
+if( ! is_user_logged_in() ){
 ?>
-
 <div id="st-login"> <!-- log in form -->
+    <?php if( !$in_modal ){ ?>
+        <h3><?php _e('Login','st-user'); ?></h3>
+    <?php } ?>
     <form class="st-form st-login-form" action="<?php echo site_url('/'); ?>" method="post">
         <?php do_action('st_user_before_login_form'); ?>
         <p class="fieldset st-username">
@@ -42,3 +48,37 @@
     <p class="st-form-bottom-message"><a href="<?php echo esc_attr(  apply_filters('st_user_lost_passoword_url','#') ); ?>"><?php _e('I don\'t know my password','st-user'); ?></a></p>
     <!-- <a href="#0" class="st-close-form">Close</a> -->
 </div> <!-- st-login -->
+<?php } else{
+
+    // user logged in info
+    $user = wp_get_current_user();
+    ?>
+    <div id="st-login" class="st-form-w st-logged-in"> <!-- log in form -->
+        <h3><?php echo sprintf(__('Welcome <span class="display-name">%s</span>', 'st-user'), $user->display_name ); ?></h3>
+         <div class="st-user-info">
+             <div class="st-ui st-username">
+                 <?php
+                 echo get_avatar( $user->ID, '80' );
+                 ?>
+                 <div class="logged-info">
+                     <p><?php
+                     echo sprintf(
+                         __('Logged in as <a href="%1$s">%2$s</strong>'),
+                         apply_filters('st_user_url', '#'),
+                         $user->user_login
+                         );
+                     ?></p>
+                     <p><?php
+                          echo sprintf( __('Member since <strong>%1$s</strong>', 'st-user'), date_i18n( get_option('date_format'),  strtotime( $user->user_registered ) ) );
+                         ?></p>
+                 </div>
+             </div>
+             <div class="st-ui st-user-links">
+                 <a href="<?php echo esc_attr( apply_filters('st_user_url', '#') ) ?>"><?php _e('Profile','st-user') ?></a>
+                 <a href="<?php echo esc_attr( wp_logout_url() ); ?>"><?php _e('Logout','st-user') ?></a>
+                 <?php do_action('st_user_logged_in_links',  $user ); ?>
+             </div>
+             <?php do_action('st_user_logged_in_info',  $user ); ?>
+         </div>
+    </div> <!-- st-login -->
+<?php }?>

@@ -480,7 +480,7 @@ jQuery(document).ready(function($){
 
                     if( response == 'updated' ){
                         var c_url = window.location.href;
-                        if( c_url.indexOf("st_profile_updated") !== -1 ) {
+                        if( c_url.indexOf("st_profile_updated") == -1 ) {
                             if (c_url.indexOf("?") !== -1) {
                                 c_url += '&st_profile_updated=1';
                             } else {

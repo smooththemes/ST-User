@@ -192,7 +192,10 @@ class ST_User {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'modal' );
 
-
+        /**
+         * Add filter widget text shortcode
+         */
+        add_filter('widget_text', 'do_shortcode');
         /**
          * Set default plugin page url
          */
@@ -202,6 +205,7 @@ class ST_User {
          * Set default logout redirect to url
          */
         $this->loader->add_filter('st_user_logout_url', $this, 'logout_url');
+        $this->loader->add_filter('logout_redirect', $this, 'logout_url');
 
         /**
          * Redirect to url when user logged in
@@ -228,14 +232,16 @@ class ST_User {
      */
     private function settings( ){
         $this->settings = array();
+        $user_page_id  = 19;
+        $user_page_url = get_permalink( $user_page_id );
         /**
          * The url of St User page
          * Change it in admin setting
          */
-        $this->settings['url'] = get_permalink( 1 );
-        $this->settings['logout_url'] = get_permalink( 1 );
-        $this->settings['logged_in_url'] = get_permalink( 1 );
-        $this->settings['lost_pwd_url'] = get_permalink( 1 );
+        $this->settings['url'] = $user_page_url;
+        $this->settings['logout_url'] = $user_page_url;
+        $this->settings['logged_in_url'] = $user_page_url;
+        $this->settings['lost_pwd_url'] = $user_page_url;
     }
 
     /**

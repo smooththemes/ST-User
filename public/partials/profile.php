@@ -17,7 +17,8 @@ if( !is_user_logged_in() ){
 }else{
     $user = wp_get_current_user();
 ?>
-<div class="st-user-profile">
+<div class="st-user-profile st-form-w">
+    <h3><?php _e('Profile','st-user'); ?></h3>
     <form class="st-form st-form-profile" action="<?php echo site_url('/'); ?>" method="post" >
 
         <p class="st-user-msg <?php echo isset( $_REQUEST['st_profile_updated'] ) &&  $_REQUEST['st_profile_updated']  == 1 ? 'st-show' : ''; ?>"><?php _e('Your profile updated.', 'st-user'); ?></p>

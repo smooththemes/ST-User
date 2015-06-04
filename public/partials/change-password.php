@@ -16,7 +16,10 @@ if( !isset( $in_modal ) ){
 }
 
 ?>
-<div id="st-change-password">
+<div id="st-change-password" class="st-form-w">
+    <?php if( !$in_modal ){ ?>
+        <h3><?php _e('Change your password','st-user'); ?></h3>
+    <?php } ?>
     <form class="st-form st-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?>" action="<?php echo site_url('/'); ?>" method="post" >
         <p class="st-form-message"><?php _e('Change your password','st-user'); ?></p>
         <p class="st-user-msg"><?php echo sprintf( __('Your password has been reset. <a href="%1$s" class="st-login-link">Click here to login</a>','st-user'), apply_filters('st_login_url', '#')  ); ?></p>

@@ -380,3 +380,17 @@ xsigin/signup popup
 .st-user-msg.st-show {
     display: block;
 }
+
+/*
+Loggin info
+*/
+
+.st-user-info .st-username .avatar{
+    float: left; margin-right: 15px;
+}
+.st-ui:after{
+    clear: both; content: ""; display: block;
+}
+.logged-info p{
+    margin-bottom: 5px;
+}
