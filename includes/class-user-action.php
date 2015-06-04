@@ -320,4 +320,72 @@ class ST_User_Action{
         }
     }
 
+    public static function update_profile(){
+        if( !is_user_logged_in() ){
+            $errors['error'] =  __( 'Please login to continue.' ,'st-user');
+            return json_encode(  $errors );
+        }
+
+        $user_data =  wp_parse_args($_POST['st_user_data'] , array(
+            'user_email' =>'',
+            'user_firstname' =>'',
+            'user_lastname' =>'',
+        ));
+        $errors = array();
+
+        $c_user =  wp_get_current_user();
+
+        // check email
+        if( !is_email( $user_data['user_email'] ) ){
+            $errors['st-email'] =  __( 'Invalid email.' ,'st-user');
+        }else{
+            $check_u =  get_user_by('email', $user_data['user_email'] );
+            if( !empty( $check_u ) ){
+                if( $check_u->ID != $c_user->ID ){
+                    $errors['st-email'] = __( 'Sorry, that email address is already used by other account!', 'st-user' ); // __( 'This email is used by other account.' ,'st-user');
+                }
+            }
+        }
+
+        // check password if enter
+        if( isset( $user_data['user_pass'] ) && $user_data['user_pass'] != '' ){
+            $pass2  = isset( $_POST['st_user_pwd2'] ) ? trim( $_POST['st_user_pwd2'] ) : '';
+            if( $pass2 == '' ){
+                $errors['pass2'] =  __( 'Please enter your confirm password.' ,'st-user');
+            }else if( $user_data['user_pass'] != $pass2  ) {
+                $errors['pass2'] =  __( 'The passwords do not match.' ,'st-user');
+            }
+        }
+
+        // do no update pwd if it empty
+        if( isset(  $user_data['user_pass'] ) &&  trim( $user_data['user_pass'] ) =='' ){
+            unset( $user_data['user_pass'] );
+        }
+
+        /**
+         * Hook to add data
+         */
+        do_action('st_user_update_profile', $user_data,  $errors );
+        $user_data = apply_filters('st_user_update_profile_data', $user_data );
+        $errors = apply_filters('st_user_update_profile_errors', $errors );
+
+        if(  !empty( $errors ) ){
+            return json_encode(  $errors );
+        }
+
+        // update for current user only
+        $user_data['ID'] = $c_user->ID;
+        $r = wp_update_user( $user_data );
+
+        if ( is_wp_error( $r ) ) {
+            $errors['error'] =  __( 'Something wrong, please try again.' ,'st-user');
+            return json_encode(  $errors );
+        } else {
+            // Success!
+        }
+
+        return 'updated';
+
+    }
+
 }

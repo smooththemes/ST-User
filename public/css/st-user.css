@@ -376,4 +376,7 @@ xsigin/signup popup
 }
 
 .st-errors-msg { color: #ff0000; }
-.st-user-wrapper .st-form-bottom-message { display: none; }
+.st-user-wrapper .st-form-bottom-message , .st-user-wrapper .st-form-bottom-message a{ color: #333333; position: relative; }
+.st-user-msg.st-show {
+    display: block;
+}

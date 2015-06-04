@@ -15,6 +15,7 @@
 
 <div id="st-login"> <!-- log in form -->
     <form class="st-form st-login-form" action="<?php echo site_url('/'); ?>" method="post">
+        <?php do_action('st_user_before_login_form'); ?>
         <p class="fieldset st-username">
             <label class="image-replace st-username" for="signin-username"><?php _e('Username','st-user'); ?></label>
             <input name="st_username" class="full-width has-padding has-border" id="signin-username" type="text" placeholder="<?php echo esc_attr( __('Username', 'st-login')); ?>">
@@ -30,11 +31,14 @@
         <p class="forgetmenot fieldset">
             <label> <input type="checkbox" value="forever" name="st-rememberme" checked> <?php _e('Remember me','st-user'); ?></label>
         </p>
+        <?php do_action('st_user_before_submit_login_form'); ?>
         <p class="fieldset">
             <input class="full-width" type="submit" value="<?php echo esc_attr__('Login', 'st-user'); ?>">
             <input type="hidden" value="<?php echo apply_filters('st_user_logged_in_redirect_to', get_permalink() ); ?>" name="st_redirect_to" >
         </p>
+
+        <?php do_action('st_user_after_login_form'); ?>
     </form>
-    <p class="st-form-bottom-message"><a href="#"><?php _e('I don\'t know my password','st-user'); ?></a></p>
+    <p class="st-form-bottom-message"><a href="<?php echo esc_attr(  apply_filters('st_user_lost_passoword_url','#') ); ?>"><?php _e('I don\'t know my password','st-user'); ?></a></p>
     <!-- <a href="#0" class="st-close-form">Close</a> -->
 </div> <!-- st-login -->

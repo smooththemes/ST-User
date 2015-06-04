@@ -145,9 +145,12 @@ class ST_User_Shortcodes{
      * @return string
      */
     function profile( $atts, $content = "" ){
+        if( !is_user_logged_in() ){
+            return self::login( $atts, $content );
+        }
 
         $atts = shortcode_atts(array(
-            'ajax_load' => 'true' ,
+            'ajax_load' => 'false' ,
         ), $atts );
         $atts['action'] = 'profile-template';
         extract(  $atts );

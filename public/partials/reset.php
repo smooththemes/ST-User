@@ -30,5 +30,5 @@
         </div>
     </form>
 
-    <p class="st-form-bottom-message"><a class="st-back-to-login" href="#"><?php _e('Back to log-in','st-user'); ?></a></p>
+    <p class="st-form-bottom-message"><a class="st-back-to-login" href="<?php echo esc_attr( apply_filters('st_user_login_url', '#') ); ?>"><?php _e('Back to log-in','st-user'); ?></a></p>
 </div> <!-- st-reset-password -->

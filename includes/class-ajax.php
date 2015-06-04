@@ -40,7 +40,12 @@ class ST_User_Ajax{
                 echo $this->instance->get_template_content('change-password.php') ;
                 break;
             case 'profile-template':
-                echo $this->instance->get_template_content('profile.php') ;
+                if( !is_user_logged_in() ){
+                    echo $this->instance->get_template_content('login.php');
+                }else{
+                    echo $this->instance->get_template_content('profile.php') ;
+                }
+
                 break;
             case 'modal-template':
                 echo $this->instance->get_template_content('modal.php') ;
@@ -56,6 +61,9 @@ class ST_User_Ajax{
                 break;
             case 'do_reset_pass':
                 echo ST_User_Action::reset_pass();
+                break;
+            case 'do_update_profile':
+                echo ST_User_Action::update_profile();
                 break;
         }
         exit();

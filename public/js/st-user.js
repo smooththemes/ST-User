@@ -56,8 +56,11 @@ jQuery(document).ready(function($){
 
     $('.st-user-wrapper').each(function(){
         var w = $(this);
-        var _act = w.data('action');
+        if( w.data('ajax-load') !== true ){
+            return ;
+        }
 
+        var _act = w.data('action');
         var data = { action :'st_user_ajax', 'act' : _act,  'current_url' : ST_User.current_url  };
         $.ajax({
             data: data,
@@ -241,9 +244,7 @@ jQuery(document).ready(function($){
         });
 
 
-        //-------------------------------------------------
         //  Login form submit
-
         $('.st-login-form', w ).submit( function(){
             var form = $(this);
             var formData = form.serializeObject();
@@ -255,7 +256,7 @@ jQuery(document).ready(function($){
                 type: 'POST',
                 success: function( response ){
                     if( response === 'logged_success' ){
-                        var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : window.location;
+                        var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : document.location.toString();
                         window.location = redirect_url;
                         return ;
                     }else{
@@ -281,9 +282,7 @@ jQuery(document).ready(function($){
             return false;
         } );
 
-        // Register Form submit
-        //console.debug(  $('.st-register-form' , w ) );
-
+        // Back to login Link
         if( $('.st-register-form' , w ).hasClass('in-st-modal') ){
             $('.st-login-link', w ).click(function(){
                 login_selected();
@@ -291,6 +290,7 @@ jQuery(document).ready(function($){
             });
         }
 
+        // Register form submit
         $('.st-register-form' , w ).submit( function(){
             var form = $(this);
             var formData = form.serializeObject();
@@ -364,7 +364,7 @@ jQuery(document).ready(function($){
             return false;
         } );
 
-        // lost pwd form
+        // Lost pwd form submit
         $('.st-form-reset-password', w ).submit( function(){
             var form = $(this);
             var formData = form.serializeObject();
@@ -449,6 +449,64 @@ jQuery(document).ready(function($){
             });
 
             return false;
+        } );
+
+        // Profile Submit
+        $('.st-form-profile', w).submit(  function() {
+
+            var form = $(this);
+            var formData = form.serializeObject();
+            formData.action = 'st_user_ajax';
+            formData.act = 'do_update_profile';
+
+            var submit_btn =  $('.st-submit', form);
+            var txt = submit_btn.val();
+            submit_btn.data('default-text',  txt );
+            if( submit_btn.data('loading-text') !== '' ){
+                submit_btn.val( submit_btn.data('loading-text') ) ;
+                submit_btn.attr('disabled', 'disabled');
+            }
+
+            $('.st-user-msg', form).hide(1);
+
+            $.ajax({
+                url: ST_User.ajax_url,
+                data: formData,
+                type: 'POST',
+                success: function( response ) {
+
+                    submit_btn.val( submit_btn.data('default-text') ) ;
+                    submit_btn.removeAttr('disabled');
+
+                    if( response == 'updated' ){
+                        var c_url = window.location.href;
+                        if( c_url.indexOf("st_profile_updated") !== -1 ) {
+                            if (c_url.indexOf("?") !== -1) {
+                                c_url += '&st_profile_updated=1';
+                            } else {
+                                c_url += '?st_profile_updated=1';
+                            }
+                        }
+                        // refresh page
+                        window.location =  c_url;
+                        $('.st-user-msg', form).show(1);
+                    }else{
+                        var res = JSON.parse( response );
+                        $('.st-user-msg', form).hide(1);
+                        if( typeof res.error !== 'undefined'  && res.error !=='' ){
+                            $('.st-errors-msg', form).html(res.error).show(1);
+                        }
+                        $.each( res, function ( key, value ){
+                            var  p = $('.' + key, form );
+                            $('.st-error-message', p).html( value ).toggleClass('is-visible');
+                            p.find('.input').toggleClass('has-error');
+                        } );
+
+                    }
+                }
+            });
+
+            return  false;
         } );
 
 

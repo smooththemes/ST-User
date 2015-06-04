@@ -81,13 +81,10 @@ class ST_User {
 		$this->version = '1.0.0';
 
         $this->settings();
-
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
-
 
 	}
 
@@ -215,6 +212,7 @@ class ST_User {
          * Login url
          */
         $this->loader->add_filter('st_user_login_url', $this, 'login_url');
+        $this->loader->add_filter('st_user_lost_passoword_url', $this, 'lost_pwd_url');
 
         $ajax = new ST_User_Ajax( $this );
 
@@ -237,6 +235,7 @@ class ST_User {
         $this->settings['url'] = get_permalink( 1 );
         $this->settings['logout_url'] = get_permalink( 1 );
         $this->settings['logged_in_url'] = get_permalink( 1 );
+        $this->settings['lost_pwd_url'] = get_permalink( 1 );
     }
 
     /**
@@ -296,6 +295,17 @@ class ST_User {
      */
     public function login_url(  $url = '' ){
         return $this->get_setting('url');
+    }
+
+    /**
+     * Set lost password url
+     *
+     * @since 1.0.0
+     * @param string $url
+     * @return mixed
+     */
+    public function lost_pwd_url(  $url = '' ){
+        return $this->get_setting('lost_pwd_url');
     }
 
 	/**
@@ -402,6 +412,7 @@ class ST_User {
 
     /**
      * Get template content
+     * @see
      * @see get_file_content
      * @see get_file_template
      * @param $template
@@ -412,4 +423,7 @@ class ST_User {
         return  $this->get_file_content( $this->get_file_template(  $template ) , $custom_data );
     }
 
+    public function get_user(  $user_id = 0 ){
+        wp_get_current_user();
+    }
 }
