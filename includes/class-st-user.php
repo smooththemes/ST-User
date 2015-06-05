@@ -225,16 +225,18 @@ class ST_User {
          */
         $this->loader->add_filter('st_user_login_url', $this, 'login_url');
 
+        // disable default login url
+        if( $this->get_setting('disable_default_login')  && !isset( $_GET['interim-login'] ) ){
+            if(  !is_admin() ){
+                $this->loader->add_filter('login_url', $this, 'login_url');
+            }
+
+        }
+
         /**
          * Register url
          */
         $this->loader->add_filter('register_url', $this, 'register_url');
-
-        // disable default login url
-        if( $this->get_setting('disable_default_login') ){
-            $this->loader->add_filter('login_url', $this, 'login_url');
-        }
-
 
         /**
          * Lost pwd url
