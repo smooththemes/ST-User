@@ -20,8 +20,7 @@ if( isset( $_POST['submit'] ) ){
         'st_user_logout_redirect_url'=>'',
         'st_user_term_page'=>'',
     );
-
-    $option_keys = apply_filters('st_settings_keys', $option_keys );
+    $option_keys = apply_filters( 'st_settings_keys', $option_keys );
 
     foreach(  $option_keys as $k => $v ){
         // if the key container "st_user_"  at begin of string the save it

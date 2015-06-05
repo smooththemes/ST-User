@@ -21,7 +21,7 @@ class ST_User_Shortcodes{
         add_shortcode( 'st_user_login', array( $this, 'login' ) );
         add_shortcode( 'st_user_register', array( $this , 'register' ) );
         add_shortcode( 'st_user_lost_password', array( $this, 'lost_password' ) );
-        add_shortcode( 'st_user_reset_password', array($this , 'reset_password' ) );
+        add_shortcode( 'st_user_reset_password', array( $this , 'reset_password' ) );
         add_shortcode( 'st_user_change_password', array($this , 'change_password' ) );
         add_shortcode( 'st_user_profile', array( $this , 'profile' ) );
         add_shortcode( 'st_login_btn', array( $this , 'login_button' ) );
@@ -40,7 +40,6 @@ class ST_User_Shortcodes{
     function login( $atts, $content = "" ){
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
-            'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'login-template';
         extract(  $atts );
@@ -71,7 +70,6 @@ class ST_User_Shortcodes{
 
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
-            'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'register-template';
         extract(  $atts );
@@ -103,7 +101,7 @@ class ST_User_Shortcodes{
 
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
-            'redirect' => '', // page id or url
+            //'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'reset-template';
         extract(  $atts );
@@ -135,7 +133,7 @@ class ST_User_Shortcodes{
 
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
-            'redirect' => '', // page id or url
+            //'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'change-pwd-template';
         extract(  $atts );

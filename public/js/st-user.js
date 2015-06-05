@@ -537,6 +537,11 @@ jQuery(document).ready(function($){
             });
         }
 
+        /**
+         * Trigger when init
+         */
+        $( "body").trigger( "st_user_init", w );
+
     }// end function init
 
 });
