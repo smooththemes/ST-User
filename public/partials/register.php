@@ -48,7 +48,7 @@ if( !isset( $in_modal ) ){
             if( apply_filters('st_user_register_show_term_link' , true ) ){
             ?>
             <p class="fieldset accept-terms">
-                <label><input name="st_accept_terms" value="i-agree" type="checkbox" id="st-accept-terms"> <?php echo sprintf( __('I agree to the <a href="%s">Terms and Conditions</a>' ,'st-user') ,  apply_filters('st_user_term_link' , '#') ); ?></label>
+                <label><input name="st_accept_terms" value="i-agree" type="checkbox" id="st-accept-terms"> <?php echo sprintf( __('I agree to the <a href="%s" target="_blank">Terms and Conditions</a>' ,'st-user') ,  apply_filters('st_user_term_link' , '#') ); ?></label>
                 <span class="st-error-message"><?php _e('You must agree our Terms and Conditions to continue', 'st-user'); ?></span>
             </p>
             <?php } ?>
@@ -57,6 +57,8 @@ if( !isset( $in_modal ) ){
             </p>
         </div>
     </form>
-
+    <?php if( ! $in_modal ){ ?>
+    <p class="st-form-bottom-message"><a class="st-back-to-login" href="<?php echo wp_login_url(); ?>"><?php _e('Back to log-in','st-user'); ?></a></p>
+    <?php } ?>
     <!-- <a href="#0" class="st-close-form">Close</a> -->
 </div> <!-- st-signup -->

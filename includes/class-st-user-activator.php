@@ -23,9 +23,7 @@
 class ST_User_Activator {
 
 	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
+	 * Run settings when plugin active
 	 *
 	 * @since    1.0.0
 	 */

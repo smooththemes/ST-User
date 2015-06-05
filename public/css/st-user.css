@@ -384,7 +384,9 @@ xsigin/signup popup
 /*
 Loggin info
 */
-
+.st-user-wrapper .st-form {
+    padding: 0px;
+}
 .st-user-info .st-username .avatar{
     float: left; margin-right: 15px;
 }

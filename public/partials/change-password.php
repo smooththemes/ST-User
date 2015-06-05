@@ -22,7 +22,7 @@ if( !isset( $in_modal ) ){
     <?php } ?>
     <form class="st-form st-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?>" action="<?php echo site_url('/'); ?>" method="post" >
         <p class="st-form-message"><?php _e('Change your password','st-user'); ?></p>
-        <p class="st-user-msg"><?php echo sprintf( __('Your password has been reset. <a href="%1$s" class="st-login-link">Click here to login</a>','st-user'), apply_filters('st_login_url', '#')  ); ?></p>
+        <p class="st-user-msg"><?php echo sprintf( __('Your password has been reset. <a href="%1$s" class="st-login-link">Click here to login</a>','st-user'), wp_login_url()  ); ?></p>
         <p class="st-user-msg st-errors-msg"></p>
         <div class="form-fields">
             <p class="fieldset st-pwd pass1">

@@ -39,7 +39,7 @@ class ST_User_Shortcodes{
      */
     function login( $atts, $content = "" ){
         $atts = shortcode_atts(array(
-            'ajax_load' => 'true' ,
+            'ajax_load' => 'false' ,
             'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'login-template';
@@ -70,7 +70,7 @@ class ST_User_Shortcodes{
         }
 
         $atts = shortcode_atts(array(
-            'ajax_load' => 'true' ,
+            'ajax_load' => 'false' ,
             'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'register-template';
@@ -102,7 +102,7 @@ class ST_User_Shortcodes{
         }
 
         $atts = shortcode_atts(array(
-            'ajax_load' => 'true' ,
+            'ajax_load' => 'false' ,
             'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'reset-template';
@@ -134,7 +134,7 @@ class ST_User_Shortcodes{
         }
 
         $atts = shortcode_atts(array(
-            'ajax_load' => 'true' ,
+            'ajax_load' => 'false' ,
             'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'change-pwd-template';
@@ -199,12 +199,11 @@ class ST_User_Shortcodes{
         $atts['class'].=' st-login-btn';
 
         if( is_user_logged_in() ){
-            $url = apply_filters( 'st_user_logout_url', '#' );
+            $url = wp_logout_url();
             $atts['is_logged'] = 'true';
-            $url =  wp_logout_url( $url );
             $text = $logout_text;
         }else{
-            $url =  apply_filters( 'st_user_login_url', '#' );
+            $url =  wp_login_url();
             $atts['is_logged'] = 'false';
             $text = $login_text;
         }
@@ -248,11 +247,18 @@ class ST_User_Shortcodes{
      * @since 1.0
      * @see login
      * @see profile
+     * @see reset_password
      * @param $atts array that containers all attributes of other ST User shortcode
      * @param string $content
      * @return string
      */
     public  function user(  $atts, $content ='' ){
+        if( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='lost-pass' ){
+            return $this->reset_password( $atts , $content );
+        }
+        if( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='register' ){
+            return $this->register( $atts , $content );
+        }
         if( is_user_logged_in() ){
             return $this->profile( $atts , $content );
         }else{

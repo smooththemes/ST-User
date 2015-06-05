@@ -224,7 +224,28 @@ class ST_User {
          * Login url
          */
         $this->loader->add_filter('st_user_login_url', $this, 'login_url');
+
+        /**
+         * Register url
+         */
+        $this->loader->add_filter('register_url', $this, 'register_url');
+
+        // disable default login url
+        if( $this->get_setting('disable_default_login') ){
+            $this->loader->add_filter('login_url', $this, 'login_url');
+        }
+
+
+        /**
+         * Lost pwd url
+         */
         $this->loader->add_filter('st_user_lost_passoword_url', $this, 'lost_pwd_url');
+        $this->loader->add_filter('lostpassword_url', $this, 'lost_pwd_url');
+
+        /**
+         * Change  term condition link
+         */
+        $this->loader->add_filter('st_user_term_link', $this, 'term_link');
 
         $ajax = new ST_User_Ajax( $this );
 
@@ -240,16 +261,35 @@ class ST_User {
      */
     private function settings( ){
         $this->settings = array();
-        $user_page_id  = 19;
-        $user_page_url = get_permalink( $user_page_id );
+
         /**
          * The url of St User page
          * Change it in admin setting
          */
-        $this->settings['url'] = $user_page_url;
-        $this->settings['logout_url'] = $user_page_url;
-        $this->settings['logged_in_url'] = $user_page_url;
-        $this->settings['lost_pwd_url'] = $user_page_url;
+        $page_id = get_option('st_user_account_page');
+        $page_url =  get_permalink( $page_id );
+        $this->settings['url'] = ($page_id) ?  $page_url :  site_url('/');
+
+        $this->settings['disable_default_login'] = get_option('st_user_disable_default_login');
+
+        if(  ! ( $this->settings['logout_url'] =  get_option('st_user_logout_redirect_url') ) ) {
+            $this->settings['logout_url'] = $this->settings['url'];
+        }
+
+        if( ! (  $this->settings['logged_in_url'] = get_option('st_user_login_redirect_url') ) ){
+           $this->settings['logged_in_url'] = $this->settings['url'];
+        }
+
+        $this->settings['lost_pwd_url'] = add_query_arg(  array( 'st_action' => 'lost-pass' ), $page_url );
+        $this->settings['register_url'] = add_query_arg(  array( 'st_action' => 'register' ), $page_url );
+
+        $this->settings['term_link'] = get_permalink( get_option('st_user_term_page') );
+
+        /**
+         * Hook to change settings if you want
+         * @since 1.0.0
+         */
+        $this->settings = apply_filters('st_user_setup_settings', $this->settings,  $this );
     }
 
     /**
@@ -276,6 +316,17 @@ class ST_User {
      */
     public function page_url(  $url = '' ){
         return $this->get_setting('url');
+    }
+
+    /**
+     * Plugin page url
+     *
+     * @since 1.0.0
+     * @param string $url
+     * @return mixed
+     */
+    public function register_url(  $url = '' ){
+        return $this->get_setting('register_url');
     }
 
     /**
@@ -320,6 +371,18 @@ class ST_User {
      */
     public function lost_pwd_url(  $url = '' ){
         return $this->get_setting('lost_pwd_url');
+    }
+
+
+    /**
+     * Set term and condition link
+     *
+     * @since 1.0.0
+     * @param string $url
+     * @return mixed
+     */
+    public function term_link(  $url = '' ){
+        return $this->get_setting('term_link');
     }
 
 	/**
@@ -437,7 +500,4 @@ class ST_User {
         return  $this->get_file_content( $this->get_file_template(  $template ) , $custom_data );
     }
 
-    public function get_user(  $user_id = 0 ){
-        wp_get_current_user();
-    }
 }

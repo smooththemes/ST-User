@@ -45,7 +45,12 @@ if( ! is_user_logged_in() ){
 
         <?php do_action('st_user_after_login_form'); ?>
     </form>
-    <p class="st-form-bottom-message"><a href="<?php echo esc_attr(  apply_filters('st_user_lost_passoword_url','#') ); ?>"><?php _e('I don\'t know my password','st-user'); ?></a></p>
+    <p class="st-form-bottom-message">
+        <a class="st-lost-pwd-link" href="<?php echo wp_lostpassword_url(); ?>"><?php _e('I don\'t know my password','st-user'); ?></a>
+        <?php if( ! $in_modal ){ ?>
+        <a class="st-register-link" href="<?php echo wp_registration_url();  ?>"><?php _e('Singup','st-user'); ?></a>
+        <?php } ?>
+    </p>
     <!-- <a href="#0" class="st-close-form">Close</a> -->
 </div> <!-- st-login -->
 <?php } else{

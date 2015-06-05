@@ -10,87 +10,115 @@
  * @package    ST_User
  * @subpackage ST_User/admin/partials
  */
-?>
-<h2>ST User Settings</h2>
 
+if( isset( $_POST['submit'] ) ){
+
+    $option_keys = array(
+        'st_user_account_page'=>'',
+        'st_user_disable_default_login'=>'',
+        'st_user_login_redirect_url'=>'',
+        'st_user_logout_redirect_url'=>'',
+        'st_user_term_page'=>'',
+    );
+
+    $option_keys = apply_filters('st_settings_keys', $option_keys );
+
+    foreach(  $option_keys as $k => $v ){
+        // if the key container "st_user_"  at begin of string the save it
+        if( isset( $_POST[ $k ] ) ){
+            update_option(  $k, $_POST[ $k ] );
+        }else{
+            delete_option(  $k );
+        }
+    }
+}
+
+
+?>
+<h2><?php _e('ST User Settings','st-user'); ?></h2>
 <form novalidate="novalidate" action="" method="post">
-    <input type="hidden" value="general" name="option_page"><input type="hidden" value="update" name="action"><input type="hidden" value="b2e9ecd063" name="_wpnonce" id="_wpnonce"><input type="hidden" value="/wp-plugins/wp-admin/options-general.php" name="_wp_http_referer">
     <table class="form-table">
         <tbody>
         <tr>
-            <th scope="row"><label for="default_role"><?php _e('Account page') ?></label></th>
+            <th scope="row"><label for="st_user_account_page"><?php _e('Account page','st-user'); ?></label></th>
             <td>
-                <select id="default_role" name="default_role">
-                    <option value="subscriber" selected="selected">Subscriber</option>
-                </select>
+                <?php
+                wp_dropdown_pages(
+                    array(
+                    //'depth'                 => 0,
+                    //'child_of'              => 0,
+                    'selected'              => get_option('st_user_account_page'),
+                    //'echo'                  => 1,
+                    'name'                  => 'st_user_account_page',
+                    'id'                    => null, // string
+                    'show_option_none'      => null, // string
+                    'show_option_no_change' => null, // string
+                    'option_none_value'     => null, // string
+                ) );
+                ?>
             </td>
         </tr>
 
         <tr>
-            <th scope="row">Login</th>
+            <th scope="row"><?php _e('Login','st-user'); ?></th>
             <td>
                 <fieldset>
-                    <legend class="screen-reader-text"><span>Login</span></legend>
+                    <legend class="screen-reader-text"><span><?php _e('Login','st-user'); ?></span></legend>
                     <label >
-                        <input type="checkbox" checked="checked" value="1"  name="users_can_register">
-                        User Account page as login page.
+                        <input type="checkbox" <?php checked( get_option('st_user_disable_default_login') , 1 ) ?> value="1"  name="st_user_disable_default_login">
+                        <?php _e('User Account page as login page.','st-user'); ?>
                     </label>
-                    <p class="description">Default login page of WordPress will disable.</p>
+                    <p class="description"><?php _e('Default login page of WordPress will disable.','st-user'); ?></p>
                 </fieldset>
             </td>
         </tr>
 
         <tr>
-            <th scope="row"><label for="logout-redirect-url">Logout Redirect (URL)</label></th>
+            <th scope="row"><label for="st_user_login_redirect_url"><?php _e('Login Redirect (URL)', 'st-user'); ?></label></th>
             <td>
-                <input type="text" class="regular-text" value="" id="logout-redirect-url" name="blogname">
-                <p class="description">The url will redirect when you logout, leave empty to redirect home page.</p>
+                <input type="text" class="regular-text" value="<?php echo esc_attr( get_option('st_user_login_redirect_url') ); ?>" id="st_user_login_redirect_url" name="st_user_login_redirect_url">
+                <p class="description"><?php _e('The url will redirect when you logged in, leave empty to redirect home page.', 'st-user'); ?></p>
             </td>
         </tr>
 
         <tr>
-            <th scope="row"><label for="blogdescription">Tagline</label></th>
-            <td><input type="text" class="regular-text" value="Just another WordPress site" aria-describedby="tagline-description" id="blogdescription" name="blogdescription">
-                <p id="tagline-description" class="description">In a few words, explain what this site is about.</p>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><label for="siteurl">WordPress Address (URL)</label></th>
-            <td><input type="url" class="regular-text code" value="http://localhost/wp-plugins" id="siteurl" name="siteurl"></td>
-        </tr>
-        <tr>
-            <th scope="row"><label for="home">Site Address (URL)</label></th>
-            <td><input type="url" class="regular-text code" value="http://localhost/wp-plugins" aria-describedby="home-description" id="home" name="home">
-                <p id="home-description" class="description">Enter the address here if you <a href="https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">want your site home page to be different from your WordPress installation directory.</a></p></td>
-        </tr>
-        <tr>
-            <th scope="row"><label for="admin_email">E-mail Address </label></th>
+            <th scope="row"><label for="st_user_logout_redirect_url"><?php _e('Logout Redirect (URL)','st-user'); ?></label></th>
             <td>
-                <input type="email" class="regular-text ltr" value="shrimp2t@gmail.com" aria-describedby="admin-email-description" id="admin_email" name="admin_email">
-                <p id="admin-email-description" class="description">This address is used for admin purposes, like new user notification.</p>
+                <input type="text" class="regular-text" value="<?php echo esc_attr( get_option('st_user_logout_redirect_url') ); ?>" id="st_user_logout_redirect_url" name="st_user_logout_redirect_url">
+                <p class="description"><?php _e('The url will redirect when you logout, leave empty to redirect home page.', 'st-user'); ?></p>
             </td>
         </tr>
+
 
         <tr>
-            <th scope="row"><label for="start_of_week">Week Starts On</label></th>
-            <td><select id="start_of_week" name="start_of_week">
-
-                    <option value="0">Sunday</option>
-                    <option selected="selected" value="1">Monday</option>
-                    <option value="2">Tuesday</option>
-                    <option value="3">Wednesday</option>
-                    <option value="4">Thursday</option>
-                    <option value="5">Friday</option>
-                    <option value="6">Saturday</option>
-                </select>
+            <th scope="row"><label for="st_user_term_page"><?php _e('Term and Condition','st-user'); ?></label></th>
+            <td>
+                <?php
+                wp_dropdown_pages(
+                    array(
+                        //'depth'                 => 0,
+                        //'child_of'              => 0,
+                        'selected'              => get_option('st_user_term_page'),
+                        //'echo'                  => 1,
+                        'name'                  => 'st_user_term_page',
+                        'id'                    => null, // string
+                        'show_option_none'      => null, // string
+                        'show_option_no_change' => null, // string
+                        'option_none_value'     => null, // string
+                    ) );
+                ?>
             </td>
         </tr>
 
+        <?php
+        // hook you can add more fields if you want
+        do_action('st_user_settings_fields');
+        ?>
         </tbody>
     </table>
 
     <p class="submit">
-        <input type="submit" value="Save Changes" class="button button-primary" id="submit" name="submit">
+        <input type="submit" value="<?php echo esc_attr__('Save Changes','st-user'); ?>" class="button button-primary" id="submit" name="submit">
     </p>
 </form>
 
