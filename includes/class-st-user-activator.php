@@ -43,7 +43,7 @@ class ST_User_Activator {
             $page_id = $p->ID;
 
             if( ! has_shortcode(  $p->post_content, $shortcode_base ) ){
-                $p->post_content = '['.$shortcode_base.']'."\r\r\r\r". $p->post_content;
+                $p->post_content = '['.$shortcode_base.']'."\r\n \r\n". $p->post_content;
                 wp_update_post(  $p );
             }
 
