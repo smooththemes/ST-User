@@ -21,11 +21,20 @@ class ST_User_Action{
         $secure_cookie = '';
         $msgs = array();
         if( trim( $creds['user_login'] ) == '' ){
-            $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username.', 'st-user');
+            $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username or email.', 'st-user');
         }
 
         if( trim( $creds['user_password'] ) == '' ){
             $msgs['incorrect_password'] =  __('<strong>ERROR</strong>: The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
+        }
+
+        if( is_email( $creds['user_login'] ) ){
+            $u =  get_user_by('email', $creds['user_login'] );
+            if( ! $u ){
+                $msgs['invalid_username'] =  __('<strong>ERROR</strong>: This email does not exists.', 'st-user');
+            }else{
+                $creds['user_login'] = $u->user_login;
+            }
         }
 
         if( !empty( $msgs ) ){

@@ -44,7 +44,6 @@ jQuery(document).ready(function($){
 
     __init();
 
-
     // forec reset password form
     if( ST_User.current_action == 'rp' ){
         $('.st-user-modal').addClass('is-visible');
@@ -70,6 +69,7 @@ jQuery(document).ready(function($){
                 html = $( html );
                 w.html( html );
                 __init( html  );
+                $( "body").trigger( "st_user_content_loaded", [ html ] );
             }
         });
     });
@@ -540,7 +540,7 @@ jQuery(document).ready(function($){
         /**
          * Trigger when init
          */
-        $( "body").trigger( "st_user_init", w );
+        $( "body").trigger( "st_user_init", [ w ] );
 
     }// end function init
 

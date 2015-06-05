@@ -23,8 +23,8 @@ if( ! is_user_logged_in() ){
     <form class="st-form st-login-form" action="<?php echo site_url('/'); ?>" method="post">
         <?php do_action('st_user_before_login_form'); ?>
         <p class="fieldset st-username">
-            <label class="image-replace st-username" for="signin-username"><?php _e('Username','st-user'); ?></label>
-            <input name="st_username" class="full-width has-padding has-border" id="signin-username" type="text" placeholder="<?php echo esc_attr( __('Username', 'st-login')); ?>">
+            <label class="image-replace st-username" for="signin-username"><?php _e('Username or email','st-user'); ?></label>
+            <input name="st_username" class="full-width has-padding has-border" id="signin-username" type="text" placeholder="<?php echo esc_attr( __('Username or email', 'st-login')); ?>">
             <span class="st-error-message"></span>
         </p>
 
