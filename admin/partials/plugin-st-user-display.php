@@ -36,6 +36,7 @@ if( isset( $_POST['submit'] ) ){
 ?>
 <h2><?php _e('ST User Settings','st-user'); ?></h2>
 <form novalidate="novalidate" action="" method="post">
+    <h3><?php _e('General','st-user'); ?></h3>
     <table class="form-table">
         <tbody>
         <tr>
@@ -115,6 +116,11 @@ if( isset( $_POST['submit'] ) ){
         ?>
         </tbody>
     </table>
+
+    <?php
+    // hook you can add more table fields if you want
+    do_action('st_user_settings_table');
+    ?>
 
     <p class="submit">
         <input type="submit" value="<?php echo esc_attr__('Save Changes','st-user'); ?>" class="button button-primary" id="submit" name="submit">

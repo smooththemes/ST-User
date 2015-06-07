@@ -151,14 +151,29 @@ jQuery(document).ready(function($){
         $('body').on('forgot_password_selected', function(){
             forgot_password_selected();
         });
+
+        $('body').on('st_add_loading_form', function(){
+            add_loading();
+        });
+
+        $('body').on('st_remove_loading_form', function(){
+            remove_loading();
+        });
+
         //close modal
         $('.st-user-modal').on('click', function(event){
+            if( $form_modal.hasClass('st-disabled') ){
+                return false;
+            }
             if( $(event.target).is($form_modal) || $(event.target).is('.st-close-form') ) {
                 $form_modal.removeClass('is-visible');
             }
         });
         //close modal when clicking the esc keyboard button
         $(document).keyup(function(event){
+            if( $form_modal.hasClass('st-disabled') ){
+                return false;
+            }
             if(event.which=='27'){
                 $form_modal.removeClass('is-visible');
             }
@@ -166,6 +181,9 @@ jQuery(document).ready(function($){
 
         //switch from a tab to another
         $form_modal_tab.on('click', function(event) {
+            if( $form_modal.hasClass('st-disabled') ){
+                return false;
+            }
             event.preventDefault();
             ( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
             return false;
@@ -244,8 +262,19 @@ jQuery(document).ready(function($){
         });
 
 
+        function add_loading(){
+            $('.st-form', w).append('<div class="st-loading"><div class="st-loading-md"><div class="st-loading-icon"></div></div></div>');
+            $form_modal.addClass('st-disabled');
+        }
+
+        function remove_loading(){
+            $('.st-form .st-loading', w ).remove();
+            $form_modal.removeClass('st-disabled');
+        }
+
         //  Login form submit
         $('.st-login-form', w ).submit( function(){
+            //return false;
             var form = $(this);
             var formData = form.serializeObject();
             formData.action = 'st_user_ajax';
@@ -255,6 +284,7 @@ jQuery(document).ready(function($){
                 data: formData,
                 type: 'POST',
                 success: function( response ){
+
                     if( response === 'logged_success' ){
                         var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : document.location.toString();
                         window.location = redirect_url;
@@ -292,6 +322,7 @@ jQuery(document).ready(function($){
 
         // Register form submit
         $('.st-register-form' , w ).submit( function(){
+
             var form = $(this);
             var formData = form.serializeObject();
             formData.action = 'st_user_ajax';
@@ -314,6 +345,7 @@ jQuery(document).ready(function($){
                 data: formData,
                 type: 'POST',
                 success: function( response ){
+
                     submit_btn.val( submit_btn.data('default-text') ) ;
                     submit_btn.removeAttr('disabled');
 
