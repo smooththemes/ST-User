@@ -385,6 +385,15 @@ class ST_User_Action{
         // update for current user only
         $user_data['ID'] = $c_user->ID;
         $r = wp_update_user( $user_data );
+        // update user meta
+        $user_meta = array(
+            'first_name' =>  $user_data['user_firstname'],
+            'last_name' =>  $user_data['user_lastname']
+        );
+        $user_meta = apply_filters('st_user_update_meta', $user_meta);
+        foreach( $user_meta  as $k => $v ){
+            update_user_meta( $c_user->ID, $k, $v );
+        }
 
         if ( is_wp_error( $r ) ) {
             $errors['error'] =  __( 'Something wrong, please try again.' ,'st-user');

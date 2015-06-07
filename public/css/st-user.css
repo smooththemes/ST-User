@@ -164,7 +164,7 @@ xsigin/signup popup
     background-image: url("../img/st-icon-website.svg");
 }
 
-.st-form input {
+.st-form input, .st-form .st-btn {
     margin: 0;
     padding: 0;
     border-radius: 0.25em;
@@ -202,7 +202,7 @@ xsigin/signup popup
     padding-right: 65px;
 }
 
-.st-form input[type=submit] {
+.st-form input[type=submit] , .st-form .st-btn{
     padding: 16px 0;
     cursor: pointer;
     background: #2f889a;
@@ -216,7 +216,7 @@ xsigin/signup popup
     appearance: none;
 }
 
-.no-touch .st-form input[type=submit]:hover, .no-touch .st-form input[type=submit]:focus {
+.no-touch .st-form input[type=submit]:hover, .no-touch .st-form input[type=submit]:focus, .no-touch .st-form .st-btn, .no-touch .st-form .st-btn:focus {
     background: #3599ae;
     outline: none;
 }
@@ -303,7 +303,7 @@ xsigin/signup popup
         padding: 16px 20px 16px 50px;
     }
 
-    .st-form input[type=submit] {
+    .st-form input[type=submit], .st-form .st-btn {
         padding: 16px 0;
     }
 }

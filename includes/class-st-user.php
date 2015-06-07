@@ -93,6 +93,7 @@ class ST_User {
             show_admin_bar(false);
         }
 
+        do_action( 'st_user_init',  $this );
 
 	}
 
@@ -219,6 +220,7 @@ class ST_User {
          * Redirect to url when user logged in
          */
         $this->loader->add_filter('st_user_logged_in_redirect_to', $this, 'logged_in_url');
+        $this->loader->add_filter('login_redirect', $this, 'logged_in_url');
 
         /**
          * Login url
@@ -226,11 +228,13 @@ class ST_User {
         $this->loader->add_filter('st_user_login_url', $this, 'login_url');
 
         // disable default login url
+
         if( $this->get_setting('disable_default_login')  && !isset( $_GET['interim-login'] ) ){
-            if(  !is_admin() ){
+            if(  ! is_admin()  ){
+                $this->loader->add_filter('login_url', $this, 'login_url');
+            }elseif( defined( 'DOING_AJAX' )  ) {
                 $this->loader->add_filter('login_url', $this, 'login_url');
             }
-
         }
 
         /**
@@ -350,7 +354,10 @@ class ST_User {
      * @return mixed
      */
     public function logged_in_url(  $url = '' ){
-        return $this->get_setting('logged_in_url');
+         if( current_user_can('editor') || current_user_can('administrator') ) {
+            return $url;
+         }
+        return ( $this->get_setting('logged_in_url') != '' ) ? $this->get_setting('logged_in_url') : $url ;
     }
 
     /**

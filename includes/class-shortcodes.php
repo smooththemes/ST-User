@@ -40,7 +40,15 @@ class ST_User_Shortcodes{
     function login( $atts, $content = "" ){
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
+            'login_button' => '', // use login button instead login form
         ), $atts );
+
+        if( ! is_user_logged_in() ){
+            if( $atts['login_button'] == 1 ){
+                return $this->login_button( $atts );
+            }
+        }
+
         $atts['action'] = 'login-template';
         extract(  $atts );
         $content ='';

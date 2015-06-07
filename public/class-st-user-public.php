@@ -120,13 +120,14 @@ class ST_User_Public {
         wp_enqueue_script( $this->st_user , ST_USER_URL.'public/js/st-user.js',array('jquery'), '1.0',  true  );
 
         wp_localize_script( $this->st_user , 'ST_User',
-            array(
+            apply_filters('st_user_localize_script', array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'current_action' => $this->current_action,
                 'hide_txt' => __('Hide','st-user'),
                 'show_txt' => __('Show','st-user'),
                 'current_url' => $_SERVER['REQUEST_URI'],
-            )
+                '_wpnonce' => wp_create_nonce()
+            ) )
         );
 
     }

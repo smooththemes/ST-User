@@ -37,11 +37,11 @@ if( !is_user_logged_in() ){
 
             <p class="fieldset st-firstname">
                 <label class="image-replace st-username" for="signin-password"><?php _e('First Name','st-user'); ?></label>
-                <input name="st_user_data[user_firstname]" value="<?php echo esc_attr(  $user->user_firstname ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__('First name','sa-login') ; ?>">
+                <input name="st_user_data[user_firstname]" value="<?php echo esc_attr(  get_user_meta(  $user->ID, 'first_name', true ) ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__('First name','sa-login') ; ?>">
             </p>
             <p class="fieldset st-lastname">
                 <label class="image-replace st-username" for="signin-password"><?php _e('Last Name','st-user'); ?></label>
-                <input name="st_user_data[user_lastname]" value="<?php echo esc_attr(  $user->user_lastname ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__('Last name','sa-login') ; ?>">
+                <input name="st_user_data[user_lastname]" value="<?php echo esc_attr( get_user_meta(  $user->ID, 'last_name', true ) ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__('Last name','sa-login') ; ?>">
             </p>
 
             <p class="fieldset st-display-name">

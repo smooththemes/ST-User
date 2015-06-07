@@ -43,7 +43,7 @@ if( ! is_user_logged_in() ){
             <input type="hidden" value="<?php echo apply_filters('st_user_logged_in_redirect_to', get_permalink() ); ?>" name="st_redirect_to" >
         </p>
 
-        <?php do_action('st_user_after_login_form'); ?>
+        <?php do_action('st_user_after_login_form', $in_modal ); ?>
     </form>
     <p class="st-form-bottom-message">
         <a class="st-lost-pwd-link" href="<?php echo wp_lostpassword_url(); ?>"><?php _e('I don\'t know my password','st-user'); ?></a>
