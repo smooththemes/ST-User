@@ -11,7 +11,7 @@
  * @version     1.0
  */
 
-if( ! isset( $current_action ) ){
+if ( ! isset( $current_action ) ) {
     $current_action = false;
 }
 ?>
@@ -26,7 +26,7 @@ if( ! isset( $current_action ) ){
         echo $this->get_template_content( 'login.php', array('in_modal' => true ) );
         echo $this->get_template_content( 'register.php', array('in_modal' => true ) );
         echo $this->get_template_content( 'reset.php' , array('in_modal' => true ) );
-        if( $current_action == 'rp' ){
+        if ( $current_action == 'rp' ) {
             echo $this->get_template_content( 'change-password.php' , array('in_modal' => true ) );
         }
         ?>

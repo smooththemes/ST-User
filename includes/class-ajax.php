@@ -12,16 +12,16 @@ class ST_User_Ajax{
      */
     private  $instance;
 
-    function __construct(  $instance ){
+    function __construct( $instance ) {
         $this->instance = $instance;
     }
     /**
      * Handle ajax requests
      * @since 1.0
      */
-    public function  ajax( ){
+    public function  ajax( ) {
         $act = $_REQUEST['act'];
-        switch( $act ){
+        switch( $act ) {
             case 'login-template':
                 echo $this->instance->get_template_content('login.php');
                 break;
@@ -38,9 +38,9 @@ class ST_User_Ajax{
                 echo $this->instance->get_template_content('change-password.php') ;
                 break;
             case 'profile-template':
-                if( ! is_user_logged_in() ){
+                if ( ! is_user_logged_in() ) {
                     echo $this->instance->get_template_content('login.php');
-                }else{
+                } else {
                     echo $this->instance->get_template_content('profile.php') ;
                 }
                 break;

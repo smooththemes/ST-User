@@ -14,31 +14,31 @@ class ST_User_Action{
      *
      * @return string
      */
-    public  static function do_login(){
-        $creds = array();
-        $creds['user_login'] = $_POST['st_username'];
+    public  static function do_login() {
+        $creds                  = array();
+        $creds['user_login']    = $_POST['st_username'];
         $creds['user_password'] = $_POST['st_pwd'];
-        $secure_cookie = '';
-        $msgs = array();
-        if( trim( $creds['user_login'] ) == '' ){
+        $secure_cookie          = '';
+        $msgs                   = array();
+        if ( trim( $creds['user_login'] ) == '' ) {
             $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username or email.', 'st-user');
         }
 
-        if( trim( $creds['user_password'] ) == '' ){
+        if ( trim( $creds['user_password'] ) == '' ) {
             $msgs['incorrect_password'] =  __('<strong>ERROR</strong>: The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
         }
 
-        if( is_email( $creds['user_login'] ) ){
+        if ( is_email( $creds['user_login'] ) ) {
             $u =  get_user_by('email', $creds['user_login'] );
-            if( ! $u ){
+            if ( ! $u ) {
                 $msgs['invalid_username'] =  __('<strong>ERROR</strong>: This email does not exists.', 'st-user');
-            }else{
+            } else {
                 $creds['user_login'] = $u->user_login;
             }
         }
 
-        if( !empty( $msgs ) ){
-            return (  json_encode( $msgs ) );
+        if ( !empty( $msgs ) ) {
+            return ( json_encode( $msgs ) );
         }
 
         $creds['remember'] = isset( $_POST['st_rememberme'] )  && $_POST['st_rememberme'] !='' ? true :  false;
@@ -56,11 +56,11 @@ class ST_User_Action{
         
         $user = wp_signon( $creds, $secure_cookie );
 
-        if ( is_wp_error($user) ){
+        if ( is_wp_error( $user ) ) {
             $codes = $user->get_error_codes();
 
-            foreach( $codes as $code ){
-                switch( $code ){
+            foreach ( $codes as $code ) {
+                switch( $code ) {
                     case 'invalid_username':
                         $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username.', 'st-user');
                         break;
@@ -70,7 +70,7 @@ class ST_User_Action{
                 }
             }
             return json_encode( $msgs );
-        }else{
+        } else {
             return 'logged_success';
         }
 
@@ -82,7 +82,7 @@ class ST_User_Action{
      * @since 1.0
      * @return int|string int if register success string json if failure
      */
-    public static function do_register(){
+    public static function do_register() {
         $args = wp_parse_args( $_POST, array(
             'st_signup_email'       => '',
             'st_signup_password'    => '',
@@ -91,39 +91,39 @@ class ST_User_Action{
         ) );
 
         $email      = $args['st_signup_email'];
-        $pwd        =  $args['st_signup_password'];
-        $username   =  $args['st_signup_username'];
+        $pwd        = $args['st_signup_password'];
+        $username   = $args['st_signup_username'];
 
         $msgs = array();
         $pwd_length =  apply_filters('st_user_pwd_leng', 6 );
-        if(  empty( $username ) || ! validate_username( $username ) ){
+        if ( empty( $username ) || ! validate_username( $username ) ) {
             $msgs['invalidate_username'] = __('Invalidate username','st-user');
         }
-        if( strlen( $pwd ) < $pwd_length ){
+        if ( strlen( $pwd ) < $pwd_length ) {
             $msgs['incorrect_password'] = sprintf( __('Please enter your password more than %s characters', 'st-user'),  $pwd_length );
         }
-        if( ! is_email( $email ) ){
+        if ( ! is_email( $email ) ) {
             $msgs['incorrect_email'] =  __('Please enter a correct your email', 'st-user');
         }
 
         // check if show term and term checked
-        if( apply_filters('st_user_register_show_term_link' , true ) ) {
+        if ( apply_filters('st_user_register_show_term_link' , true ) ) {
             if ($args['st_accept_terms'] == '' ) {
                 $msgs['accept_terms'] = __('You must agree our Terms and Conditions to continue', 'st-user');
             }
         }
 
         // if data invalid
-        if( !empty (  $msgs ) ){
-            return json_encode(  $msgs );
+        if ( !empty ( $msgs ) ) {
+            return json_encode( $msgs );
         }
         $r = wp_create_user( $username, $pwd , $email );
-        if( is_wp_error( $r ) ){
+        if ( is_wp_error( $r ) ) {
             foreach ( (array) $r->errors as $code => $messages ) {
                 $msgs[  $code ] = $messages[0];
             }
            return json_encode( $msgs );
-        }else{
+        } else {
             // __('Registration complete. Please check your e-mail.');
             wp_new_user_notification( $r, $pwd );
             return $r;
@@ -138,7 +138,7 @@ class ST_User_Action{
      *
      * @return string
      */
-    public  static function retrieve_password(){
+    public  static function retrieve_password() {
         global $wpdb, $wp_hasher;
         $errors =   array();
         $user_data =  false;
@@ -182,7 +182,7 @@ class ST_User_Action{
          */
         $allow = apply_filters( 'allow_password_reset', true, $user_data->ID );
 
-        if( !$allow ){
+        if ( !$allow ) {
            $errors['msg'] = __('Password reset is not allowed for this user') ;
             return json_encode( $errors );
         }
@@ -216,10 +216,10 @@ class ST_User_Action{
 
         $url = apply_filters( 'st_user_url', network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') );
         $url = remove_query_arg( array( 'action', 'key', 'login' ),  $url );
-        $url =  add_query_arg(  array(
+        $url =  add_query_arg( array(
                                     'st_action' => 'rp',
-                                    'key' => $key ,
-                                    'login' => $user_login ,
+                                    'key'       => $key ,
+                                    'login'     => $user_login ,
                                 ) ,  $url );
 
         $message .= '<' . $url . ">\r\n";
@@ -257,7 +257,7 @@ class ST_User_Action{
          */
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
-        if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ){
+        if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
            // wp_die( __('The e-mail could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.') );
             $errors['msg'] = __('The e-mail could not be sent.');
             return json_encode($errors['msg']);
@@ -271,15 +271,15 @@ class ST_User_Action{
      * @since 1.0
      * @return string
      */
-    static function  reset_pass(){
+    static function  reset_pass() {
         $rp_key =  isset( $_REQUEST['key'] ) ?  $_REQUEST['key'] : null;
         $rp_login = isset( $_REQUEST['login'] ) ?  $_REQUEST['login'] :  null;
 
         // check if not request change in modal
-        if( empty( $rp_key ) || empty ( $rp_login ) ){
+        if ( empty( $rp_key ) || empty ( $rp_login ) ) {
             $current_url = $_REQUEST['current_url'];
             $current_url =explode('?', $current_url );
-            if( count(  $current_url ) > 1 ){
+            if ( count( $current_url ) > 1 ) {
                 $current_url = $current_url[1];
             }
             $data = wp_parse_args( $current_url , array(
@@ -296,7 +296,7 @@ class ST_User_Action{
             $errors['pass1'] =  __( 'Please enter your password' ,'st-user');
         }
 
-        if ( isset($_REQUEST['st_pwd']) && $_REQUEST['st_pwd'] != $_REQUEST['st_pwd2'] ){
+        if ( isset($_REQUEST['st_pwd']) && $_REQUEST['st_pwd'] != $_REQUEST['st_pwd2'] ) {
             $errors['pass2'] =  __( 'The passwords do not match.' ,'st-user');
         }
 
@@ -324,15 +324,15 @@ class ST_User_Action{
             reset_password($user, $_POST['st_pwd']);
             //<p class="message reset-pass">' . __( 'Your password has been reset.' )
             return 'changed';
-        }else{
+        } else {
             return json_encode( $errors );
         }
     }
 
-    public static function update_profile(){
-        if( ! is_user_logged_in() ){
+    public static function update_profile() {
+        if ( ! is_user_logged_in() ) {
             $errors['error'] =  __( 'Please login to continue.' ,'st-user');
-            return json_encode(  $errors );
+            return json_encode( $errors );
         }
 
         $user_data =  wp_parse_args( $_POST['st_user_data'] , array(
@@ -345,29 +345,29 @@ class ST_User_Action{
         $c_user =  wp_get_current_user();
 
         // check email
-        if( !is_email( $user_data['user_email'] ) ){
+        if ( !is_email( $user_data['user_email'] ) ) {
             $errors['st-email'] =  __( 'Invalid email.' ,'st-user' );
-        }else{
+        } else {
             $check_u =  get_user_by('email', $user_data['user_email'] );
-            if( !empty( $check_u ) ){
-                if( $check_u->ID != $c_user->ID ){
+            if ( !empty( $check_u ) ) {
+                if ( $check_u->ID != $c_user->ID ) {
                     $errors['st-email'] = __( 'Sorry, that email address is already used by other account!', 'st-user' ); // __( 'This email is used by other account.' ,'st-user');
                 }
             }
         }
 
         // check password if enter
-        if( isset( $user_data['user_pass'] ) && $user_data['user_pass'] != '' ){
+        if ( isset( $user_data['user_pass'] ) && $user_data['user_pass'] != '' ) {
             $pass2  = isset( $_POST['st_user_pwd2'] ) ? trim( $_POST['st_user_pwd2'] ) : '';
-            if( $pass2 == '' ){
+            if ( $pass2 == '' ) {
                 $errors['pass2'] =  __( 'Please enter your confirm password.' ,'st-user' );
-            }else if( $user_data['user_pass'] != $pass2  ) {
+            }else if ( $user_data['user_pass'] != $pass2  ) {
                 $errors['pass2'] =  __( 'The passwords do not match.' ,'st-user' );
             }
         }
 
         // do no update pwd if it empty
-        if( isset(  $user_data['user_pass'] ) &&  trim( $user_data['user_pass'] ) =='' ){
+        if ( isset( $user_data['user_pass'] ) &&  trim( $user_data['user_pass'] ) =='' ) {
             unset( $user_data['user_pass'] );
         }
 
@@ -378,8 +378,8 @@ class ST_User_Action{
         $user_data = apply_filters( 'st_user_update_profile_data', $user_data );
         $errors = apply_filters( 'st_user_update_profile_errors', $errors );
 
-        if(  !empty( $errors ) ){
-            return json_encode(  $errors );
+        if ( !empty( $errors ) ) {
+            return json_encode( $errors );
         }
 
         // update for current user only
@@ -388,7 +388,7 @@ class ST_User_Action{
 
         if ( is_wp_error( $r ) ) {
             $errors['error'] =  __( 'Something wrong, please try again.' ,'st-user');
-            return json_encode(  $errors );
+            return json_encode( $errors );
         } else {
             // Success!
         }

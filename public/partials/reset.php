@@ -10,12 +10,12 @@
 * @package 	ST-User/Templates
 * @version     1.0
 */
-if( !isset( $in_modal ) ){
+if ( !isset( $in_modal ) ) {
     $in_modal = false;
 }
 ?>
 <div id="st-reset-password" class="st-form-w">
-    <?php if( !$in_modal ){ ?>
+    <?php if ( !$in_modal ) { ?>
         <h3><?php _e('Lost password','st-user'); ?></h3>
     <?php } ?>
     <form class="st-form st-form-reset-password" action="" method="post" >

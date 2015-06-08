@@ -19,7 +19,7 @@
  *
  * @package    ST_User
  * @subpackage ST_User/includes
- * @author     Truong Sa <shrimp2t@gmail.com>
+ * @author     SmoothThemes
  */
 class ST_User_Loader {
 

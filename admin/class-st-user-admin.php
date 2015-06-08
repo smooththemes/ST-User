@@ -18,7 +18,7 @@
  *
  * @package    ST_User
  * @subpackage ST_User/admin
- * @author     Truong Sa <shrimp2t@gmail.com>
+ * @author     SmoothThemes
  */
 class ST_User_Admin {
 
@@ -55,11 +55,11 @@ class ST_User_Admin {
 
 	}
 
-    public function add_option_menu(){
+    public function add_option_menu() {
         add_options_page( __( 'ST User', 'st-user' ), __( 'ST User','st-user' ), 'edit_users', 'st-user',  array( $this, 'option_settings' ));
     }
 
-    function option_settings(){
+    function option_settings() {
        include  dirname(__FILE__).'/partials/plugin-st-user-display.php';
     }
 

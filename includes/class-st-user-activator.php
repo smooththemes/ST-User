@@ -7,7 +7,7 @@
  * @since      1.0.0
  * @package    ST_User
  * @subpackage ST_User/includes
- * @author     Truong Sa <shrimp2t@gmail.com>
+ * @author     SmoothThemes
  */
 class ST_User_Activator {
 
@@ -23,7 +23,7 @@ class ST_User_Activator {
             'post_title'   => __('Account','st-user'),
             'post_name'    => $account_slug,
             'post_type'    => 'page',
-            'post_status'    => 'publish',
+            'post_status'  => 'publish',
             'post_content' => '['.$shortcode_base.']',
 
         );
@@ -39,7 +39,7 @@ class ST_User_Activator {
 
         } else {
             $r = wp_insert_post( $page );
-            if ( ! is_wp_error( $r ) && is_numeric( $r ) ){
+            if ( ! is_wp_error( $r ) && is_numeric( $r ) ) {
                 $page_id = $r;
             }
         }
@@ -52,7 +52,7 @@ class ST_User_Activator {
             'st_user_term_page'             => '',
         );
 
-        foreach( $option_keys as $k => $v ){
+        foreach ( $option_keys as $k => $v ) {
             update_option( $k, $v );
         }
 	}

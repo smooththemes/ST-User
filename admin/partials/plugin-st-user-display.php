@@ -11,7 +11,7 @@
  * @subpackage ST_User/admin/partials
  */
 
-if( isset( $_POST['submit'] ) ){
+if ( isset( $_POST['submit'] ) ) {
     $option_keys = array(
         'st_user_account_page'          => '',
         'st_user_disable_default_login' => '',
@@ -21,9 +21,9 @@ if( isset( $_POST['submit'] ) ){
     );
     $option_keys = apply_filters( 'st_settings_keys', $option_keys );
 
-    foreach (  $option_keys as $k => $v ){
+    foreach ( $option_keys as $k => $v ) {
         // if the key container "st_user_"  at begin of string the save it
-        if( isset( $_POST[ $k ] ) ){
+        if ( isset( $_POST[ $k ] ) ) {
             update_option( $k, $_POST[ $k ] );
         } else {
             delete_option( $k );

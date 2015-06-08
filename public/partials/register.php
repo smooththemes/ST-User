@@ -12,12 +12,12 @@
  */
 //global $custom_data;
 //var_dump($custom_data, $a, $in_modal);
-if( !isset( $in_modal ) ){
+if ( !isset( $in_modal ) ) {
     $in_modal = false;
 }
 ?>
 <div id="st-signup" class="st-form-w"> <!-- sign up form -->
-    <?php if( !$in_modal ){ ?>
+    <?php if ( !$in_modal ) { ?>
         <h3><?php _e('Singup','st-user'); ?></h3>
     <?php } ?>
     <form class="st-form st-register-form<?php echo $in_modal ? ' in-st-modal' : ''; ?>"  action="<?php echo site_url('/'); ?>" method="post">
@@ -45,7 +45,7 @@ if( !isset( $in_modal ) ){
             </p>
             <?php
             // Filter  to show term link
-            if( apply_filters('st_user_register_show_term_link' , true ) ){
+            if ( apply_filters('st_user_register_show_term_link' , true ) ) {
             ?>
             <p class="fieldset accept-terms">
                 <label><input name="st_accept_terms" value="i-agree" type="checkbox" id="st-accept-terms"> <?php echo sprintf( __('I agree to the <a href="%s" target="_blank">Terms and Conditions</a>' ,'st-user') ,  apply_filters('st_user_term_link' , '#') ); ?></label>
@@ -57,7 +57,7 @@ if( !isset( $in_modal ) ){
             </p>
         </div>
     </form>
-    <?php if( ! $in_modal ){ ?>
+    <?php if ( ! $in_modal ) { ?>
     <p class="st-form-bottom-message"><a class="st-back-to-login" href="<?php echo wp_login_url(); ?>"><?php _e('Back to log-in','st-user'); ?></a></p>
     <?php } ?>
     <!-- <a href="#0" class="st-close-form">Close</a> -->

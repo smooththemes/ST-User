@@ -15,7 +15,7 @@ class ST_User_Shortcodes{
      */
     private  $instance;
 
-    function __construct( $instance ){
+    function __construct( $instance ) {
         $this->instance = $instance;
         add_shortcode( 'st_user',                   array( $this, 'user' ) );
         add_shortcode( 'st_user_login',             array( $this, 'login' ) );
@@ -37,24 +37,24 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    function login( $atts, $content = "" ){
+    function login( $atts, $content = "" ) {
         $atts = shortcode_atts(array(
             'ajax_load'     => 'false' ,
             'login_button'  => '', // use login button instead login form
         ), $atts );
 
-        if( ! is_user_logged_in() ){
-            if( $atts['login_button'] == 1 ){
+        if ( ! is_user_logged_in() ) {
+            if ( $atts['login_button'] == 1 ) {
                 return $this->login_button( $atts );
             }
         }
 
         $atts['action'] = 'login-template';
-        extract(  $atts );
+        extract( $atts );
         $content ='';
-        if(  st_is_true ( $atts['ajax_load'] ) ){
+        if ( st_is_true ( $atts['ajax_load'] ) ) {
              // leave content empty and load it via ajax
-        }else{
+        } else {
             $content =  $this->instance->get_template_content('login.php') ;
         }
         $html = '<div '.st_user_array_to_html_atts( $atts ).' class="st-user-wrapper st-login-wrapper">'.$content.'</div>';
@@ -70,9 +70,9 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    function register( $atts, $content = "" ){
+    function register( $atts, $content = "" ) {
         // do not display the form when user loggin
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             return '';
         }
 
@@ -80,11 +80,11 @@ class ST_User_Shortcodes{
             'ajax_load' => 'false' ,
         ), $atts );
         $atts['action'] = 'register-template';
-        extract(  $atts );
+        extract( $atts );
         $content ='';
-        if(  st_is_true ( $atts['ajax_load'] ) ){
+        if ( st_is_true ( $atts['ajax_load'] ) ) {
             // leave content empty and load it via ajax
-        }else{
+        } else {
             $content = $this->instance->get_template_content('register.php') ;
         }
 
@@ -100,10 +100,10 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    function reset_password( $atts, $content = "" ){
+    function reset_password( $atts, $content = "" ) {
 
         // do not display the form when user loggin
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             return '';
         }
 
@@ -112,11 +112,11 @@ class ST_User_Shortcodes{
             //'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'reset-template';
-        extract(  $atts );
+        extract( $atts );
         $content ='';
-        if(  st_is_true ( $atts['ajax_load'] ) ){
+        if ( st_is_true ( $atts['ajax_load'] ) ) {
             // leave content empty and load it via ajax
-        }else{
+        } else {
             $content =  $this->instance->get_template_content('reset.php') ;
         }
 
@@ -132,10 +132,10 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    function change_password( $atts, $content = "" ){
+    function change_password( $atts, $content = "" ) {
 
         // do not display the form when user loggin user profile form instead
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             return '';
         }
 
@@ -144,11 +144,11 @@ class ST_User_Shortcodes{
             //'redirect' => '', // page id or url
         ), $atts );
         $atts['action'] = 'change-pwd-template';
-        extract(  $atts );
+        extract( $atts );
         $content ='';
-        if(  st_is_true ( $atts['ajax_load'] ) ){
+        if ( st_is_true ( $atts['ajax_load'] ) ) {
             // leave content empty and load it via ajax
-        }else{
+        } else {
             $content =  $this->instance->get_template_content('change-password.php') ;
         }
 
@@ -164,9 +164,9 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    public function profile( $atts, $content = "" ){
+    public function profile( $atts, $content = "" ) {
         // if user not logged in display login form instead
-        if( !is_user_logged_in() ){
+        if ( !is_user_logged_in() ) {
             return self::login( $atts, $content );
         }
 
@@ -174,11 +174,11 @@ class ST_User_Shortcodes{
             'ajax_load' => 'false' ,
         ), $atts );
         $atts['action'] = 'profile-template';
-        extract(  $atts );
+        extract( $atts );
         $content ='';
-        if(  st_is_true ( $atts['ajax_load'] ) ){
+        if ( st_is_true ( $atts['ajax_load'] ) ) {
             // leave content empty and load it via ajax
-        }else{
+        } else {
             $content =  $this->instance->get_template_content('profile.php') ;
         }
         return '<div class="st-user-wrapper st-profile-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
@@ -195,20 +195,20 @@ class ST_User_Shortcodes{
      * @param $atts
      * @return string
      */
-    public   function login_button( $atts ){
+    public   function login_button( $atts ) {
         $atts = shortcode_atts(array(
             'class'         => '' ,
             'login_text'    => __('Login', 'st-user'),
             'logout_text'   => __("Logout", 'st-user'),
         ), $atts );
-        extract(  $atts );
+        extract( $atts );
         $atts['class'].=' st-login-btn';
 
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             $url = wp_logout_url();
             $atts['is_logged'] = 'true';
             $text = $logout_text;
-        }else{
+        } else {
             $url =  wp_login_url();
             $atts['is_logged'] = 'false';
             $text = $login_text;
@@ -225,9 +225,9 @@ class ST_User_Shortcodes{
      * @param $atts
      * @return string
      */
-    public  function singup_button( $atts ){
+    public  function singup_button( $atts ) {
         // disable when user logged in
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             return '';
         }
         $atts = shortcode_atts(array(
@@ -236,13 +236,13 @@ class ST_User_Shortcodes{
             'text'              => __('Singup', 'st-user'),
             'ajax'              => 'true'
         ), $atts );
-        extract(  $atts );
+        extract( $atts );
         $atts['class'].=' st-singup-btn';
 
-        if( ! st_is_true( $ajax ) ){
+        if ( ! st_is_true( $ajax ) ) {
             $url = get_permalink();
             $url =  add_query_arg( array('logout'=>'true') , $url );
-        }else{
+        } else {
             $url ='#';
         }
         return  '<a href="'.$url.'" '.st_user_array_to_html_atts( $atts ).'>'.$text.'</a>';
@@ -258,16 +258,16 @@ class ST_User_Shortcodes{
      * @param string $content
      * @return string
      */
-    public  function user(  $atts, $content ='' ){
-        if( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='lost-pass' ){
+    public  function user( $atts, $content ='' ) {
+        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='lost-pass' ) {
             return $this->reset_password( $atts , $content );
         }
-        if( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='register' ){
+        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='register' ) {
             return $this->register( $atts , $content );
         }
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             return $this->profile( $atts , $content );
-        }else{
+        } else {
             return $this->login($atts, $content );
         }
     }

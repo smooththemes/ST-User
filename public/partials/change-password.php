@@ -11,13 +11,13 @@
  * @version     1.0
  */
 
-if( !isset( $in_modal ) ){
+if ( !isset( $in_modal ) ) {
     $in_modal = false;
 }
 
 ?>
 <div id="st-change-password" class="st-form-w">
-    <?php if( !$in_modal ){ ?>
+    <?php if ( !$in_modal ) { ?>
         <h3><?php _e('Change your password','st-user'); ?></h3>
     <?php } ?>
     <form class="st-form st-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?>" action="<?php echo site_url('/'); ?>" method="post" >
@@ -39,7 +39,7 @@ if( !isset( $in_modal ) ){
             </p>
             <p class="fieldset">
                 <input class="full-width has-padding st-submit" type="submit" data-loading-text="<?php echo esc_attr__('Loading...', 'st-user'); ?>" value="<?php echo esc_attr__('Reset password','st-user'); ?>">
-                <?php foreach( $_GET as $k => $v ){
+                <?php foreach ( $_GET as $k => $v ) {
                     ?>
                     <input type="hidden" name="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( (string) $v ); ?>">
                 <?php } ?>

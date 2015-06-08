@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    ST_User
  * @subpackage ST_User/includes
- * @author     Truong Sa <shrimp2t@gmail.com>
+ * @author     SmoothThemes
  */
 class ST_User {
 
@@ -224,10 +224,10 @@ class ST_User {
 
         // disable default login url
 
-        if( $this->get_setting('disable_default_login')  && !isset( $_GET['interim-login'] ) ){
-            if(  ! is_admin()  ){
+        if ( $this->get_setting('disable_default_login')  && !isset( $_GET['interim-login'] ) ) {
+            if ( ! is_admin()  ) {
                 $this->loader->add_filter( 'login_url', $this, 'login_url' );
-            }elseif( defined( 'DOING_AJAX' )  ) {
+            }elseif ( defined( 'DOING_AJAX' )  ) {
                 $this->loader->add_filter( 'login_url', $this, 'login_url' );
             }
         }
@@ -260,7 +260,7 @@ class ST_User {
      *
      * @since 1.0.0
      */
-    private function settings( ){
+    private function settings( ) {
         $this->settings = array();
 
         /**
@@ -273,16 +273,16 @@ class ST_User {
 
         $this->settings['disable_default_login'] = get_option( 'st_user_disable_default_login' );
 
-        if(  ! ( $this->settings['logout_url'] =  get_option( 'st_user_logout_redirect_url' ) ) ) {
+        if ( ! ( $this->settings['logout_url'] =  get_option( 'st_user_logout_redirect_url' ) ) ) {
             $this->settings['logout_url'] = $this->settings['url'];
         }
 
-        if( ! (  $this->settings['logged_in_url'] = get_option( 'st_user_login_redirect_url' ) ) ){
+        if ( ! ( $this->settings['logged_in_url'] = get_option( 'st_user_login_redirect_url' ) ) ) {
            $this->settings['logged_in_url'] = $this->settings['url'];
         }
 
-        $this->settings['lost_pwd_url'] = add_query_arg(  array( 'st_action' => 'lost-pass' ), $page_url );
-        $this->settings['register_url'] = add_query_arg(  array( 'st_action' => 'register' ), $page_url );
+        $this->settings['lost_pwd_url'] = add_query_arg( array( 'st_action' => 'lost-pass' ), $page_url );
+        $this->settings['register_url'] = add_query_arg( array( 'st_action' => 'register' ), $page_url );
 
         $this->settings['term_link'] = get_permalink( get_option( 'st_user_term_page' ) );
 
@@ -300,10 +300,10 @@ class ST_User {
      * @param bool $default
      * @return mixed
      */
-    public function get_setting( $key , $default =  false ){
-        if( isset(  $this->settings[  $key ] ) ){
+    public function get_setting( $key , $default =  false ) {
+        if ( isset( $this->settings[  $key ] ) ) {
             return  $this->settings[  $key ];
-        }else{
+        } else {
             return $default;
         }
     }
@@ -315,7 +315,7 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function page_url( $url = '' ){
+    public function page_url( $url = '' ) {
         return $this->get_setting('url');
     }
 
@@ -326,7 +326,7 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function register_url( $url = '' ){
+    public function register_url( $url = '' ) {
         return $this->get_setting( 'register_url' );
     }
 
@@ -337,7 +337,7 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function logout_url(  $url = '' ){
+    public function logout_url( $url = '' ) {
        return $this->get_setting( 'logout_url' );
     }
 
@@ -348,8 +348,8 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function logged_in_url(  $url = '' ){
-         if( current_user_can( 'editor' ) || current_user_can( 'administrator' ) ) {
+    public function logged_in_url( $url = '' ) {
+         if ( current_user_can( 'editor' ) || current_user_can( 'administrator' ) ) {
             return $url;
          }
         return ( $this->get_setting( 'logged_in_url' ) != '' ) ? $this->get_setting( 'logged_in_url' ) : $url ;
@@ -362,7 +362,7 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function login_url( $url = '' ){
+    public function login_url( $url = '' ) {
         return $this->get_setting('url');
     }
 
@@ -373,7 +373,7 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function lost_pwd_url( $url = '' ){
+    public function lost_pwd_url( $url = '' ) {
         return $this->get_setting( 'lost_pwd_url' );
     }
 
@@ -385,7 +385,7 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function term_link( $url = '' ){
+    public function term_link( $url = '' ) {
         return $this->get_setting( 'term_link' );
     }
 
@@ -442,7 +442,7 @@ class ST_User {
      * @param string $template
      * @return string
      */
-    public function get_file_template( $template ='' ){
+    public function get_file_template( $template ='' ) {
         /**
          * Overridden template in your theme
          * YOUR_THEME_DIR/templates/{$template}
@@ -475,12 +475,12 @@ class ST_User {
      * @param array $custom_data
      * @return string
      */
-    public function get_file_content( $template, $custom_data = array() ){
+    public function get_file_content( $template, $custom_data = array() ) {
         ob_start();
         $old_content = ob_get_clean();
         ob_start();
-        if( is_file( $template ) ){
-            if ( is_array( $custom_data ) ){
+        if ( is_file( $template ) ) {
+            if ( is_array( $custom_data ) ) {
                 extract( $custom_data);
             }
             //load_template();
@@ -500,8 +500,8 @@ class ST_User {
      * @param array $custom_data
      * @return string
      */
-    public  function get_template_content( $template,   $custom_data = array() ){
-        return  $this->get_file_content( $this->get_file_template(  $template ) , $custom_data );
+    public  function get_template_content( $template,   $custom_data = array() ) {
+        return  $this->get_file_content( $this->get_file_template( $template ) , $custom_data );
     }
 
 }

@@ -255,7 +255,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
             if (this instanceof bound) {
 
-              var F = function(){};
+              var F = function() {};
               F.prototype = target.prototype;
               var self = new F();
 
@@ -356,7 +356,7 @@ window.Modernizr = (function( window, document, undefined ) {
                 if (elem === false) return props[i];
 
                 // let's bind a function
-                if (is(item, 'function')){
+                if (is(item, 'function')) {
                   // default to autobind unless override
                   return item.bind(elem || obj);
                 }
@@ -381,7 +381,7 @@ window.Modernizr = (function( window, document, undefined ) {
             props   = (prop + ' ' + cssomPrefixes.join(ucProp + ' ') + ucProp).split(' ');
 
         // did they call .prefixed('boxSizing') or are we just testing a prop?
-        if(is(prefixed, "string") || is(prefixed, "undefined")) {
+        if (is(prefixed, "string") || is(prefixed, "undefined")) {
           return testProps(props, prefixed);
 
         // otherwise, they called .prefixed('requestAnimationFrame', window[, elem])
@@ -451,7 +451,7 @@ window.Modernizr = (function( window, document, undefined ) {
     tests['touch'] = function() {
         var bool;
 
-        if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
           bool = true;
         } else {
           injectElementWithStyles(['@media (',prefixes.join('touch-enabled),('),mod,')','{#modernizr{top:9px;position:absolute}}'].join(''), function( node ) {
@@ -554,7 +554,7 @@ window.Modernizr = (function( window, document, undefined ) {
         // If the UA supports multiple backgrounds, there should be three occurrences
         //   of the string "url(" in the return value for elemStyle.background
 
-        return (/(url\s*\(.*?){3}/).test(mStyle.background);
+        return (/(url\s*\(.*?) {3}/).test(mStyle.background);
     };
 
 
@@ -661,8 +661,8 @@ window.Modernizr = (function( window, document, undefined ) {
         if ( ret && 'webkitPerspective' in docElement.style ) {
 
           // Webkit allows this media query to succeed only if the feature is enabled.
-          // `@media (transform-3d),(-webkit-transform-3d){ ... }`
-          injectElementWithStyles('@media (transform-3d),(-webkit-transform-3d){#modernizr{left:9px;position:absolute;height:3px;}}', function( node, rule ) {
+          // `@media (transform-3d),(-webkit-transform-3d) { ... }`
+          injectElementWithStyles('@media (transform-3d),(-webkit-transform-3d) {#modernizr{left:9px;position:absolute;height:3px;}}', function( node, rule ) {
             ret = node.offsetLeft === 9 && node.offsetHeight === 3;
           });
         }
@@ -862,7 +862,7 @@ window.Modernizr = (function( window, document, undefined ) {
             for ( var i = 0, len = props.length; i < len; i++ ) {
                 attrs[ props[i] ] = !!(props[i] in inputElem);
             }
-            if (attrs.list){
+            if (attrs.list) {
               // safari false positive's on datalist: webk.it/74252
               // see also github.com/Modernizr/Modernizr/issues/146
               attrs.list = !!(document.createElement('datalist') && window.HTMLDataListElement);
@@ -907,7 +907,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
                       docElement.removeChild(inputElem);
 
-                    } else if ( /^(search|tel)$/.test(inputElemType) ){
+                    } else if ( /^(search|tel)$/.test(inputElemType) ) {
                       // Spec doesn't define any special parsing or detectable UI
                       //   behaviors so we pass these through as true
 
@@ -1112,11 +1112,11 @@ window.Modernizr = (function( window, document, undefined ) {
          * @param {Document} ownerDocument The context document.
          * @returns {Object} The shived element.
          */
-        function createElement(nodeName, ownerDocument, data){
+        function createElement(nodeName, ownerDocument, data) {
           if (!ownerDocument) {
             ownerDocument = document;
           }
-          if(supportsUnknownElements){
+          if (supportsUnknownElements) {
             return ownerDocument.createElement(nodeName);
           }
           if (!data) {
@@ -1148,11 +1148,11 @@ window.Modernizr = (function( window, document, undefined ) {
          * @param {Document} ownerDocument The context document.
          * @returns {Object} The shived DocumentFragment.
          */
-        function createDocumentFragment(ownerDocument, data){
+        function createDocumentFragment(ownerDocument, data) {
           if (!ownerDocument) {
             ownerDocument = document;
           }
-          if(supportsUnknownElements){
+          if (supportsUnknownElements) {
             return ownerDocument.createDocumentFragment();
           }
           data = data || getExpandoData(ownerDocument);
@@ -1160,7 +1160,7 @@ window.Modernizr = (function( window, document, undefined ) {
           i = 0,
           elems = getElements(),
           l = elems.length;
-          for(;i<l;i++){
+          for(;i<l;i++) {
             clone.createElement(elems[i]);
           }
           return clone;
@@ -1189,7 +1189,7 @@ window.Modernizr = (function( window, document, undefined ) {
             return createElement(nodeName, ownerDocument, data);
           };
 
-          ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
+          ownerDocument.createDocumentFragment = Function('h,f', 'return function() {' +
                                                           'var n=f.cloneNode(),c=n.createElement;' +
                                                           'h.shivMethods&&(' +
                                                           // unroll the `createElement` calls
@@ -1341,7 +1341,7 @@ window.Modernizr = (function( window, document, undefined ) {
     // Modernizr.testProp() investigates whether a given style property is recognized
     // Note that the property names must be provided in the camelCase variant.
     // Modernizr.testProp('pointerEvents')
-    Modernizr.testProp      = function(prop){
+    Modernizr.testProp      = function(prop) {
         return testProps([prop]);
     };
     /*>>testprop*/
@@ -1357,7 +1357,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
     /*>>teststyles*/
     // Modernizr.testStyles() allows you to add custom styles to the document and test an element afterwards
-    // Modernizr.testStyles('#modernizr { position:absolute }', function(elem, rule){ ... })
+    // Modernizr.testStyles('#modernizr { position:absolute }', function(elem, rule) { ... })
     Modernizr.testStyles    = injectElementWithStyles;
     /*>>teststyles*/
 
@@ -1369,7 +1369,7 @@ window.Modernizr = (function( window, document, undefined ) {
     // Properties must be passed as dom-style camelcase, rather than `box-sizing` hypentated style.
     // Return values will also be the camelCase variant, if you need to translate that to hypenated style use:
     //
-    //     str.replace(/([A-Z])/g, function(str,m1){ return '-' + m1.toLowerCase(); }).replace(/^ms-/,'-ms-');
+    //     str.replace(/([A-Z])/g, function(str,m1) { return '-' + m1.toLowerCase(); }).replace(/^ms-/,'-ms-');
 
     // If you're trying to ascertain which transition end event to bind to, you might do something like...
     //
@@ -1382,8 +1382,8 @@ window.Modernizr = (function( window, document, undefined ) {
     //     },
     //     transEndEventName = transEndEventNames[ Modernizr.prefixed('transition') ];
 
-    Modernizr.prefixed      = function(prop, obj, elem){
-      if(!obj) {
+    Modernizr.prefixed      = function(prop, obj, elem) {
+      if (!obj) {
         return testPropsAll(prop, 'pfx');
       } else {
         // Testing DOM property e.g. Modernizr.prefixed('requestAnimationFrame', window) // 'mozRequestAnimationFrame'

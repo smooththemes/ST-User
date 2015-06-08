@@ -18,7 +18,7 @@
  *
  * @package    ST_User
  * @subpackage ST_User/public
- * @author     Truong Sa <shrimp2t@gmail.com>
+ * @author     SmoothThemes
  */
 class ST_User_Public {
 
@@ -136,7 +136,7 @@ class ST_User_Public {
      *  Display modal
      * @since 1.0
      */
-    function modal(){
+    function modal() {
         echo $this->instance->get_template_content('modal.php', array('current_action' => $this->current_action ) ) ;
     }
 
