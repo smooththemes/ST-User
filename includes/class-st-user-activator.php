@@ -23,6 +23,7 @@ class ST_User_Activator {
             'post_title'   => __('Account','st-user'),
             'post_name'    => $account_slug,
             'post_type'    => 'page',
+            'post_status'    => 'publish',
             'post_content' => '['.$shortcode_base.']',
 
         );
@@ -45,7 +46,7 @@ class ST_User_Activator {
 
         $option_keys = array(
             'st_user_account_page'          => $page_id ,
-            'st_user_disable_default_login' => 1 ,
+            'st_user_disable_default_login' => 0 ,
             'st_user_login_redirect_url'    => '',
             'st_user_logout_redirect_url'   => '',
             'st_user_term_page'             => '',
