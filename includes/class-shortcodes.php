@@ -17,15 +17,15 @@ class ST_User_Shortcodes{
 
     function __construct( $instance ){
         $this->instance = $instance;
-        add_shortcode( 'st_user', array( $this, 'user' ) );
-        add_shortcode( 'st_user_login', array( $this, 'login' ) );
-        add_shortcode( 'st_user_register', array( $this , 'register' ) );
-        add_shortcode( 'st_user_lost_password', array( $this, 'lost_password' ) );
-        add_shortcode( 'st_user_reset_password', array( $this , 'reset_password' ) );
-        add_shortcode( 'st_user_change_password', array($this , 'change_password' ) );
-        add_shortcode( 'st_user_profile', array( $this , 'profile' ) );
-        add_shortcode( 'st_login_btn', array( $this , 'login_button' ) );
-        add_shortcode( 'st_singup_btn', array( $this, 'singup_button' ) );
+        add_shortcode( 'st_user',                   array( $this, 'user' ) );
+        add_shortcode( 'st_user_login',             array( $this, 'login' ) );
+        add_shortcode( 'st_user_register',          array( $this , 'register' ) );
+        add_shortcode( 'st_user_lost_password',     array( $this, 'lost_password' ) );
+        add_shortcode( 'st_user_reset_password',    array( $this , 'reset_password' ) );
+        add_shortcode( 'st_user_change_password',   array( $this , 'change_password' ) );
+        add_shortcode( 'st_user_profile',           array( $this , 'profile' ) );
+        add_shortcode( 'st_login_btn',              array( $this , 'login_button' ) );
+        add_shortcode( 'st_singup_btn',             array( $this, 'singup_button' ) );
     }
 
     /**
@@ -39,8 +39,8 @@ class ST_User_Shortcodes{
      */
     function login( $atts, $content = "" ){
         $atts = shortcode_atts(array(
-            'ajax_load' => 'false' ,
-            'login_button' => '', // use login button instead login form
+            'ajax_load'     => 'false' ,
+            'login_button'  => '', // use login button instead login form
         ), $atts );
 
         if( ! is_user_logged_in() ){
@@ -197,9 +197,9 @@ class ST_User_Shortcodes{
      */
     public   function login_button( $atts ){
         $atts = shortcode_atts(array(
-            'class' => '' ,
-            'login_text' => __('Login', 'st-user'),
-            'logout_text' => __("Logout", 'st-user'),
+            'class'         => '' ,
+            'login_text'    => __('Login', 'st-user'),
+            'logout_text'   => __("Logout", 'st-user'),
         ), $atts );
         extract(  $atts );
         $atts['class'].=' st-login-btn';
@@ -231,10 +231,10 @@ class ST_User_Shortcodes{
             return '';
         }
         $atts = shortcode_atts(array(
-            'class' => '' ,
-            'hide_when_logged' =>  'true' ,
-            'text' => __('Singup', 'st-user'),
-            'ajax'=> 'true'
+            'class'             => '' ,
+            'hide_when_logged'  =>  'true' ,
+            'text'              => __('Singup', 'st-user'),
+            'ajax'              => 'true'
         ), $atts );
         extract(  $atts );
         $atts['class'].=' st-singup-btn';

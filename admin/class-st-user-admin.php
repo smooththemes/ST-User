@@ -51,12 +51,12 @@ class ST_User_Admin {
 
 		$this->st_user = $st_user;
 		$this->version = $version;
-        add_action('admin_menu', array( $this ,'add_option_menu' ) );
+        add_action( 'admin_menu', array( $this ,'add_option_menu' ) );
 
 	}
 
     public function add_option_menu(){
-        add_options_page( __('ST User','st-user'), __('ST User','st-user'), 'edit_users', 'st-user',  array( $this, 'option_settings' ));
+        add_options_page( __( 'ST User', 'st-user' ), __( 'ST User','st-user' ), 'edit_users', 'st-user',  array( $this, 'option_settings' ));
     }
 
     function option_settings(){

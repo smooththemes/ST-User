@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class ST_User_Ajax
  * Handle ajax requests class
@@ -21,7 +20,6 @@ class ST_User_Ajax{
      * @since 1.0
      */
     public function  ajax( ){
-
         $act = $_REQUEST['act'];
         switch( $act ){
             case 'login-template':
@@ -40,12 +38,11 @@ class ST_User_Ajax{
                 echo $this->instance->get_template_content('change-password.php') ;
                 break;
             case 'profile-template':
-                if( !is_user_logged_in() ){
+                if( ! is_user_logged_in() ){
                     echo $this->instance->get_template_content('login.php');
                 }else{
                     echo $this->instance->get_template_content('profile.php') ;
                 }
-
                 break;
             case 'modal-template':
                 echo $this->instance->get_template_content('modal.php') ;

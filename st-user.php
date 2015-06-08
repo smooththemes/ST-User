@@ -30,8 +30,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define('ST_USER_URL', trailingslashit( plugins_url('', __FILE__) ) );
-define('ST_USER_PATH', trailingslashit(plugin_dir_path( __FILE__)));
+define( 'ST_USER_URL',  trailingslashit( plugins_url('', __FILE__) ) );
+define( 'ST_USER_PATH', trailingslashit( plugin_dir_path( __FILE__) ) );
 
 /**
  * The code that runs during plugin activation.
@@ -72,7 +72,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-st-user.php';
 function run_st_user() {
 	$plugin = new ST_User();
 	$plugin->run();
-
 }
 
-add_action('init', 'run_st_user');
+add_action( 'init', 'run_st_user' );

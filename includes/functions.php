@@ -78,7 +78,7 @@ function st_user_array_to_html_atts(  $array ){
             $v = json_encode(  $v );
         }
 
-        if( ! in_array(  $k , array('href','id','name','class', 'style') ) ){
+        if( ! in_array(  $k , array( 'href','id','name','class', 'style' ) ) ){
             $k = 'data-'.$k;
         }
 
