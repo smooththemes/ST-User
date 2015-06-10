@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
         }
 
         var _act = w.data('action');
-        var data = { action :'st_user_ajax', 'act' : _act,  'current_url' : ST_User.current_url  };
+        var data = { action :'st_user_ajax', 'act' : _act, 'current_url' : ST_User.current_url  };
         $.ajax({
             data: data,
             url: ST_User.ajax_url,
@@ -337,7 +337,7 @@ jQuery(document).ready(function($) {
 
             var submit_btn =  $('.st-submit', form);
             var txt = submit_btn.val();
-            submit_btn.data('default-text',  txt );
+            submit_btn.data('default-text', txt );
             if ( submit_btn.data('loading-text') !== '' ) {
                 submit_btn.val( submit_btn.data('loading-text') ) ;
                 submit_btn.attr('disabled', 'disabled');
@@ -408,7 +408,7 @@ jQuery(document).ready(function($) {
 
             var submit_btn =  $('.st-submit', form);
             var txt = submit_btn.val();
-            submit_btn.data('default-text',  txt );
+            submit_btn.data('default-text', txt );
             if ( submit_btn.data('loading-text') !== '' ) {
                 submit_btn.val( submit_btn.data('loading-text') ) ;
                 submit_btn.attr('disabled', 'disabled');
@@ -447,7 +447,7 @@ jQuery(document).ready(function($) {
 
             var submit_btn =  $('.st-submit', form);
             var txt = submit_btn.val();
-            submit_btn.data('default-text',  txt );
+            submit_btn.data('default-text', txt );
             if ( submit_btn.data('loading-text') !== '' ) {
                 submit_btn.val( submit_btn.data('loading-text') ) ;
                 submit_btn.attr('disabled', 'disabled');
@@ -496,7 +496,7 @@ jQuery(document).ready(function($) {
 
             var submit_btn =  $('.st-submit', form);
             var txt = submit_btn.val();
-            submit_btn.data('default-text',  txt );
+            submit_btn.data('default-text', txt );
             if ( submit_btn.data('loading-text') !== '' ) {
                 submit_btn.val( submit_btn.data('loading-text') ) ;
                 submit_btn.attr('disabled', 'disabled');

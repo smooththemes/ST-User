@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ST_USER_URL',  trailingslashit( plugins_url('', __FILE__) ) );
+define( 'ST_USER_URL', trailingslashit( plugins_url('', __FILE__) ) );
 define( 'ST_USER_PATH', trailingslashit( plugin_dir_path( __FILE__) ) );
 
 /**

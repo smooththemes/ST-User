@@ -20,7 +20,7 @@
  * @param int    $depth Depth of menu item. Used for padding.
  */
 function st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $depth = false ){
-    if ( get_post_meta( $item->ID,  '_is_logout' , true ) == 'yes' ) {
+    if ( get_post_meta( $item->ID, '_is_logout' , true ) == 'yes' ) {
         if ( is_user_logged_in() ) {
             //$title =  get_post_meta( $item->ID, '_logout_title', true );
             $atts['href']                   =  wp_logout_url( $atts['href'] );

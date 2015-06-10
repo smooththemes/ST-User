@@ -74,16 +74,16 @@ if ( ! is_user_logged_in() ) {
                          );
                      ?></p>
                      <p><?php
-                          echo sprintf( __('Member since <strong>%1$s</strong>', 'st-user'), date_i18n( get_option('date_format'),  strtotime( $user->user_registered ) ) );
+                          echo sprintf( __('Member since <strong>%1$s</strong>', 'st-user'), date_i18n( get_option('date_format'), strtotime( $user->user_registered ) ) );
                          ?></p>
                  </div>
              </div>
              <div class="st-ui st-user-links">
                  <a href="<?php echo esc_attr( apply_filters('st_user_url', '#') ) ?>"><?php _e('Profile','st-user') ?></a>
                  <a href="<?php echo wp_logout_url( $logout_url ) ; ?>"><?php _e('Logout','st-user') ?></a>
-                 <?php do_action('st_user_logged_in_links',  $user ); ?>
+                 <?php do_action('st_user_logged_in_links', $user ); ?>
              </div>
-             <?php do_action('st_user_logged_in_info',  $user ); ?>
+             <?php do_action('st_user_logged_in_info', $user ); ?>
          </div>
     </div> <!-- st-login -->
 <?php }?>

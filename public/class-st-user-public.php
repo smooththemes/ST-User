@@ -116,8 +116,8 @@ class ST_User_Public {
 
         wp_enqueue_script('jquery');
         wp_enqueue_script('json2');
-        wp_enqueue_script('modernizr', ST_USER_URL.'public/js/modernizr.js',array('jquery'), '2.7.1',  true  );
-        wp_enqueue_script( $this->st_user , ST_USER_URL.'public/js/st-user.js',array('jquery'), '1.0',  true  );
+        wp_enqueue_script('modernizr', ST_USER_URL.'public/js/modernizr.js',array('jquery'), '2.7.1', true  );
+        wp_enqueue_script( $this->st_user , ST_USER_URL.'public/js/st-user.js',array('jquery'), '1.0', true  );
 
         wp_localize_script( $this->st_user , 'ST_User',
             apply_filters('st_user_localize_script', array(

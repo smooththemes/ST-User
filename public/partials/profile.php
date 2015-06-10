@@ -32,11 +32,11 @@ if ( !is_user_logged_in() ) {
                 <div class="logged-info">
                     <p class="display-name"><strong><?php echo esc_html( $user->display_name ); ?></strong></p>
                     <p><?php
-                        echo sprintf( __('Member since <strong>%1$s</strong>', 'st-user'), date_i18n( get_option('date_format'),  strtotime( $user->user_registered ) ) );
+                        echo sprintf( __('Member since <strong>%1$s</strong>', 'st-user'), date_i18n( get_option('date_format'), strtotime( $user->user_registered ) ) );
                         ?></p>
                 </div>
             </div>
-            <?php do_action('st_user_profile_info',  $user ); ?>
+            <?php do_action('st_user_profile_info', $user ); ?>
         </div>
 
         <div class="form-fields">

@@ -17,15 +17,15 @@ class ST_User_Shortcodes{
 
     function __construct( $instance ) {
         $this->instance = $instance;
-        add_shortcode( 'st_user',                   array( $this, 'user' ) );
-        add_shortcode( 'st_user_login',             array( $this, 'login' ) );
-        add_shortcode( 'st_user_register',          array( $this ,'register' ) );
-        add_shortcode( 'st_user_lost_password',     array( $this, 'lost_password' ) );
-        add_shortcode( 'st_user_reset_password',    array( $this , 'reset_password' ) );
-        add_shortcode( 'st_user_change_password',   array( $this , 'change_password' ) );
-        add_shortcode( 'st_user_profile',           array( $this , 'profile' ) );
-        add_shortcode( 'st_login_btn',              array( $this , 'login_button' ) );
-        add_shortcode( 'st_singup_btn',             array( $this, 'singup_button' ) );
+        add_shortcode( 'st_user',                  array( $this, 'user' ) );
+        add_shortcode( 'st_user_login',            array( $this, 'login' ) );
+        add_shortcode( 'st_user_register',         array( $this, 'register' ) );
+        add_shortcode( 'st_user_lost_password',    array( $this, 'lost_password' ) );
+        add_shortcode( 'st_user_reset_password',   array( $this, 'reset_password' ) );
+        add_shortcode( 'st_user_change_password',  array( $this, 'change_password' ) );
+        add_shortcode( 'st_user_profile',          array( $this, 'profile' ) );
+        add_shortcode( 'st_login_btn',             array( $this, 'login_button' ) );
+        add_shortcode( 'st_singup_btn',            array( $this, 'singup_button' ) );
     }
 
     /**
@@ -86,7 +86,7 @@ class ST_User_Shortcodes{
             $content = $this->instance->get_template_content('register.php') ;
         }
 
-        return '<div class="st-user-wrapper st-register-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
+        return '<div class="st-user-wrapper st-register-wrapper" ' . st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
     /**
