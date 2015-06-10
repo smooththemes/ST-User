@@ -342,7 +342,7 @@ class ST_User {
      * @return mixed
      */
     public function logout_url( $url = '' ) {
-        if(  $url == '' ){
+        if (  $url == '' ){
             return $this->get_setting( 'logout_url' );
         }
         return $url;

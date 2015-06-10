@@ -20,7 +20,7 @@
  * @param int    $depth Depth of menu item. Used for padding.
  */
 function  st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $depth = false ){
-    if( get_post_meta( $item->ID,  '_is_logout' , true ) == 'yes' ) {
+    if ( get_post_meta( $item->ID,  '_is_logout' , true ) == 'yes' ) {
         if ( is_user_logged_in() ) {
             //$title =  get_post_meta( $item->ID, '_logout_title', true );
             $atts['href']                   =  wp_logout_url( $atts['href'] );
@@ -42,10 +42,10 @@ add_filter('megamenu_nav_menu_link_attributes','st_user_nav_menu_link_attributes
 
 /** This filter is documented in wp-includes/post-template.php */
 function st_user_nav_item_title( $title, $id ){
-    if( get_post_type( $id ) == 'nav_menu_item' ) {
+    if ( get_post_type( $id ) == 'nav_menu_item' ) {
 
         if ( get_post_meta( $id, '_is_logout', true ) == 'yes' ) {
-            if( is_user_logged_in() ){
+            if ( is_user_logged_in() ){
 
                 $new_title =  get_post_meta( $id, '_logout_title', true );
                 return ( $new_title != '' ) ? $new_title :  $title;
@@ -79,7 +79,7 @@ function st_user_can_see_nav_item( $item ){
         $user_can_see = false;
         $user = wp_get_current_user();
         foreach ( (array) $user->roles as $r ) {
-            if( isset( $who_can_see[ $r ] ) ){
+            if ( isset( $who_can_see[ $r ] ) ) {
                 $user_can_see = true;
             }
         }
@@ -185,7 +185,7 @@ function st_wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $args ){
     $classes = array();
     foreach ( $old_classes as $k => $v ) {
         $v = trim( ( string ) $v );
-        if( $v && strpos( $v, 'visible-') !== 0 ){
+        if ( $v && strpos( $v, 'visible-') !== 0 ) {
             $classes[ $v ] = $v;
         }
     }
@@ -360,7 +360,7 @@ class ST_Walker_Nav_Menu_Edit extends Walker_Nav_Menu {
         <div class="menu-item-settings" id="menu-item-settings-<?php echo $item_id; ?>">
 
 
-            <?php if( 'custom' == $item->type ) : ?>
+            <?php if ( 'custom' == $item->type ) : ?>
                 <p class="field-url description description-wide">
                     <label for="edit-menu-item-url-<?php echo $item_id; ?>">
                         <?php _e( 'URL' ); ?><br />
@@ -397,7 +397,7 @@ class ST_Walker_Nav_Menu_Edit extends Walker_Nav_Menu {
                     var o = jQuery( a );
                     var id = <?php echo json_encode( $id ); ?>;
                     console.debug( '#'+id  );
-                    if( o.is( ':checked' ) ){
+                    if ( o.is( ':checked' ) ) {
                         jQuery( '.more-title', jQuery( '#'+id ) ).show();
                     }else{
                         jQuery( '.more-title', jQuery( '#'+id ) ).hide();
@@ -508,7 +508,7 @@ class ST_Walker_Nav_Menu_Edit extends Walker_Nav_Menu {
             </p>
 
             <div class="menu-item-actions description-wide submitbox">
-                <?php if( 'custom' != $item->type && $original_title !== false ) : ?>
+                <?php if ( 'custom' != $item->type && $original_title !== false ) : ?>
                     <p class="link-to-original">
                         <?php printf( __('Original: %s'), '<a href="' . esc_attr( $item->url ) . '">' . esc_html( $original_title ) . '</a>' ); ?>
                     </p>

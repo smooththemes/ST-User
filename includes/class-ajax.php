@@ -21,7 +21,7 @@ class ST_User_Ajax{
      */
     public function  ajax( ) {
         $act = $_REQUEST['act'];
-        switch( $act ) {
+        switch ( $act ) {
             case 'login-template':
                 echo $this->instance->get_template_content('login.php');
                 break;
