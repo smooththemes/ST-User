@@ -73,5 +73,4 @@ function run_st_user() {
 	$plugin = new ST_User();
 	$plugin->run();
 }
-
 add_action( 'init', 'run_st_user' );

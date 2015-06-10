@@ -419,3 +419,12 @@ Loggin info
 .logged-info p{
     margin-bottom: 5px;
 }
+
+/* --------------------------------
+
+NAV helper - Use for menu conditions
+
+-------------------------------- */
+.display-none, .js-remove-nav, .hide {
+    display: none;
+}

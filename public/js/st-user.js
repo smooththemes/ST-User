@@ -42,6 +42,9 @@
 
 jQuery(document).ready(function($) {
 
+    // remove menu item not show
+    $('.js-remove-nav').remove();
+
     __init();
 
     // forec reset password form

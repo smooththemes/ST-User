@@ -138,6 +138,7 @@ class ST_User {
          */
         include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions.php';
         include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-user-action.php';
+        include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/nav-menu.php';
         include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-shortcodes.php';
         new ST_User_Shortcodes( $this );
 
@@ -273,12 +274,15 @@ class ST_User {
 
         $this->settings['disable_default_login'] = get_option( 'st_user_disable_default_login' );
 
-        if ( ! ( $this->settings['logout_url'] =  get_option( 'st_user_logout_redirect_url' ) ) ) {
+        $this->settings['logout_url'] =  get_option( 'st_user_logout_redirect_url' );
+        if ( $this->settings['logout_url'] == '' ) {
             $this->settings['logout_url'] = $this->settings['url'];
         }
 
+
+
         if ( ! ( $this->settings['logged_in_url'] = get_option( 'st_user_login_redirect_url' ) ) ) {
-           $this->settings['logged_in_url'] = $this->settings['url'];
+            $this->settings['logged_in_url'] = $this->settings['url'];
         }
 
         $this->settings['lost_pwd_url'] = add_query_arg( array( 'st_action' => 'lost-pass' ), $page_url );
@@ -338,7 +342,10 @@ class ST_User {
      * @return mixed
      */
     public function logout_url( $url = '' ) {
-       return $this->get_setting( 'logout_url' );
+        if(  $url == '' ){
+            return $this->get_setting( 'logout_url' );
+        }
+        return $url;
     }
 
     /**

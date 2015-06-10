@@ -19,7 +19,7 @@ class ST_User_Shortcodes{
         $this->instance = $instance;
         add_shortcode( 'st_user',                   array( $this, 'user' ) );
         add_shortcode( 'st_user_login',             array( $this, 'login' ) );
-        add_shortcode( 'st_user_register',          array( $this , 'register' ) );
+        add_shortcode( 'st_user_register',          array( $this ,'register' ) );
         add_shortcode( 'st_user_lost_password',     array( $this, 'lost_password' ) );
         add_shortcode( 'st_user_reset_password',    array( $this , 'reset_password' ) );
         add_shortcode( 'st_user_change_password',   array( $this , 'change_password' ) );
