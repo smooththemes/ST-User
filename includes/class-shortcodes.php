@@ -39,8 +39,10 @@ class ST_User_Shortcodes{
      */
     function login( $atts, $content = "" ) {
         $atts = shortcode_atts(array(
-            'ajax_load'     => 'false' ,
+            //'ajax_load'     => 'false' ,
             'login_button'  => '', // use login button instead login form
+            'logout_url'    => '', // the url will redirect when user logout
+            'login_url'     => '', // use url will redirect when user login
         ), $atts );
 
         if ( ! is_user_logged_in() ) {
@@ -51,12 +53,8 @@ class ST_User_Shortcodes{
 
         $atts['action'] = 'login-template';
         extract( $atts );
-        $content ='';
-        if ( st_is_true ( $atts['ajax_load'] ) ) {
-             // leave content empty and load it via ajax
-        } else {
-            $content =  $this->instance->get_template_content('login.php') ;
-        }
+
+        $content =  $this->instance->get_template_content('login.php', $atts ) ;
         $html = '<div '.st_user_array_to_html_atts( $atts ).' class="st-user-wrapper st-login-wrapper">'.$content.'</div>';
         return $html;
     }
