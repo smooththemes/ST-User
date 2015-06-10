@@ -39,10 +39,10 @@ class ST_User_Shortcodes{
      */
     function login( $atts, $content = "" ) {
         $atts = shortcode_atts(array(
-            //'ajax_load'            => 'false' ,
-            'login_button'           => '', // use login button instead login form
-            'logout_redirect_url'    => '', // the url will redirect when user logout
-            'login_redirect_url'     => '', // use url will redirect when user login
+            //'ajax_load'     => 'false' ,
+            'login_button'  => '', // use login button instead login form
+            'logout_url'    => '', // the url will redirect when user logout
+            'login_url'     => '', // use url will redirect when user login
         ), $atts );
 
         if ( ! is_user_logged_in() ) {
