@@ -40,7 +40,7 @@ if ( ! is_user_logged_in() ) {
         <?php do_action('st_user_before_submit_login_form'); ?>
         <p class="fieldset">
             <input class="full-width" type="submit" value="<?php echo esc_attr__('Login', 'st-user'); ?>">
-            <input type="hidden" value="<?php echo esc_attr( $login_url ) ; ?>" name="st_redirect_to" >
+            <input type="hidden" value="<?php echo apply_filters('st_user_logged_in_redirect_to', $login_url ); ?>" name="st_redirect_to" >
         </p>
 
         <?php do_action('st_user_after_login_form', $in_modal ); ?>
@@ -80,7 +80,7 @@ if ( ! is_user_logged_in() ) {
              </div>
              <div class="st-ui st-user-links">
                  <a href="<?php echo esc_attr( apply_filters('st_user_url', '#') ) ?>"><?php _e('Profile','st-user') ?></a>
-                 <a href="<?php echo esc_attr( wp_logout_url( $logout_url ) ); ?>"><?php _e('Logout','st-user') ?></a>
+                 <a href="<?php echo wp_logout_url( $logout_url ) ; ?>"><?php _e('Logout','st-user') ?></a>
                  <?php do_action('st_user_logged_in_links',  $user ); ?>
              </div>
              <?php do_action('st_user_logged_in_info',  $user ); ?>
