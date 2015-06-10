@@ -21,12 +21,12 @@
  */
 function  st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $depth = false ){
     if( get_post_meta( $item->ID,  '_is_logout' , true ) == 'yes' ){
-        if( is_user_logged_in() ){
+        if ( is_user_logged_in() ) {
             //$title =  get_post_meta( $item->ID, '_logout_title', true );
             $atts['href']                   =  wp_logout_url( $atts['href'] );
             $atts['data-st-user-logout']    = 'true';
             $atts['class']                  = '';
-        }else{
+        } else {
             //$title =  get_post_meta( $item->ID, '_logout_title', true );
             $atts['href']               =  wp_login_url( $atts['href'] );
             $atts['data-st-user-login'] = 'true';
@@ -44,13 +44,13 @@ add_filter('megamenu_nav_menu_link_attributes','st_user_nav_menu_link_attributes
 function st_user_nav_item_title( $title, $id ){
     if( get_post_type( $id ) == 'nav_menu_item' ){
 
-        if( get_post_meta( $id, '_is_logout', true ) == 'yes' ){
+        if ( get_post_meta( $id, '_is_logout', true ) == 'yes' ) {
             if( is_user_logged_in() ){
 
                 $new_title =  get_post_meta( $id, '_logout_title', true );
                 return ( $new_title != '' ) ? $new_title :  $title;
 
-            }else{
+            } else {
                 $new_title =  get_post_meta( $id, '_login_title', true );
                 return ( $new_title != '' ) ? $new_title :  $title;
             }
@@ -75,10 +75,10 @@ function st_user_can_see_nav_item( $item ){
      */
     $user_can_see = true;
     $who_can_see =  get_post_meta( $item->ID, '_see', true );
-    if( is_array( $who_can_see ) && count( $who_can_see ) ){
+    if ( is_array( $who_can_see ) && count( $who_can_see ) ) {
         $user_can_see = false;
         $user = wp_get_current_user();
-        foreach( (array) $user->roles as $r ){
+        foreach ( (array) $user->roles as $r ) {
             if( isset( $who_can_see[ $r ] ) ){
                 $user_can_see = true;
             }
@@ -88,8 +88,8 @@ function st_user_can_see_nav_item( $item ){
     /*
      * Hide Item when logged in if checked
      */
-    if( is_user_logged_in() ){
-        if( 'yes' ==  get_post_meta( $item->ID, '_hide_loggedin', true ) ){
+    if ( is_user_logged_in() ) {
+        if ( 'yes' ==  get_post_meta( $item->ID, '_hide_loggedin', true ) ) {
             $user_can_see = false;
         }
     }
@@ -116,7 +116,7 @@ function st_user_can_see_nav_item( $item ){
  * @param array  $args   An array of arguments. @see wp_nav_menu()
  */
 function st_user_menu_item_output( $item_output, $item, $depth = false, $args = array() ) {
-    if( ! st_user_can_see_nav_item( $item ) ){
+    if ( ! st_user_can_see_nav_item( $item ) ) {
         return '';
     }
 
@@ -140,7 +140,7 @@ add_filter( 'megamenu_walker_nav_menu_start_el', 'st_user_menu_item_output', 99,
  * @param int    $depth   Depth of menu item. Used for padding.
  */
 function st_user_nav_menu_css_class( $classes, $item, $args = array(), $dept = false ){
-    if( ! st_user_can_see_nav_item(  $item ) ){
+    if ( ! st_user_can_see_nav_item(  $item ) ) {
         $classes['remove'] = 'js-remove-nav display-none hide';
     }
     return $classes;
@@ -169,7 +169,7 @@ function st_wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $args ){
     );
 
     $values = array();
-    foreach ( $more_keys as $field => $v ){
+    foreach ( $more_keys as $field => $v ) {
         $value = isset( $_POST[ $field ][ $menu_item_db_id ] ) ? $_POST[ $field ][ $menu_item_db_id ] : '';
         $option_name  =  str_replace( 'menu-item', '_', $field );
         $option_name  =  str_replace( '-', '_', $option_name );
@@ -183,22 +183,22 @@ function st_wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $args ){
 
     //var_dump( $classes );
     $classes = array();
-    foreach( $old_classes as $k => $v ){
+    foreach ( $old_classes as $k => $v ) {
         $v = trim( ( string ) $v );
         if( $v && strpos( $v, 'visible-') !== 0 ){
             $classes[ $v ] = $v;
         }
     }
 
-    if( $values['_is_logout'] == 'yes' ){
+    if ( $values['_is_logout'] == 'yes' ) {
         $classes['is-logout-url'] = 'is-logout-url';
-    }else{
-        if( isset( $classes['is-logout-url'] ) ) {
-            unset(  $classes['is-logout-url'] );
+    } else {
+        if ( isset( $classes['is-logout-url'] ) ) {
+            unset( $classes['is-logout-url'] );
         }
     }
 
-    if( is_array( $values['_see'] ) ){
+    if ( is_array( $values['_see'] ) ) {
         foreach ( $values['_see'] as $k => $v ){
             if ( $v != '' ){
                 $classes['visible-'.$k] = 'visible-'.$k;
