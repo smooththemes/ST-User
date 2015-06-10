@@ -44,15 +44,15 @@ add_filter('megamenu_nav_menu_link_attributes','st_user_nav_menu_link_attributes
 function st_user_nav_item_title( $title, $id ){
     if( get_post_type( $id ) == 'nav_menu_item' ){
 
-        if( get_post_meta( $id,  '_is_logout' , true ) == 'yes' ){
+        if( get_post_meta( $id, '_is_logout', true ) == 'yes' ){
             if( is_user_logged_in() ){
 
                 $new_title =  get_post_meta( $id, '_logout_title', true );
-                return ( $new_title !='' ) ? $new_title :  $title;
+                return ( $new_title != '' ) ? $new_title :  $title;
 
             }else{
                 $new_title =  get_post_meta( $id, '_login_title', true );
-                return ( $new_title !='' ) ? $new_title :  $title;
+                return ( $new_title != '' ) ? $new_title :  $title;
             }
         }
     }
@@ -95,7 +95,7 @@ function st_user_can_see_nav_item( $item ){
     /*
      * Hide Item when logged in if checked
      */
-    if(  is_user_logged_in() ){
+    if( is_user_logged_in() ){
         if( 'yes' ==  get_post_meta( $item->ID, '_hide_loggedin', true ) ){
             $user_can_see = false;
         }
@@ -122,9 +122,9 @@ function st_user_can_see_nav_item( $item ){
  * @param int    $depth  Depth of menu item. Used for padding.
  * @param array  $args   An array of arguments. @see wp_nav_menu()
  */
-function st_user_menu_item_output(  $item_output, $item, $depth = false, $args = array()  ) {
+function st_user_menu_item_output( $item_output, $item, $depth = false, $args = array() ) {
 
-    if( ! st_user_can_see_nav_item(  $item ) ){
+    if( ! st_user_can_see_nav_item( $item ) ){
         return '';
     }
 
@@ -167,13 +167,13 @@ add_filter( 'megamenu_nav_menu_css_class', 'st_user_nav_menu_css_class', 99,  4 
  * @param $menu_item_db_id
  * @param $args
  */
-function st_wp_update_nav_menu_item(  $menu_id, $menu_item_db_id, $args ){
+function st_wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $args ){
     $more_keys =   array(
         'menu-item-login-title'    => '',
         'menu-item-logout-title'   => '',
         'menu-item-see'            => '',
         'menu-item-is-logout'      => '',
-        'menu-item-hide-loggedin'      => '',
+        'menu-item-hide-loggedin'  => '',
     );
 
     $values = array();
@@ -206,10 +206,10 @@ function st_wp_update_nav_menu_item(  $menu_id, $menu_item_db_id, $args ){
         }
     }
 
-    if( is_array( $values['_see'] )  ){
-        foreach ( $values['_see']  as $k => $v ){
+    if( is_array( $values['_see'] ) ){
+        foreach ( $values['_see'] as $k => $v ){
             if ( $v != '' ){
-                $classes['visible-'.$k] =  'visible-'.$k;
+                $classes['visible-'.$k] = 'visible-'.$k;
             } elseif ( isset( $classes['visible-'.$k] ) ) {
                 unset( $classes['visible-'.$k] );
             }
@@ -298,11 +298,6 @@ class ST_Walker_Nav_Menu_Edit extends Walker_Nav_Menu {
         } elseif ( 'post_type' == $item->type ) {
             $original_object = get_post( $item->object_id );
             $original_title = get_the_title( $original_object->ID );
-        }elseif ( 'st-menu-item' == $item->type ) {
-            $original_object = get_post( $item->object_id );
-            $original_title = get_the_title( $original_object->ID );
-            $item->type_label = __('ST User menu', 'st-user');
-            $item->url = get_permalink( $original_object->ID );
         }
 
         $classes = array(
@@ -341,7 +336,7 @@ class ST_Walker_Nav_Menu_Edit extends Walker_Nav_Menu {
                             echo wp_nonce_url(
                                 add_query_arg(
                                     array(
-                                        'action' => 'move-up-menu-item',
+                                        'action'    => 'move-up-menu-item',
                                         'menu-item' => $item_id,
                                     ),
                                     remove_query_arg($removed_args, admin_url( 'nav-menus.php' ) )
