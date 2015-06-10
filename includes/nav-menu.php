@@ -19,7 +19,7 @@
  * @param array  $args  An array of {@see wp_nav_menu()} arguments.
  * @param int    $depth Depth of menu item. Used for padding.
  */
-function  st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $depth = false ){
+function st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $depth = false ){
     if ( get_post_meta( $item->ID,  '_is_logout' , true ) == 'yes' ) {
         if ( is_user_logged_in() ) {
             //$title =  get_post_meta( $item->ID, '_logout_title', true );
@@ -36,8 +36,8 @@ function  st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $dept
     }
     return $atts;
 }
-add_filter('nav_menu_link_attributes','st_user_nav_menu_link_attributes', 99, 4);
-add_filter('megamenu_nav_menu_link_attributes','st_user_nav_menu_link_attributes', 99, 4);
+add_filter( 'nav_menu_link_attributes','st_user_nav_menu_link_attributes', 99, 4 );
+add_filter( 'megamenu_nav_menu_link_attributes','st_user_nav_menu_link_attributes', 99, 4 );
 
 
 /** This filter is documented in wp-includes/post-template.php */
@@ -59,7 +59,7 @@ function st_user_nav_item_title( $title, $id ){
     return  $title;
 }
 
-add_filter( 'the_title', 'st_user_nav_item_title', 99, 2);
+add_filter( 'the_title', 'st_user_nav_item_title', 99, 2 );
 
 /**
  * Check Menu item permissions
@@ -145,8 +145,8 @@ function st_user_nav_menu_css_class( $classes, $item, $args = array(), $dept = f
     }
     return $classes;
 }
-add_filter( 'nav_menu_css_class', 'st_user_nav_menu_css_class', 99,  4 );
-add_filter( 'megamenu_nav_menu_css_class', 'st_user_nav_menu_css_class', 99,  4 );
+add_filter( 'nav_menu_css_class', 'st_user_nav_menu_css_class', 99, 4 );
+add_filter( 'megamenu_nav_menu_css_class', 'st_user_nav_menu_css_class', 99, 4 );
 
 
 /**
@@ -211,7 +211,7 @@ function st_wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $args ){
     $classes =  array_unique( $classes );
     update_post_meta( $menu_item_db_id, '_menu_item_classes', $classes );
 }
-add_action('wp_update_nav_menu_item', 'st_wp_update_nav_menu_item', 16, 3 );
+add_action( 'wp_update_nav_menu_item', 'st_wp_update_nav_menu_item', 16, 3 );
 
 
 
@@ -295,7 +295,7 @@ class ST_Walker_Nav_Menu_Edit extends Walker_Nav_Menu {
         $classes = array(
             'menu-item menu-item-depth-' . $depth,
             'menu-item-' . esc_attr( $item->object ),
-            'menu-item-edit-' . ( ( isset( $_GET['edit-menu-item'] ) && $item_id == $_GET['edit-menu-item'] ) ? 'active' : 'inactive'),
+            'menu-item-edit-' . ( ( isset( $_GET['edit-menu-item'] ) && $item_id == $_GET['edit-menu-item'] ) ? 'active' : 'inactive' ),
         );
 
         $title = $item->title;

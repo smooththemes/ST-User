@@ -215,12 +215,12 @@ class ST_User_Action{
         $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
 
         $url = apply_filters( 'st_user_url', network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') );
-        $url = remove_query_arg( array( 'action', 'key', 'login' ),  $url );
+        $url = remove_query_arg( array( 'action', 'key', 'login' ), $url );
         $url =  add_query_arg( array(
                                     'st_action' => 'rp',
                                     'key'       => $key ,
                                     'login'     => $user_login ,
-                                ) ,  $url );
+                                ), $url );
 
         $message .= '<' . $url . ">\r\n";
 
