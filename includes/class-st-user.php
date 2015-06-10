@@ -93,7 +93,7 @@ class ST_User {
             show_admin_bar( false );
         }
 
-        do_action( 'st_user_init',  $this );
+        do_action( 'st_user_init', $this );
 
 	}
 
@@ -251,7 +251,7 @@ class ST_User {
 
         $ajax = new ST_User_Ajax( $this );
 
-        $this->loader->add_action( 'wp_ajax_st_user_ajax', $ajax,  'ajax' );
+        $this->loader->add_action( 'wp_ajax_st_user_ajax', $ajax, 'ajax' );
         $this->loader->add_action( 'wp_ajax_nopriv_st_user_ajax', $ajax, 'ajax' );
 
 	}
@@ -294,7 +294,7 @@ class ST_User {
          * Hook to change settings if you want
          * @since 1.0.0
          */
-        $this->settings = apply_filters('st_user_setup_settings', $this->settings,  $this );
+        $this->settings = apply_filters('st_user_setup_settings', $this->settings, $this );
     }
 
     /**
@@ -507,7 +507,7 @@ class ST_User {
      * @param array $custom_data
      * @return string
      */
-    public  function get_template_content( $template,   $custom_data = array() ) {
+    public  function get_template_content( $template,  $custom_data = array() ) {
         return  $this->get_file_content( $this->get_file_template( $template ) , $custom_data );
     }
 

@@ -84,6 +84,7 @@ if ( ! is_user_logged_in() ) {
                  <?php do_action( 'st_user_logged_in_links',  $user ); ?>
              </div>
              <?php do_action( 'st_user_logged_in_info',  $user ); ?>
+
          </div>
     </div> <!-- st-login -->
 <?php }?>

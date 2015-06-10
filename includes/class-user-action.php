@@ -100,7 +100,7 @@ class ST_User_Action{
             $msgs['invalidate_username'] = __('Invalidate username','st-user');
         }
         if ( strlen( $pwd ) < $pwd_length ) {
-            $msgs['incorrect_password'] = sprintf( __('Please enter your password more than %s characters', 'st-user'),  $pwd_length );
+            $msgs['incorrect_password'] = sprintf( __('Please enter your password more than %s characters', 'st-user'), $pwd_length );
         }
         if ( ! is_email( $email ) ) {
             $msgs['incorrect_email'] =  __('Please enter a correct your email', 'st-user');
@@ -374,7 +374,7 @@ class ST_User_Action{
         /**
          * Hook to add data
          */
-        do_action( 'st_user_update_profile', $user_data,  $errors );
+        do_action( 'st_user_update_profile', $user_data, $errors );
         $user_data = apply_filters( 'st_user_update_profile_data', $user_data );
         $errors = apply_filters( 'st_user_update_profile_errors', $errors );
 

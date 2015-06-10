@@ -36,7 +36,7 @@ if ( !is_user_logged_in() ) {
                         ?></p>
                 </div>
             </div>
-            <?php do_action('st_user_profile_info',  $user ); ?>
+            <?php do_action('st_user_profile_info', $user ); ?>
         </div>
 
         <div class="form-fields">
