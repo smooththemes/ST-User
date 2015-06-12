@@ -53,7 +53,6 @@ class ST_User_Shortcodes{
 
         $atts['action'] = 'login-template';
         extract( $atts );
-        var_dump( $atts );
 
         $content =  $this->instance->get_template_content( 'login.php', $atts ) ;
         $html = '<div '.st_user_array_to_html_atts( $atts ).' class="st-user-wrapper st-login-wrapper">'.$content.'</div>';
