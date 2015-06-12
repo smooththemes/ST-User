@@ -36,6 +36,9 @@ if ( isset( $_POST['submit'] ) ) {
 <h2><?php _e( 'ST User Settings','st-user' ); ?></h2>
 <form novalidate="novalidate" action="" method="post">
     <h3><?php _e( 'General', 'st-user' ); ?></h3>
+    <?php if ( isset( $_POST['submit'] ) ) { ?>
+    <div class="updated notice is-dismissible" id="message"><p>Your settings updated.</p><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php _e('Dismiss this notice.'); ?></span></button></div>
+    <?php } ?>
     <table class="form-table">
         <tbody>
         <tr>
