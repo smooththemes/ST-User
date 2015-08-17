@@ -16,12 +16,14 @@ if ( !isset( $in_modal ) ) {
 }
 
 ?>
-<div id="st-change-password" class="st-form-w">
-    <?php if ( ! $in_modal ) { ?>
+
+<form  id="st-change-password" class="st-form st-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?>" action="<?php echo site_url('/'); ?>" method="post" >
+
+    <div class="st-form-header">
         <h3><?php _e( 'Change your password', 'st-user' ); ?></h3>
-    <?php } ?>
-    <form class="st-form st-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?>" action="<?php echo site_url('/'); ?>" method="post" >
-        <p class="st-form-message"><?php _e( 'Change your password', 'st-user' ); ?></p>
+    </div>
+
+    <div class="s-form-body">
         <p class="st-user-msg"><?php echo sprintf( __( 'Your password has been reset. <a href="%1$s" class="st-login-link">Click here to login</a>', 'st-user'), wp_login_url()  ); ?></p>
         <p class="st-user-msg st-errors-msg"></p>
         <div class="form-fields">
@@ -45,6 +47,9 @@ if ( !isset( $in_modal ) ) {
                 <?php } ?>
             </p>
         </div>
-    </form>
-    <p class="st-form-bottom-message"><a class="st-back-to-login" href="#"><?php _e( 'Back to log-in', 'st-user' ); ?></a></p>
-</div> <!-- st-reset-password -->
+    </div>
+    <div class="st-form-footer">
+        <p><?php printf( __( 'Remember your password ? <a class="st-back-to-login" href="%1$s">Login</a>', 'st-user' ), wp_login_url() ); ?></p>
+    </div>
+</form>
+

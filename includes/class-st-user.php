@@ -29,15 +29,6 @@
  */
 class ST_User {
 
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      ST_User_Loader    $loader    Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
 
 	/**
 	 * The unique identifier of this plugin.
@@ -73,7 +64,7 @@ class ST_User {
      *
      * @since 1.0.0
      */
-    protected  $settings;
+    public  $settings;
 
 	public function __construct() {
 
@@ -82,7 +73,7 @@ class ST_User {
 
         $this->settings();
 		$this->load_dependencies();
-		$this->set_locale();
+        add_action( 'plugins_loaded', array( $this, 'set_locale'  ) );
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
@@ -102,7 +93,6 @@ class ST_User {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - ST_User_Loader. Orchestrates the hooks of the plugin.
 	 * - ST_User_i18n. Defines internationalization functionality.
 	 * - ST_User_Admin. Defines all hooks for the admin area.
 	 * - ST_User_Public. Defines all hooks for the public side of the site.
@@ -114,19 +104,6 @@ class ST_User {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-st-user-loader.php';
-        $this->loader = new ST_User_Loader();
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-st-user-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -148,24 +125,14 @@ class ST_User {
 		 */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-st-user-public.php';
 
-        include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ajax.php';
-
 	}
 
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the ST_User_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function set_locale() {
-		$plugin_i18n = new ST_User_i18n();
-		$plugin_i18n->set_domain( $this->get_st_user() );
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-	}
+    /**
+     * Load the plugin text domain for translation.
+     */
+    function set_locale() {
+        load_plugin_textdomain( $this->get_st_user() , false, ST_USER_PATH . 'languages/' );
+    }
 
 	/**
 	 * Register all of the hooks related to the admin area functionality
@@ -176,9 +143,8 @@ class ST_User {
 	 */
 	private function define_admin_hooks() {
 		$plugin_admin = new ST_User_Admin( $this->get_st_user(), $this->get_version() );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 	}
 
 
@@ -193,9 +159,9 @@ class ST_User {
 
 		$plugin_public = new ST_User_Public( $this );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'modal' );
+		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
+		add_action( 'wp_footer', array( $plugin_public, 'modal' ) );
 
         /**
          * Add filter widget text shortcode
@@ -204,55 +170,53 @@ class ST_User {
         /**
          * Set default plugin page url
          */
-        $this->loader->add_filter( 'st_user_url', $this, 'page_url');
+        add_filter( 'st_user_url',array( $this, 'page_url' ) );
 
         /**
          * Set default logout redirect to url
          */
-        $this->loader->add_filter( 'st_user_logout_url', $this, 'logout_url' );
-        $this->loader->add_filter( 'logout_redirect', $this, 'logout_url' );
+        add_filter( 'st_user_logout_url', array( $this, 'logout_url'  ) );
+        add_filter( 'logout_url', array( $this, 'logout_url' ), 15, 2 );
 
         /**
          * Redirect to url when user logged in
          */
-        $this->loader->add_filter('st_user_logged_in_redirect_to', $this, 'logged_in_url');
-        $this->loader->add_filter('login_redirect', $this, 'logged_in_url');
+        add_filter( 'st_user_logged_in_redirect_to', array( $this, 'logged_in_url' ) );
+        add_filter( 'login_redirect', array( $this, 'logged_in_url' ) );
 
         /**
          * Login url
          */
-        $this->loader->add_filter('st_user_login_url', $this, 'login_url');
+        add_filter( 'st_user_login_url', array( $this, 'login_url' ) );
 
         // disable default login url
 
         if ( $this->get_setting('disable_default_login')  && !isset( $_GET['interim-login'] ) ) {
             if ( ! is_admin()  ) {
-                $this->loader->add_filter( 'login_url', $this, 'login_url' );
+                add_filter( 'login_url', array( $this, 'login_url' ) );
             }elseif ( defined( 'DOING_AJAX' )  ) {
-                $this->loader->add_filter( 'login_url', $this, 'login_url' );
+                add_filter( 'login_url', array( $this, 'login_url' ) );
             }
         }
 
         /**
-         * Register url
+         * Filter Register url
          */
-        $this->loader->add_filter( 'register_url', $this, 'register_url' );
+        add_filter( 'register_url', array( $this, 'register_url' ) );
 
         /**
          * Lost pwd url
          */
-        $this->loader->add_filter( 'st_user_lost_passoword_url', $this, 'lost_pwd_url' );
-        $this->loader->add_filter( 'lostpassword_url', $this, 'lost_pwd_url' );
+        add_filter( 'st_user_lost_passoword_url', array( $this, 'lost_pwd_url' ) );
+        add_filter( 'lostpassword_url', array( $this, 'lost_pwd_url' ) );
 
         /**
          * Change  term condition link
          */
-        $this->loader->add_filter( 'st_user_term_link', $this, 'term_link' );
+        add_filter( 'st_user_term_link', array( $this, 'term_link' ) );
 
-        $ajax = new ST_User_Ajax( $this );
-
-        $this->loader->add_action( 'wp_ajax_st_user_ajax', $ajax, 'ajax' );
-        $this->loader->add_action( 'wp_ajax_nopriv_st_user_ajax', $ajax, 'ajax' );
+        add_action( 'wp_ajax_st_user_ajax', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_st_user_ajax', array( $this, 'ajax' ) );
 
 	}
 
@@ -279,8 +243,6 @@ class ST_User {
             $this->settings['logout_url'] = $this->settings['url'];
         }
 
-
-
         if ( ! ( $this->settings['logged_in_url'] = get_option( 'st_user_login_redirect_url' ) ) ) {
             $this->settings['logged_in_url'] = $this->settings['url'];
         }
@@ -289,6 +251,9 @@ class ST_User {
         $this->settings['register_url'] = add_query_arg( array( 'st_action' => 'register' ), $page_url );
 
         $this->settings['term_link'] = get_permalink( get_option( 'st_user_term_page' ) );
+
+
+        $this->settings['theme'] = apply_filters('st_user_theme', 'smooth' ); ;
 
         /**
          * Hook to change settings if you want
@@ -341,9 +306,29 @@ class ST_User {
      * @param string $url
      * @return mixed
      */
-    public function logout_url( $url = '' ) {
-        if (  $url == '' ){
-            return $this->get_setting( 'logout_url' );
+    public function logout_url( $url = '', $redirect = '' ) {
+        if (  $redirect == '' ){
+            $_redirect =  $this->get_setting( 'logout_url' );
+
+            if ( $_redirect == '' ) {
+                if ( ! defined('DOING_AJAX')) {
+                    $_redirect = get_permalink();
+                } else {
+
+                }
+            }
+
+            if ( $_redirect != '' ) {
+                $args = array('action' => 'logout');
+                if ( ! empty( $_redirect ) ) {
+                    $args['redirect_to'] = urlencode( $_redirect );
+                }
+
+                $logout_url = add_query_arg($args, site_url('wp-login.php', 'login'));
+                $logout_url = wp_nonce_url($logout_url, 'log-out');
+                return $logout_url;
+            }
+
         }
         return $url;
     }
@@ -402,7 +387,7 @@ class ST_User {
 	 * @since    1.0.0
 	 */
 	public function run() {
-		$this->loader->run();
+
 	}
 
 	/**
@@ -416,15 +401,6 @@ class ST_User {
 		return $this->st_user;
 	}
 
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    ST_User_Loader    Orchestrates the hooks of the plugin.
-	 */
-	public function get_loader() {
-		return $this->loader;
-	}
 
 	/**
 	 * Retrieve the version number of the plugin.
@@ -469,7 +445,7 @@ class ST_User {
         } else {
             // If neither the child nor parent theme have overridden the template,
             // we load the template from the 'templates' directory if this plugin
-            return ST_USER_PATH . 'public/partials/'.$template;
+            return ST_USER_PATH . 'public/partials/'.$this->settings['theme'].'/'.$template;
         }
     }
 
@@ -509,6 +485,57 @@ class ST_User {
      */
     public  function get_template_content( $template,  $custom_data = array() ) {
         return  $this->get_file_content( $this->get_file_template( $template ) , $custom_data );
+    }
+
+    /**
+     * Ajax Handle
+     * @since 1.0.0
+     */
+    public function  ajax( ) {
+        $act = $_REQUEST['act'];
+        switch ( $act ) {
+            case 'login-template':
+                echo $this->get_template_content( 'login.php' );
+                break;
+            case 'register-template':
+                echo $this->get_template_content( 'register.php' ) ;
+                break;
+            case 'lostpwd-template':
+                echo $this->get_template_content( 'lost-password.php' ) ;
+                break;
+            case 'reset-template':
+                echo $this->get_template_content( 'reset.php' ) ;
+                break;
+            case 'change-pwd-template':
+                echo $this->get_template_content( 'change-password.php' ) ;
+                break;
+            case 'profile-template':
+                if ( ! is_user_logged_in() ) {
+                    echo $this->get_template_content( 'login.php' );
+                } else {
+                    echo $this->get_template_content( 'profile.php' ) ;
+                }
+                break;
+            case 'modal-template':
+                echo $this->get_template_content( 'modal.php' ) ;
+                break;
+            case 'do_login':
+                echo ST_User_Action::do_login();
+                break;
+            case 'do_register':
+                echo ST_User_Action::do_register();
+                break;
+            case 'retrieve_password':
+                echo ST_User_Action::retrieve_password();
+                break;
+            case 'do_reset_pass':
+                echo ST_User_Action::reset_pass();
+                break;
+            case 'do_update_profile':
+                echo ST_User_Action::update_profile();
+                break;
+        }
+        exit();
     }
 
 }

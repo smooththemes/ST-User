@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       http://smooththemes.com
  * @since      1.0.0
  *
  * @package    ST_User
@@ -91,7 +91,7 @@ class ST_User_Public {
 		 */
 
 
-        wp_register_style( $this->st_user, ST_USER_URL.'public/css/st-user.css' );
+        wp_register_style( $this->st_user, ST_USER_URL.'public/partials/'.$this->instance->settings['theme'].'/css/style.css' );
         wp_enqueue_style( $this->st_user );
 	}
 
@@ -114,10 +114,10 @@ class ST_User_Public {
 		 * class.
 		 */
 
-        wp_enqueue_script('jquery');
-        wp_enqueue_script('json2');
-        wp_enqueue_script('modernizr', ST_USER_URL.'public/js/modernizr.js',array('jquery'), '2.7.1', true  );
-        wp_enqueue_script( $this->st_user , ST_USER_URL.'public/js/st-user.js',array('jquery'), '1.0', true  );
+        wp_enqueue_script( 'jquery' );
+        wp_enqueue_script( 'json2' );
+        // wp_enqueue_script( 'modernizr', ST_USER_URL.'public/js/modernizr.js', array('jquery'), '2.7.1', true  );
+        wp_enqueue_script( $this->st_user , ST_USER_URL.'public/partials/'.$this->instance->settings['theme'].'/js/user.js', array('jquery'), '1.0', true  );
 
         wp_localize_script( $this->st_user , 'ST_User',
             apply_filters('st_user_localize_script', array(
@@ -137,7 +137,7 @@ class ST_User_Public {
      * @since 1.0
      */
     function modal() {
-        echo $this->instance->get_template_content('modal.php', array('current_action' => $this->current_action ) ) ;
+        echo $this->instance->get_template_content( 'modal.php', array('current_action' => $this->current_action ) ) ;
     }
 
 

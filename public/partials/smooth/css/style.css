@@ -1,0 +1,238 @@
+.st-user-wrapper {
+    font-size: 14px;
+}
+
+
+/* --------------------------------
+
+xsigin/signup popup 
+
+-------------------------------- */
+.st-user-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(52, 54, 66, 0.9);
+    z-index: 3;
+    overflow-y: auto;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s 0, visibility 0 0.3s;
+    -moz-transition: opacity 0.3s 0, visibility 0 0.3s;
+    transition: opacity 0.3s 0, visibility 0 0.3s;
+}
+
+.st-user-modal.is-visible {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity 0.3s 0, visibility 0 0;
+    -moz-transition: opacity 0.3s 0, visibility 0 0;
+    transition: opacity 0.3s 0, visibility 0 0;
+}
+
+.st-user-modal.is-visible .st-user-modal-container {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.st-user-modal-container {
+    position: relative;
+    width: 326px;
+    max-width: 600px;
+    background: #FFF;
+    margin: 3em auto 4em;
+    cursor: auto;
+    -webkit-transform: translateY(-30px);
+    -moz-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    -o-transform: translateY(-30px);
+    transform: translateY(-30px);
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.st-form {
+    padding: 20px;
+    position: relative;
+}
+
+.st-form .fieldset {
+    position: relative;
+    margin: 15px 0;
+}
+.st-form .fieldset:after {
+    content: ""; display: block; clear: both;
+}
+
+.st-form .fieldset:first-child {
+    margin-top: 0;
+}
+
+.st-form .fieldset:last-child {
+    margin-bottom: 0;
+}
+
+.st-form label {
+    font-size: 14px;
+}
+
+
+.st-form input.full-width {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.st-form input.has-border {
+    border: 1px solid #d2d8d8;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+
+.st-form input.has-border:focus {
+    border-color: #343642;
+    box-shadow: 0 0 5px rgba(52, 54, 66, 0.1);
+    outline: none;
+}
+
+.st-form input.has-error {
+    border: 1px solid #d76666;
+}
+
+.st-form input[type=password] {
+    /* space left for the HIDE button */
+    padding-right: 65px;
+}
+
+.st-form .hide-password {
+   display: none;
+}
+
+.st-form .st-error-message {
+    display: inline-block;
+    position: absolute;
+    left: -5px;
+    bottom: -35px;
+    background: rgba(215, 102, 102, 0.9);
+    padding: .8em;
+    z-index: 2;
+    color: #FFF;
+    font-size: 13px;
+    font-size: 0.8125rem;
+    border-radius: 0.25em;
+    /* prevent click and touch events */
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s 0, visibility 0 0.2s;
+    -moz-transition: opacity 0.2s 0, visibility 0 0.2s;
+    transition: opacity 0.2s 0, visibility 0 0.2s;
+}
+
+.st-form .st-error-message::after {
+    /* triangle */
+    content: '';
+    position: absolute;
+    left: 22px;
+    bottom: 100%;
+    height: 0;
+    width: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgba(215, 102, 102, 0.9);
+}
+
+.st-form .st-error-message.is-visible {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.2s 0, visibility 0 0;
+    -moz-transition: opacity 0.2s 0, visibility 0 0;
+    transition: opacity 0.2s 0, visibility 0 0;
+}
+.st-user-msg {
+    font-size: 14px;
+    line-height: 1.4;
+    display: none;
+}
+.st-user-msg.st-show {
+    display: block;
+}
+
+.st-close-form {
+    /* form X button on top right */
+    display: none;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 0;
+    top: -40px;
+    background: url("../img/st-icon-close.svg") no-repeat center center;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.st-errors-msg {
+    color: #ff0000;
+}
+.st-user-info .st-username .avatar {
+    float: left;
+    margin-right: 15px;
+}
+.st-ui:after{
+    clear: both; content: "";
+    display: block;
+}
+.st-user-modal .st-form {
+    display: none;
+}
+.st-user-modal .st-form.is-selected {
+    display: block;
+}
+
+.forgetmenot .st-lost-pwd-link {
+    float: right;
+}
+
+
+.st-form-header {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #DCDCDC;
+}
+.st-form-header h3 {
+    font-size: 24px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.st-form-footer {
+    border-top: 1px solid #DCDCDC;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+.st-form-footer p:last-child {
+    margin-bottom: 0px;
+}
+
+/* --------------------------------
+
+NAV helper - Use for menu conditions
+
+-------------------------------- */
+.display-none, .js-remove-nav, .hide {
+    display: none;
+}

@@ -14,37 +14,37 @@ class ST_User_Action{
      *
      * @return string
      */
-    public  static function do_login() {
+    public static function do_login() {
         $creds                  = array();
         $creds['user_login']    = $_POST['st_username'];
         $creds['user_password'] = $_POST['st_pwd'];
         $secure_cookie          = '';
         $msgs                   = array();
         if ( trim( $creds['user_login'] ) == '' ) {
-            $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username or email.', 'st-user');
+            $msgs['st_username_email'] =  __( 'Invalid username or email.', 'st-user');
         }
 
         if ( trim( $creds['user_password'] ) == '' ) {
-            $msgs['incorrect_password'] =  __('<strong>ERROR</strong>: The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
+            $msgs['st_pwd'] =  __( 'The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
         }
 
         if ( is_email( $creds['user_login'] ) ) {
             $u =  get_user_by('email', $creds['user_login'] );
             if ( ! $u ) {
-                $msgs['invalid_username'] =  __('<strong>ERROR</strong>: This email does not exists.', 'st-user');
+                $msgs['st_username_email'] =  __( 'This email does not exists.', 'st-user');
             } else {
                 $creds['user_login'] = $u->user_login;
             }
         }
 
-        if ( !empty( $msgs ) ) {
+        if ( ! empty( $msgs ) ) {
             return ( json_encode( $msgs ) );
         }
 
         $creds['remember'] = isset( $_POST['st_rememberme'] )  && $_POST['st_rememberme'] !='' ? true :  false;
 
         // If the user wants ssl but the session is not ssl, force a secure cookie.
-        if ( ! empty($creds['user_login']) && ! force_ssl_admin() ) {
+        if ( ! empty( $creds['user_login'] ) && ! force_ssl_admin() ) {
             $user_name = sanitize_user( $creds['user_login'] );
             if ( $user = get_user_by( 'login', $user_name ) ) {
                 if ( get_user_option( 'use_ssl', $user->ID ) ) {
@@ -62,10 +62,10 @@ class ST_User_Action{
             foreach ( $codes as $code ) {
                 switch( $code ) {
                     case 'invalid_username':
-                        $msgs['invalid_username'] =  __('<strong>ERROR</strong>: Invalid username.', 'st-user');
+                        $msgs['st_username_email'] =  __('Invalid username.', 'st-user');
                         break;
                     case 'incorrect_password':
-                        $msgs['incorrect_password'] =  __('<strong>ERROR</strong>: The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
+                        $msgs['st_pwd'] =  __('The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
                         break;
                 }
             }
@@ -95,19 +95,20 @@ class ST_User_Action{
         $username   = $args['st_signup_username'];
 
         $msgs = array();
-        $pwd_length =  apply_filters('st_user_pwd_leng', 6 );
+        $pwd_length =  apply_filters( 'st_user_pwd_leng', 6 );
         if ( empty( $username ) || ! validate_username( $username ) ) {
-            $msgs['invalidate_username'] = __('Invalidate username','st-user');
+            $msgs['st_username'] = __('Invalidate username','st-user');
         }
         if ( strlen( $pwd ) < $pwd_length ) {
-            $msgs['incorrect_password'] = sprintf( __('Please enter your password more than %s characters', 'st-user'), $pwd_length );
+            $msgs['st_password'] = sprintf( __('Please enter your password more than %s characters', 'st-user'), $pwd_length );
         }
         if ( ! is_email( $email ) ) {
-            $msgs['incorrect_email'] =  __('Please enter a correct your email', 'st-user');
+            $msgs['st_email'] =  __('Please enter a correct your email', 'st-user');
         }
 
         // check if show term and term checked
-        if ( apply_filters('st_user_register_show_term_link' , true ) ) {
+        $show_term =  apply_filters( 'st_user_term_link', '' ) != '' ? true : false;
+        if ( apply_filters('st_user_register_show_term_link' , $show_term ) ) {
             if ($args['st_accept_terms'] == '' ) {
                 $msgs['accept_terms'] = __('You must agree our Terms and Conditions to continue', 'st-user');
             }
@@ -143,18 +144,18 @@ class ST_User_Action{
         $errors =   array();
         $user_data =  false;
         if ( empty ( $_POST['st_user_login'] ) ) {
-            $errors['invalid_combo'] = __( '<strong>ERROR</strong>: Enter a username or e-mail address.' );
+            $errors['st_input_combo'] = __( 'Enter a username or e-mail address.' );
         } elseif ( is_email( $_POST['st_user_login'] ) ) {
             $user_data = get_user_by( 'email', trim( $_POST['st_user_login'] ) );
             if ( empty( $user_data ) )
-                $errors['invalid_combo'] = __( '<strong>ERROR</strong>: There is no user registered with that email address.' );
+                $errors['st_input_combo'] = __( 'There is no user registered with that email address.' );
         } else {
             $login = trim( $_POST['st_user_login'] );
             $user_data = get_user_by( 'login', $login );
         }
 
         if ( ! $user_data ) {
-            $errors['invalid_combo'] =  __( '<strong>ERROR</strong>: Invalid username or e-mail.' );
+            $errors['st_input_combo'] =  __( 'Invalid username or e-mail.' );
             return json_encode( $errors ) ;
         }
 
@@ -211,10 +212,10 @@ class ST_User_Action{
         $message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
         $message .= network_home_url( '/' ) . "\r\n\r\n";
         $message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
-        $message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
-        $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
+        $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
+        $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
 
-        $url = apply_filters( 'st_user_url', network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') );
+        $url = apply_filters( 'st_user_url', network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login' ) );
         $url = remove_query_arg( array( 'action', 'key', 'login' ), $url );
         $url =  add_query_arg( array(
                                     'st_action' => 'rp',
@@ -259,8 +260,7 @@ class ST_User_Action{
 
         if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
            // wp_die( __('The e-mail could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.') );
-            $errors['msg'] = __('The e-mail could not be sent.');
-            return json_encode($errors['msg']);
+            return __( 'The e-mail could not be sent.', 'st-user' );
         }
 
         return 'sent';
@@ -304,9 +304,9 @@ class ST_User_Action{
 
         if ( ! $user || is_wp_error( $user ) ) {
             if ( $user && $user->get_error_code() === 'expired_key' )
-                $errors['error'] =  __( 'Your key is expired' ,'st-user');
+                $errors['error'] =  __( 'Your key is expired' ,'st-user' );
             else
-                $errors['error'] =  __( 'Your key is invalid' ,'st-user');
+                $errors['error'] =  __( 'Your key is invalid' ,'st-user' );
 
         }
 
@@ -337,15 +337,13 @@ class ST_User_Action{
 
         $user_data =  wp_parse_args( $_POST['st_user_data'] , array(
             'user_email'        => '',
-            'user_firstname'    => '',
-            'user_lastname'     => '',
         ));
         $errors = array();
 
         $c_user =  wp_get_current_user();
 
         // check email
-        if ( !is_email( $user_data['user_email'] ) ) {
+        if ( ! is_email( $user_data['user_email'] ) ) {
             $errors['st-email'] =  __( 'Invalid email.' ,'st-user' );
         } else {
             $check_u =  get_user_by('email', $user_data['user_email'] );
@@ -382,15 +380,52 @@ class ST_User_Action{
             return json_encode( $errors );
         }
 
+
+        global $wpdb;
+
+        $sql = "SHOW COLUMNS FROM ".$wpdb->users;
+        $user_cols_db = $wpdb->get_results( $sql, ARRAY_A );
+
         // update for current user only
         $user_data['ID'] = $c_user->ID;
-        $r = wp_update_user( $user_data );
+        $fields_not_used = array(
+            'user_activation_key', 'user_registered', 'user_status'
+        );
+        $black_meta_keys = apply_filters( 'st_profile_back_meta_keys', array( 'wp_capabilities', 'wp_user_level', 'session_tokens', 'default_password_nag' ) );
+
+        $table_users_data =  array();
+        foreach ( $user_cols_db as $col ) {
+            if ( ! in_array( $col['Field'], $fields_not_used ) ) {
+                $user_cols[ $col['Field'] ] = $col['Field'];
+                if ( isset ( $user_data[ $col['Field'] ] ) ) {
+                    $table_users_data[ $col['Field'] ] = $user_data[ $col['Field'] ];
+                    unset ( $user_data[ $col['Field']  ] );
+                }
+            }
+        }
+
+        foreach ( $black_meta_keys as $k ) {
+            if ( isset( $user_data[ $k ] ) ) {
+                unset( $user_data[ $k ] );
+            }
+        }
+
+        $r = wp_update_user( $table_users_data );
 
         if ( is_wp_error( $r ) ) {
             $errors['error'] =  __( 'Something wrong, please try again.' ,'st-user');
             return json_encode( $errors );
         } else {
             // Success!
+            foreach( $user_data as $k => $v ) {
+                if ( $v ) {
+                    update_user_meta( $c_user->ID , $k, $v );
+                } else {
+                    delete_user_meta( $c_user->ID , $k );
+                }
+
+            }
+
         }
 
         return 'updated';

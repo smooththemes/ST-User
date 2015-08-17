@@ -193,7 +193,7 @@ class ST_User_Shortcodes{
      * @param $atts
      * @return string
      */
-    public   function login_button( $atts ) {
+    public  function login_button( $atts ) {
         $atts = shortcode_atts(array(
             'class'         => '' ,
             'login_text'    => __('Login', 'st-user'),
@@ -257,10 +257,10 @@ class ST_User_Shortcodes{
      * @return string
      */
     public  function user( $atts, $content ='' ) {
-        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='lost-pass' ) {
+        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'lost-pass' ) {
             return $this->reset_password( $atts, $content );
         }
-        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  =='register' ) {
+        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'register' ) {
             return $this->register( $atts, $content );
         }
         if ( is_user_logged_in() ) {

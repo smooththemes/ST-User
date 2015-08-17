@@ -14,28 +14,35 @@ if ( !isset( $in_modal ) ) {
     $in_modal = false;
 }
 
+if ( ! isset ( $login_redirect_url ) ) {
+    $login_redirect_url = '';
+}
+
 if ( ! is_user_logged_in() ) {
 ?>
-<div id="st-login"> <!-- log in form -->
-    <?php if ( !$in_modal ) { ?>
+
+<form id="st-login" class="st-form st-login-form" action="<?php echo site_url('/'); ?>" method="post">
+    <div class="st-form-header">
         <h3><?php _e( 'Login', 'st-user' ); ?></h3>
-    <?php } ?>
-    <form class="st-form st-login-form" action="<?php echo site_url('/'); ?>" method="post">
+    </div>
+
+    <div class="st-form-body">
         <?php do_action( 'st_user_before_login_form' ); ?>
-        <p class="fieldset st-username">
-            <label class="image-replace st-username" for="signin-username"><?php _e( 'Username or email', 'st-user' ); ?></label>
+        <p class="fieldset st_username_email">
+            <label class="st-username" for="signin-username"><?php _e( 'Username or email', 'st-user' ); ?></label>
             <input name="st_username" class="full-width has-padding has-border" id="signin-username" type="text" placeholder="<?php echo esc_attr( __( 'Username or email', 'st-user' ) ); ?>">
             <span class="st-error-message"></span>
         </p>
 
-        <p class="fieldset st-pwd">
+        <p class="fieldset st_pwd">
             <label class="image-replace st-password" for="signin-password"><?php _e('Password','st-user'); ?></label>
             <input name="st_pwd" class="full-width has-padding has-border" id="signin-password" type="password"  placeholder="<?php echo esc_attr( __( 'Password', 'st-user' ) ); ?>">
-            <a href="#0" class="hide-password"><?php _e('Show','st-user') ?></a>
+            <a href="#0" class="hide-password"><?php _e( 'Show', 'st-user' ) ?></a>
             <span class="st-error-message"></span>
         </p>
         <p class="forgetmenot fieldset">
             <label> <input type="checkbox" value="forever" name="st-rememberme" checked> <?php _e( 'Remember me','st-user' ); ?></label>
+            <a class="st-lost-pwd-link" href="<?php echo wp_lostpassword_url(); ?>"><?php _e( 'Forgot password ?', 'st-user' ); ?></a>
         </p>
         <?php do_action('st_user_before_submit_login_form'); ?>
         <p class="fieldset">
@@ -44,26 +51,28 @@ if ( ! is_user_logged_in() ) {
         </p>
 
         <?php do_action('st_user_after_login_form', $in_modal, $login_redirect_url ); ?>
-    </form>
-    <p class="st-form-bottom-message">
-        <a class="st-lost-pwd-link" href="<?php echo wp_lostpassword_url(); ?>"><?php _e( 'I don\'t know my password', 'st-user' ); ?></a>
-        <?php if ( ! $in_modal ) { ?>
-        <a class="st-register-link" href="<?php echo wp_registration_url();  ?>"><?php _e( 'Singup', 'st-user' ); ?></a>
-        <?php } ?>
-    </p>
-    <!-- <a href="#0" class="st-close-form">Close</a> -->
-</div> <!-- st-login -->
+    </div>
+
+    <div class="st-form-footer">
+        <p>
+        <?php
+            printf( __( 'Don\'t have an account ? <a  class="st-register-link" href="%1$s">Sing Up</a>', 'st-user'  ), wp_registration_url() );
+        ?>
+        </p>
+    </div>
+</form>
+
 <?php } else {
 
     // user logged in info
     $user = wp_get_current_user();
     ?>
-    <div id="st-login" class="st-form-w st-logged-in"> <!-- log in form -->
+    <div  class="st-form-w st-logged-in"> <!-- log in form -->
         <h3><?php echo sprintf( __( 'Welcome <span class="display-name">%s</span>', 'st-user' ), $user->display_name ); ?></h3>
          <div class="st-user-info">
              <div class="st-ui st-username">
                  <?php
-                 echo get_avatar( $user->ID, '80' );
+                 echo get_avatar( $user->ID, 40 );
                  ?>
                  <div class="logged-info">
                      <p><?php
@@ -80,7 +89,7 @@ if ( ! is_user_logged_in() ) {
              </div>
              <div class="st-ui st-user-links">
                  <a href="<?php echo esc_attr( apply_filters( 'st_user_url', '#' ) ) ?>"><?php _e( 'Profile', 'st-user' ) ?></a>
-                 <a href="<?php echo wp_logout_url( $logout_redirect_url ) ; ?>"><?php _e( 'Logout', 'st-user' ) ?></a>
+                 <a href="<?php echo wp_logout_url() ; ?>"><?php _e( 'Logout', 'st-user' ) ?></a>
                  <?php do_action( 'st_user_logged_in_links',  $user ); ?>
              </div>
              <?php do_action( 'st_user_logged_in_info',  $user ); ?>
