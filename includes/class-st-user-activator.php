@@ -32,7 +32,7 @@ class ST_User_Activator {
         if ( $p ) {
             $page_id = $p->ID;
 
-            if ( ! has_shortcode( $p->post_content, $shortcode_base ) ) {
+            if ( strpos( $p->post_content, "[{$shortcode_base}]" ) === false ) {
                 $p->post_content = '['.$shortcode_base.']'."\r\n \r\n". $p->post_content;
                 wp_update_post( $p );
             }
@@ -44,17 +44,21 @@ class ST_User_Activator {
             }
         }
 
-        $option_keys = array(
-            'st_user_account_page'          => $page_id ,
-            'st_user_disable_default_login' => 0 ,
-            'st_user_login_redirect_url'    => '',
-            'st_user_logout_redirect_url'   => '',
-            'st_user_term_page'             => '',
+        $default = array(
+            'account_page'          => $page_id,
+            'disable_default_login' => '',
+            'login_redirect_url'    => '',
+            'logout_redirect_url'   => '',
+            'show_term'             => '',
+            'term_mgs'              => '',
+            'form_login_header'          => 0,
+            'form_register_header'       => 0,
+            'form_reset_header'          => 1,
+            'form_change_pass_header'    => 0,
+            'form_profile_header'        => 0,
         );
 
-        foreach ( $option_keys as $k => $v ) {
-            update_option( $k, $v );
-        }
+        update_option( 'st_user_settings', $default );
 	}
 
 }

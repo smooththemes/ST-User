@@ -11,34 +11,42 @@
  * @subpackage ST_User/admin/partials
  */
 
-if ( isset( $_POST['submit'] ) ) {
-    $option_keys = array(
-        'st_user_account_page'          => '',
-        'st_user_disable_default_login' => '',
-        'st_user_login_redirect_url'    => '',
-        'st_user_logout_redirect_url'   => '',
-        'st_user_term_page'             => '',
-    );
-    $option_keys = apply_filters( 'st_settings_keys', $option_keys );
 
-    foreach ( $option_keys as $k => $v ) {
-        // if the key container "st_user_"  at begin of string the save it
-        if ( isset( $_POST[ $k ] ) ) {
-            update_option( $k, $_POST[ $k ] );
-        } else {
-            delete_option( $k );
-        }
-    }
+$default = array(
+    'account_page'          => '',
+    'disable_default_login' => '',
+    'login_redirect_url'    => '',
+    'logout_redirect_url'   => '',
+    'show_term'             => '',
+    'term_mgs'             => '',
+    'form_login_header'          => 0,
+    'form_register_header'       => 0,
+    'form_reset_header'          => 0,
+    'form_change_pass_header'    => 0,
+    'form_profile_header'        => 0,
+);
+
+if ( isset( $_POST['submit'] ) ) {
+    $values = $_POST[ 'st_user_settings' ] ;
+    $values['term_mgs'] = trim( stripslashes( $_POST['st_user_settings_mgs'] ) );
+    update_option( 'st_user_settings', $values );
+
 }
 
+$settings = (array) get_option( 'st_user_settings' );
+$settings = wp_parse_args( $settings,  $default );
 
 ?>
 <h2><?php _e( 'ST User Settings','st-user' ); ?></h2>
+<?php if ( isset( $_POST['submit'] ) ) { ?>
+    <div class="updated notice notice-success is-dismissible below-h2" id="message">
+        <p><?php _e( 'Your settings updated.' , 'st-user' ); ?></p>
+    </div>
+<?php } ?>
+
 <form novalidate="novalidate" action="" method="post">
     <h3><?php _e( 'General', 'st-user' ); ?></h3>
-    <?php if ( isset( $_POST['submit'] ) ) { ?>
-    <div class="updated notice is-dismissible" id="message"><p>Your settings updated.</p><button class="notice-dismiss" type="button"><span class="screen-reader-text"><?php _e('Dismiss this notice.'); ?></span></button></div>
-    <?php } ?>
+
     <table class="form-table">
         <tbody>
         <tr>
@@ -49,9 +57,9 @@ if ( isset( $_POST['submit'] ) ) {
                     array(
                     //'depth'                 => 0,
                     //'child_of'              => 0,
-                    'selected'              => get_option( 'st_user_account_page' ),
+                    'selected'              => $settings['account_page'],
                     //'echo'                  => 1,
-                    'name'                  => 'st_user_account_page',
+                    'name'                  => 'st_user_settings[account_page]',
                     'id'                    => null, // string
                     'show_option_none'      =>  __( 'Select a page', 'st-user' ), // string
                     'show_option_no_change' => null, // string
@@ -67,7 +75,7 @@ if ( isset( $_POST['submit'] ) ) {
                 <fieldset>
                     <legend class="screen-reader-text"><span><?php _e( 'Login', 'st-user' ); ?></span></legend>
                     <label >
-                        <input type="checkbox" <?php checked ( get_option( 'st_user_disable_default_login' ) , 1 ) ?> value="1"  name="st_user_disable_default_login">
+                        <input type="checkbox" <?php checked ( $settings['disable_default_login'] , 1 ) ?> value="1"  name="st_user_settings[disable_default_login]">
                         <?php _e( 'User Account page as login page.', 'st-user' ); ?>
                     </label>
                     <p class="description"><?php _e( 'Default login page of WordPress will disable.', 'st-user' ); ?></p>
@@ -78,7 +86,7 @@ if ( isset( $_POST['submit'] ) ) {
         <tr>
             <th scope="row"><label for="st_user_login_redirect_url"><?php _e('Login Redirect (URL)', 'st-user'); ?></label></th>
             <td>
-                <input type="text" class="regular-text" value="<?php echo esc_attr( get_option( 'st_user_login_redirect_url' ) ); ?>" id="st_user_login_redirect_url" name="st_user_login_redirect_url">
+                <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['login_redirect_url'] ); ?>" id="st_user_login_redirect_url" name="st_user_settings[login_redirect_url]">
                 <p class="description"><?php _e( 'The url will redirect when you logged in, leave empty to redirect home page.', 'st-user' ); ?></p>
             </td>
         </tr>
@@ -86,29 +94,57 @@ if ( isset( $_POST['submit'] ) ) {
         <tr>
             <th scope="row"><label for="st_user_logout_redirect_url"><?php _e( 'Logout Redirect (URL)', 'st-user' ); ?></label></th>
             <td>
-                <input type="text" class="regular-text" value="<?php echo esc_attr( get_option( 'st_user_logout_redirect_url' ) ); ?>" id="st_user_logout_redirect_url" name="st_user_logout_redirect_url">
+                <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['logout_redirect_url'] ); ?>" id="st_user_logout_redirect_url" name="st_user_settings[logout_redirect_url]">
                 <p class="description"><?php _e( 'The url will redirect when you logout, leave empty to redirect home page.', 'st-user' ); ?></p>
             </td>
         </tr>
 
 
         <tr>
-            <th scope="row"><label for="st_user_term_page"><?php _e('Term and Condition','st-user'); ?></label></th>
+            <th scope="row"><label for="st_user_term_page"><?php _e('Terms and Conditions','st-user'); ?></label></th>
             <td>
+                <label >
+                    <input type="checkbox" <?php checked ( $settings['show_term'] , 1 ) ?> value="1"  name="st_user_settings[show_term]">
+                    <?php _e( 'Enable "Terms and Conditions" to sign up form.', 'st-user' ); ?>
+                </label>
+                <br/>
+                <br/>
+                <label ><strong><?php _e( 'Terms and Conditions Message ', 'st-user' ); ?></strong></label>
                 <?php
-                wp_dropdown_pages(
-                    array(
-                        //'depth'                 => 0,
-                        //'child_of'              => 0,
-                        'selected'              => get_option('st_user_term_page'),
-                        //'echo'                  => 1,
-                        'name'                  => 'st_user_term_page',
-                        'id'                    => null, // string
-                        'show_option_none'      => __('Select a page','st-user'), // string
-                        'show_option_no_change' => null, // string
-                        'option_none_value'     => null, // string
-                    ) );
+                wp_editor( $settings['term_mgs'] , 'st_user_settings_mgs', array(
+                    'textarea_rows' => 6
+                )  );
                 ?>
+
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row"><?php _e ( 'Form Settings','st-user' ); ?></th>
+            <td>
+                <fieldset>
+                    <label >
+                        <input type="checkbox" <?php checked ( $settings['form_login_header'] , 1 ) ?> value="1"  name="st_user_settings[form_login_header]">
+                        <?php _e( 'Show Login form header', 'st-user' ); ?>
+                    </label><br>
+                    <label >
+                        <input type="checkbox" <?php checked ( $settings['form_register_header'] , 1 ) ?> value="1"  name="st_user_settings[form_register_header]">
+                        <?php _e( 'Show Register form header', 'st-user' ); ?>
+                    </label><br>
+                    <label >
+                        <input type="checkbox" <?php checked ( $settings['form_reset_header'] , 1 ) ?> value="1"  name="st_user_settings[form_reset_header]">
+                        <?php _e( 'Show reset form header', 'st-user' ); ?>
+                    </label><br>
+                    <label >
+                        <input type="checkbox" <?php checked ( $settings['form_change_pass_header'], 1 ) ?> value="1"  name="st_user_settings[form_change_pass_header]">
+                        <?php _e( 'Show change password form header', 'st-user' ); ?>
+                    </label><br>
+                    <label >
+                        <input type="checkbox" <?php checked ( $settings['form_profile_header'] , 1 ) ?> value="1"  name="st_user_settings[form_profile_header]">
+                        <?php _e( 'Show profile form header', 'st-user' ); ?>
+                    </label><br>
+
+                </fieldset>
             </td>
         </tr>
 

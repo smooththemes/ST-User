@@ -107,9 +107,8 @@ class ST_User_Action{
         }
 
         // check if show term and term checked
-        $show_term =  apply_filters( 'st_user_term_link', '' ) != '' ? true : false;
-        if ( apply_filters('st_user_register_show_term_link' , $show_term ) ) {
-            if ($args['st_accept_terms'] == '' ) {
+        if ( ST_User()->settings['show_term']  ) {
+            if ( $args['st_accept_terms'] == '' ) {
                 $msgs['accept_terms'] = __('You must agree our Terms and Conditions to continue', 'st-user');
             }
         }

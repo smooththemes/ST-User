@@ -210,10 +210,6 @@ class ST_User {
         add_filter( 'st_user_lost_passoword_url', array( $this, 'lost_pwd_url' ) );
         add_filter( 'lostpassword_url', array( $this, 'lost_pwd_url' ) );
 
-        /**
-         * Change  term condition link
-         */
-        add_filter( 'st_user_term_link', array( $this, 'term_link' ) );
 
         add_action( 'wp_ajax_st_user_ajax', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_st_user_ajax', array( $this, 'ajax' ) );
@@ -226,32 +222,44 @@ class ST_User {
      * @since 1.0.0
      */
     private function settings( ) {
-        $this->settings = array();
+
+        $default = array(
+            'account_page'          => '',
+            'disable_default_login' => '',
+            'login_redirect_url'    => '',
+            'logout_redirect_url'   => '',
+            'show_term'             => '',
+            'term_mgs'              => '',
+            'form_login_header'          => 0,
+            'form_register_header'       => 0,
+            'form_reset_header'          => 0,
+            'form_change_pass_header'    => 0,
+            'form_profile_header'        => 0,
+        );
+
+        $this->settings = (array) get_option( 'st_user_settings' );
+        $this->settings = wp_parse_args( $this->settings,  $default );
 
         /**
          * The url of St User page
          * Change it in admin setting
          */
-        $page_id = get_option( 'st_user_account_page' );
-        $page_url =  get_permalink( $page_id );
-        $this->settings['url'] = ($page_id) ?  $page_url :  site_url('/');
+        $page_url =  ( $this->settings['account_page'] ) ? get_permalink( $this->settings['account_page'] ) : site_url('/') ;
 
-        $this->settings['disable_default_login'] = get_option( 'st_user_disable_default_login' );
+        $this->settings['url'] = $page_url;
 
-        $this->settings['logout_url'] =  get_option( 'st_user_logout_redirect_url' );
-        if ( $this->settings['logout_url'] == '' ) {
-            $this->settings['logout_url'] = $this->settings['url'];
+        if ( $this->settings['logout_redirect_url'] == '' ) {
+            $this->settings['logout_redirect_url'] = $this->settings['url'];
         }
 
-        if ( ! ( $this->settings['logged_in_url'] = get_option( 'st_user_login_redirect_url' ) ) ) {
-            $this->settings['logged_in_url'] = $this->settings['url'];
+        if ( $this->settings['login_redirect_url'] != '' ) {
+            $this->settings['login_redirect_url'] = $this->settings['url'];
         }
 
         $this->settings['lost_pwd_url'] = add_query_arg( array( 'st_action' => 'lost-pass' ), $page_url );
         $this->settings['register_url'] = add_query_arg( array( 'st_action' => 'register' ), $page_url );
 
         $this->settings['term_link'] = get_permalink( get_option( 'st_user_term_page' ) );
-
 
         $this->settings['theme'] = apply_filters('st_user_theme', 'smooth' ); ;
 
@@ -285,7 +293,7 @@ class ST_User {
      * @return mixed
      */
     public function page_url( $url = '' ) {
-        return $this->get_setting('url');
+        return $this->get_setting( 'url' );
     }
 
     /**
@@ -308,7 +316,7 @@ class ST_User {
      */
     public function logout_url( $url = '', $redirect = '' ) {
         if (  $redirect == '' ){
-            $_redirect =  $this->get_setting( 'logout_url' );
+            $_redirect =  $this->get_setting( 'logout_redirect_url' );
 
             if ( $_redirect == '' ) {
                 if ( ! defined('DOING_AJAX')) {
@@ -319,13 +327,13 @@ class ST_User {
             }
 
             if ( $_redirect != '' ) {
-                $args = array('action' => 'logout');
+                $args = array( 'action' => 'logout' );
                 if ( ! empty( $_redirect ) ) {
                     $args['redirect_to'] = urlencode( $_redirect );
                 }
 
-                $logout_url = add_query_arg($args, site_url('wp-login.php', 'login'));
-                $logout_url = wp_nonce_url($logout_url, 'log-out');
+                $logout_url = add_query_arg( $args, site_url( 'wp-login.php', 'login' ) );
+                $logout_url = wp_nonce_url( $logout_url, 'log-out' );
                 return $logout_url;
             }
 
@@ -344,7 +352,7 @@ class ST_User {
          if ( current_user_can( 'editor' ) || current_user_can( 'administrator' ) ) {
             return $url;
          }
-        return ( $this->get_setting( 'logged_in_url' ) != '' ) ? $this->get_setting( 'logged_in_url' ) : $url ;
+        return ( $this->get_setting( 'login_redirect_url' ) != '' ) ? $this->get_setting( 'login_redirect_url' ) : $url ;
     }
 
     /**
@@ -355,7 +363,7 @@ class ST_User {
      * @return mixed
      */
     public function login_url( $url = '' ) {
-        return $this->get_setting('url');
+        return $this->get_setting( 'url' );
     }
 
     /**
@@ -381,14 +389,6 @@ class ST_User {
         return $this->get_setting( 'term_link' );
     }
 
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 * @since    1.0.0
-	 */
-	public function run() {
-
-	}
 
 	/**
 	 * The name of the plugin used to uniquely identify it within the context of

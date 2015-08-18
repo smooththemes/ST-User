@@ -81,12 +81,17 @@ xsigin/signup popup
 .st-form .fieldset:last-child {
     margin-bottom: 0;
 }
+.custom-terms .st-accept-terms {
+    float: left;
+    margin-top: 5px;
+}
+.custom-terms .st-term-mgs {
+    margin-left: 20px;
+}
 
 .st-form label {
     font-size: 14px;
 }
-
-
 .st-form input.full-width {
     width: 100%;
     box-sizing: border-box;
@@ -155,7 +160,6 @@ xsigin/signup popup
     border-right: 8px solid transparent;
     border-bottom: 8px solid rgba(215, 102, 102, 0.9);
 }
-
 .st-form .st-error-message.is-visible {
     opacity: 1;
     visibility: visible;
@@ -207,7 +211,6 @@ xsigin/signup popup
 .forgetmenot .st-lost-pwd-link {
     float: right;
 }
-
 
 .st-form-header {
     padding-bottom: 15px;

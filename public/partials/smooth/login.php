@@ -18,25 +18,29 @@ if ( ! isset ( $login_redirect_url ) ) {
     $login_redirect_url = '';
 }
 
+$id = uniqid('f');
+
 if ( ! is_user_logged_in() ) {
 ?>
 
 <form id="st-login" class="st-form st-login-form" action="<?php echo site_url('/'); ?>" method="post">
+    <?php if( ST_User()->settings['form_login_header'] ) { ?>
     <div class="st-form-header">
         <h3><?php _e( 'Login', 'st-user' ); ?></h3>
     </div>
+    <?php } ?>
 
     <div class="st-form-body">
         <?php do_action( 'st_user_before_login_form' ); ?>
         <p class="fieldset st_username_email">
-            <label class="st-username" for="signin-username"><?php _e( 'Username or email', 'st-user' ); ?></label>
-            <input name="st_username" class="full-width has-padding has-border" id="signin-username" type="text" placeholder="<?php echo esc_attr( __( 'Username or email', 'st-user' ) ); ?>">
+            <label class="st-username" for="signin-username<?php echo $id; ?>"><?php _e( 'Username or email', 'st-user' ); ?></label>
+            <input name="st_username" class="full-width has-padding has-border" id="signin-username<?php echo $id; ?>" type="text" placeholder="<?php echo esc_attr( __( 'Username or email', 'st-user' ) ); ?>">
             <span class="st-error-message"></span>
         </p>
 
         <p class="fieldset st_pwd">
-            <label class="image-replace st-password" for="signin-password"><?php _e('Password','st-user'); ?></label>
-            <input name="st_pwd" class="full-width has-padding has-border" id="signin-password" type="password"  placeholder="<?php echo esc_attr( __( 'Password', 'st-user' ) ); ?>">
+            <label class="image-replace st-password" for="signin-password<?php echo $id; ?>"><?php _e('Password','st-user'); ?></label>
+            <input name="st_pwd" class="full-width has-padding has-border" id="signin-password<?php echo $id; ?>" type="password"  placeholder="<?php echo esc_attr( __( 'Password', 'st-user' ) ); ?>">
             <a href="#0" class="hide-password"><?php _e( 'Show', 'st-user' ) ?></a>
             <span class="st-error-message"></span>
         </p>

@@ -77,9 +77,22 @@ if ( ! defined( 'ST_USER_PATH' ) ) {
 	 */
 	function run_st_user()
 	{
-		$plugin = new ST_User();
-		$plugin->run();
-	}
+        if ( ! isset( $GLOBALS['ST_User'] ) ) {
+            $plugin = new ST_User();
+            $GLOBALS['ST_User'] = $plugin;
+        }
 
+	}
 	add_action('init', 'run_st_user');
+
+    /**
+     * A Alias of class ST_User
+     *
+     * @see ST_User
+     * @return mixed
+     */
+    function ST_User(){
+        global $ST_User;
+        return $ST_User;
+    }
 }
