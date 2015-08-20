@@ -71,7 +71,7 @@ $id = uniqid('r-');
                 </div>
             <?php } ?>
             <p class="fieldset">
-                <input class="st-submit full-width has-padding"  type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Create account', 'st-user' ); ?>">
+                <input class="st-submit full-width has-padding"  type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Sing Up', 'st-user' ); ?>">
             </p>
         </div>
 
