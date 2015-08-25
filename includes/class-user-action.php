@@ -335,7 +335,7 @@ class ST_User_Action{
         }
 
         $user_data =  wp_parse_args( $_POST['st_user_data'] , array(
-            'user_email'        => '',
+            'user_email' => '',
         ));
         $errors = array();
 
@@ -422,13 +422,241 @@ class ST_User_Action{
                 } else {
                     delete_user_meta( $c_user->ID , $k );
                 }
+            }
+        }
 
+
+        return 'updated';
+
+    }
+
+    /**
+     * Upload image form local
+     *
+     * @see  wp_upload_dir()
+     * @see wp_handle_upload()
+     *
+     *
+     * @return bool
+     */
+    public static function media_upload( $media_type = 'avatar' ){
+        $dir = ST_User()->settings['upload_dir'];
+        $url = ST_User()->settings['upload_url'];
+
+        $media_type = sanitize_title( $media_type , 'avatar' );
+
+        if ( ! is_user_logged_in() ){
+            $response = Array(
+                "status" => 'error',
+                "message" => __( 'You not have permission to upload.', 'st-user' )
+            );
+            return json_encode( $response );
+        }
+
+        $user =  wp_get_current_user();
+        $sub_path = "{$user->ID}/";
+
+        $image_path = $dir.$sub_path;
+        $image_url  = $url.$sub_path;
+
+        $allowed_exts = array( "gif", "jpeg", "jpg", "png", "GIF", "JPEG", "JPG", "PNG" );
+        $temp = explode( ".", $_FILES["img"]["name"] );
+        $extension = end( $temp );
+
+        // check if is image
+        if ( ! in_array( $extension, $allowed_exts ) )
+        {
+            $response = array(
+                "status" => 'error',
+                "message" => __( 'Please select an image file' , 'st-user' ),
+            );
+            return json_encode( $response );
+        }
+
+        // Create Directory
+        // Make sure we have an uploads directory.
+        if ( ! wp_mkdir_p( $image_path ) ) {
+            $response = Array(
+                "status" => 'error',
+                "message" => 'Can\'t upload File. No write Access'
+            );
+            return  json_encode( $response ) ;
+        }
+
+
+        if ( $_FILES["img"]["error"] > 0 )
+        {
+            $response = array(
+                "status" => 'error',
+                "message" => 'ERROR Code: '. $_FILES["img"]["error"],
+            );
+        }
+        else
+        {
+
+            $filename = $_FILES["img"]["tmp_name"];
+            $new_name = $media_type.'.'.$extension;
+            $new_file = $image_path.$new_name;
+            list($width, $height) = getimagesize( $filename );
+
+            $move_new_file = @ move_uploaded_file( $filename, $new_file );
+
+            if (  false === $move_new_file) {
+                // The uploaded file could not be moved to
+                $response = array(
+                    "status" => 'error',
+                    "message" => __( 'The uploaded file could not be moved', 'st-user' ),
+                );
+            } else {
+                // Set correct file permissions.
+                $stat = stat( dirname( $new_file ));
+                $perms = $stat['mode'] & 0000666;
+                @ chmod( $new_file, $perms );
+
+                $response = array(
+                    "status" => 'success',
+                    "url" => $image_url.$new_name.'?t='.uniqid(),
+                    "width" => $width,
+                    "height" => $height
+                );
+                update_user_meta( $user->ID, 'st-user-'.$media_type, $sub_path.$new_name );
+                update_user_meta( $user->ID, 'st-user-'.$media_type.'-img', $sub_path.$new_name );
             }
 
         }
 
-        return 'updated';
+        return  json_encode( $response ) ;
+    }
 
+    public static function remove_media( $media_type = 'avatar' ){
+        $user =  wp_get_current_user();
+
+        $image_path = ST_User()->get_user_media($media_type, 'path');
+        $thumb_path = ST_User()->get_user_media($media_type.'-img', 'path' );
+        if ( file_exists( $image_path ) ){
+            @unlink( $image_path );
+        }
+
+        if ( file_exists( $thumb_path ) ){
+            @unlink( $thumb_path );
+        }
+
+        delete_user_meta( $user->ID, 'st-user-'.$media_type );
+        delete_user_meta( $user->ID, 'st-user-'.$media_type.'-img');
+    }
+
+
+    /**
+     * Crop avatar
+     * wp_crop_image
+     *
+     *
+     * @param string $media_type
+     * @return mixed|string|void
+     */
+    public static function crop_media( $media_type = 'avatar' ){
+
+        $image_url = ST_User()->get_user_media($media_type);
+        $edited_image_url = ST_User()->get_user_media($media_type.'-img');
+        if ( !$edited_image_url ) {
+            $edited_image_url = $image_url;
+        }
+
+        return  array(
+            "status" => 'success',
+            "url" => $edited_image_url.'?t='.uniqid()
+        );
+        // Return
+
+        /*
+
+        $media_type = sanitize_title( $media_type , 'avatar' );
+
+        if ( ! is_user_logged_in() ){
+            $response = Array(
+                "status" => 'error',
+                "message" => __( 'You not have permission to edit image', 'st-user' )
+            );
+            return json_encode( $response );
+        }
+
+        $img_edit_path =  ST_User()->get_user_media('cover', 'path');
+
+        if( ! $img_edit_path ) {
+            $response = Array(
+                "status" => 'error',
+                "message" => __( 'File not exists', 'st-user' )
+            );
+            return json_encode( $response );
+        }
+
+        $user =  wp_get_current_user();
+
+        $dir = ST_User()->settings['upload_dir'];
+        $url = ST_User()->settings['upload_url'];
+
+        $sub_path = "{$user->ID}/".$media_type.'-img';
+
+        $temp = explode( ".", $img_edit_path );
+        $extension = end( $temp );
+        $sub_path .= '.'.$extension;
+
+
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+
+        // original sizes
+        $imgInitW = $_POST['imgInitW'];
+        $imgInitH = $_POST['imgInitH'];
+        // resized sizes
+        $imgW = $_POST['imgW'];
+        $imgH = $_POST['imgH'];
+        // offsets
+        $imgY1 = $_POST['imgY1'];
+        $imgX1 = $_POST['imgX1'];
+        // crop box
+        $cropW = $_POST['cropW'];
+        $cropH = $_POST['cropH'];
+        // rotation angle
+        $angle = $_POST['rotation'];
+
+
+        $settings_height = 150;
+
+        $imgInitW = $_POST['imgInitW'];
+        $imgInitH = $_POST['imgInitH'];
+        // resized sizes
+        $diff = ( $_POST['imgH'] / $imgInitH ) ;
+        // offsets
+        $imgY1 = $_POST['imgY1'];
+
+        $src_y = $imgY1 + ( $imgY1 - $imgY1 * $diff );
+        // crop box
+        $cropH = $settings_height+( $diff * $settings_height );
+
+        wp_delete_file( $dir.$sub_path );
+        $cropped = wp_crop_image( $img_edit_path , 1, $src_y, $imgInitW, $imgInitH, $imgInitW, $cropH, true, $dir.$sub_path );
+
+        if ( $cropped && ! is_wp_error( $cropped ) ) {
+            $response = Array(
+                "status" => 'success',
+                'post' => $_POST,
+                'diff' => $diff,
+                'src_y' => $src_y,
+                "url" => $url.$sub_path.'?t='.uniqid()
+            );
+            update_user_meta( $user->ID, 'st-user-'.$media_type.'-img', $sub_path );
+        } else {
+            $response = Array(
+                "status" => 'error',
+                "message" => __( 'Something went wrong', 'st-user' )
+            );
+        }
+
+        return json_encode($response);
+        */
     }
 
 }

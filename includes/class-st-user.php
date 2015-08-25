@@ -235,6 +235,8 @@ class ST_User {
             'form_reset_header'          => 0,
             'form_change_pass_header'    => 0,
             'form_profile_header'        => 0,
+            'upload_dir'                 =>  WP_CONTENT_DIR . '/uploads/st-users/',
+            'upload_url'                 =>  WP_CONTENT_URL . '/uploads/st-users/'
         );
 
         $this->settings = (array) get_option( 'st_user_settings' );
@@ -488,6 +490,36 @@ class ST_User {
     }
 
     /**
+     * Get user media
+     *
+     * @param string $media_type
+     * @param string $type url|path
+     * @return bool|string
+     */
+    public static function get_user_media( $media_type = 'avatar', $type = 'url' ){
+        if ( ! is_user_logged_in() ){
+            return false;
+        }
+        $user =  wp_get_current_user();
+        $media  = get_user_meta( $user->ID, 'st-user-'.$media_type , true );
+        if ( ! $media ) {
+            return false;
+        }
+
+        $path = ST_User()->settings['upload_dir'].$media;
+        if ( file_exists( $path ) ) {
+            if ( strtolower( $type ) !== 'path' ) {
+                return  ST_User()->settings['upload_url'].$media;
+            } else {
+                return $path;
+            }
+        }
+
+        return false;
+
+    }
+
+    /**
      * Ajax Handle
      * @since 1.0.0
      */
@@ -534,6 +566,28 @@ class ST_User {
             case 'do_update_profile':
                 echo ST_User_Action::update_profile();
                 break;
+            case 'update_cover':
+                echo ST_User_Action::media_upload( 'cover' );
+                break;
+            case 'update_avatar':
+                // echo ST_User_Action::media_upload( 'cover' );
+                echo ST_User_Action::media_upload( 'avatar' );
+                break;
+
+            case 'crop_cover':
+                // echo ST_User_Action::media_upload( 'cover' );
+                echo ST_User_Action::crop_media( 'cover' );
+                break;
+            case 'crop_avatar':
+                // echo ST_User_Action::media_upload( 'cover' );
+                echo ST_User_Action::crop_media( 'avatar' );
+                break;
+
+            case 'remove_media':
+                // echo ST_User_Action::media_upload( 'cover' );
+                ST_User_Action::remove_media( $_REQUEST['media_type'] );
+                break;
+
         }
         exit();
     }

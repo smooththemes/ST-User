@@ -47,7 +47,7 @@ jQuery(document).ready(function($) {
 
     __init();
 
-    // forec reset password form
+    // force reset password form
     if ( ST_User.current_action == 'rp' ) {
         $('.st-user-modal').addClass('is-visible');
         $('body').trigger('st_user_before_open');
@@ -76,52 +76,6 @@ jQuery(document).ready(function($) {
             }
         });
     });
-
-    // load singup modal
-
-    $('.st-singup-btn, .st-login-btn').click( function( event ) {
-        var target = $( event.target );
-        var is_login = target.is('.st-login-btn');
-
-        if ( is_login  ) {
-            if ( target.data('is-logged') ) {
-                return true;
-            }
-        }
-
-        if ($('.st-user-modal').length > 0 ) {
-            $('.st-user-modal').addClass('is-visible');
-            $('body').trigger('st_user_before_open');
-            if ( is_login ) {
-                $('body').trigger('login_selected');
-            } else {
-                $('body').trigger('signup_selected');
-            }
-
-        } else {
-            var data = { action :'st_user_ajax', 'act' : 'modal-template' };
-            $.ajax({
-                data: data,
-                url: ST_User.ajax_url,
-                type: 'GET',
-                success: function( html ) {
-                    html = $( html );
-                    $('body').append( html );
-                    __init( html );
-                    $('body').trigger('st_user_before_open');
-                    $('.st-user-modal').addClass('is-visible');
-                    if ( is_login ) {
-                        $('body').trigger('login_selected');
-                    } else {
-                        $('body').trigger('signup_selected');
-                    }
-                }
-            });
-        }
-
-        return false;
-    } );
-
 
 
 	function __init( w ) {
@@ -508,7 +462,7 @@ jQuery(document).ready(function($) {
         } );
 
         // Profile Submit
-        $( '.st-form-profile', w ).submit( function() {
+        $( 'form.st-form-profile', w ).submit( function() {
 
             var form = $(this);
             var formData = form.serializeObject();
@@ -574,9 +528,6 @@ jQuery(document).ready(function($) {
             return  false;
         } );
 
-
-        //-------------------------------------------------
-
         /**
          * Trigger when init
          */
@@ -584,7 +535,264 @@ jQuery(document).ready(function($) {
 
     }// end function init
 
+
+    /// -------------------------------------------------
+
+
+    function STCropPic( $cover,  settings ) {
+        var that = this;
+        var cid = 'cp-'+(  new Date().getTime() ),  upload_id = 'cpu-'+cid;
+
+        if ( $( '.croppic-div', $cover).length <= 0 ){
+            $cover.append( '<div class="croppic-div"></div>' );
+        }
+
+        that.cover = $cover;
+        that.cropDiv = $( '.croppic-div', $cover);
+        that.cropDiv.attr('id', cid );
+        that.id = cid;
+        that.uploadBtn = '';
+        that.repositionBtn = '';
+        that.settingsObj = '';
+        that.img = $cover.data('cover') || '';
+        that.loadImg = that.img;
+        that.cropper = '';
+        that.onAfterImgUploadCB = null;
+        that.onAfterImgCropCBName = null;
+
+        that.settings = $.extend({
+            modal : false,
+            type : 'avatar',
+            zoom : false,
+            uploadBtn : '',
+            'button_text': 'Change',
+            'remove_text': 'Remove',
+            'upload_text':  'Upload',
+        }, settings );
+
+        that.init = function(){
+            that.intSettings();
+
+            if( that.settings.type !== 'avatar' ) {
+                that.cover.css({ width: 'auto' });
+                var width = that.cover.width();
+                that.cover.width( width );
+
+                $( window).resize( function() {
+                    that.cover.css({ width: 'auto' });
+                    var width = that.cover.width();
+                    that.cover.width( width );
+                } );
+            }
+
+        };
+
+        that.intUpload = function(){
+            that.initCroppic();
+        };
+
+        that.intSettings = function(){
+            $( '.coppic-settings', that.cover ).remove();
+            that.cover.append( that.settingsMarkup() );
+            that.settingsObj = $( '.coppic-settings', that.cover );
+            that.uploadBtn = $( '.cp-upload', that.settingsObj );
+            that.uploadBtn.click( that.uploadBtnClick );
+            that.repositionBtn = $( '.cp-reposition', that.settingsObj );
+            that.repositionBtn.click( that.repositionBtnClick );
+            $( '.cp-btn', that.settingsObj ).click( function(){
+               $( '.cp-actions', that.settingsObj ).toggleClass('cp-active');
+            });
+            $( '.cp-remove' , that.settingsObj).click( that.removeImg );
+
+            $(document).mouseup(function (e)
+            {
+
+                if (!that.settingsObj.is(e.target) // if the target of the click isn't the container...
+                    && that.settingsObj.has(e.target).length === 0) // ... nor a descendant of the container
+                {
+                    $( '.cp-actions', that.settingsObj ).removeClass('cp-active');
+                }
+            });
+        };
+
+        that.removeImg =  function(){
+
+            $.post( ST_User.ajax_url, {
+                _wpnonce: ST_User._wpnonce,
+                act: "remove_media",
+                media_type: that.settings.type,
+                action: "st_user_ajax"
+            }, function () {
+                that.cover.css( { backgroundImage: '' } );
+            } );
+
+            $( '.cp-actions', that.settingsObj ).removeClass('cp-active');
+
+            return false;
+        };
+
+        that.resetCoverImg = function(){
+            that.cover.css( { backgroundImage: 'url('+that.loadImg+')' } );
+        };
+
+        that.uploadBtnClick = function(){
+            //that.settings.hide();
+            if (  typeof that.cropper === "object" ) {
+                that.cropper.destroy();
+            }
+            that.loadImg = '';
+            //that.onAfterImgUploadCBName = null;
+            that.onAfterImgCropCBName = null;
+            that.initCroppic();
+            // open upload select file
+            $( '.cropControlUpload', that.cover).click();
+           // that.settingsObj.addClass('hide');
+            return false;
+        };
+
+        that.repositionBtnClick =  function(){
+
+            if (  typeof that.cropper === "object" ) {
+                that.cropper.destroy();
+            }
+            if ( that.img === '' ) {
+                return false;
+            }
+            that.settingsObj.addClass('hide');
+            that.loadImg = that.img;
+            //that.onAfterImgUploadCBName = null;
+            that.onAfterImgCropCBName = that.onAfterImgCropCB;
+            that.initCroppic();
+            return false;
+        };
+
+        that.onAfterImgCropCB = function( ){
+            that.loadImg  = $( '.croppedImg', that.cover ).attr('src');
+            that.cropper.destroy();
+            that.intSettings();
+            that.resetCoverImg();
+        };
+
+        that.onAfterImgUploadCB =  function ( ){
+            that.loadImg  = $( '.cropImgWrapper img', that.cover ).eq( 0 ).attr('src');
+            if ( typeof that.loadImg !== "undefined" ) {
+                //console.log( that.loadImg );
+                that.cropper.destroy();
+                that.intSettings();
+                that.resetCoverImg();
+            }
+
+        };
+
+        that.settingsMarkup = function() {
+            var HTML =  '<div class="coppic-settings">' +
+                            '<div class="cp-btn"><i class="cp-icon"></i><span>'+that.settings.button_text+'</span> </div>' +
+                                '<div class="cp-actions"> ' +
+                                '<div class="cp-upload" id="'+upload_id+'">'+that.settings.upload_text+'</div> ' +
+                                // '<div class="cp-reposition">Reposition...</div> ' +
+                                '<div class="cp-remove">'+that.settings.remove_text+'</div> ' +
+                            '</div> ' +
+                        '</div>';
+            return  HTML;
+        };
+
+        that.initCroppic = function(){
+
+            that.cropper = new Croppic( that.id, {
+                //customUploadButtonId: that.uploadID,
+                modal: that.settings.modal,
+
+                uploadUrl: ST_User.ajax_url,
+                uploadData: {
+                    _wpnonce: ST_User._wpnonce,
+                    act: "update_"+that.settings.type,
+                    action: "st_user_ajax"
+                },
+                cropUrl: ST_User.ajax_url,
+                cropData: {
+                    _wpnonce: ST_User._wpnonce,
+                    act: "crop_"+that.settings.type,
+                    action: "st_user_ajax"
+                },
+                loadPicture: that.loadImg,
+                zoomFactor: 40,
+                imgEyecandy: false,
+                doubleZoomControls: false,
+                rotateFactor: 0, // 90
+                rotateControls: false,
+                scaleToFill: true,
+
+                onBeforeImgUpload: function () {
+
+                },
+                onAfterImgUpload: that.onAfterImgUploadCB,
+                onImgDrag: function () {
+
+                },
+                onImgZoom: function () {
+
+                },
+                onBeforeImgCrop: function () {
+
+                },
+                onAfterImgCrop: that.onAfterImgCropCBName ,
+                onReset: function () {
+
+                },
+                onError: function (errormsg) {
+
+                }
+            });
+        };
+
+        that.init();
+
+    }
+
+
+
+    /* Profile croppic */
+
+    if (  typeof Croppic !== 'undefined' ) {
+
+        $( '.st-profile-cover').each( function(){
+            var $cover = $( this);
+            var is_can_change = $cover.data('change') ||  false;
+            if ( is_can_change ) {
+                new STCropPic($cover, {
+                    modal: false,
+                    zoom: false,
+                    type: 'cover',
+                    'button_text': ST_User.cover_text,
+                    'remove_text': ST_User.remove_text,
+                    'upload_txt': ST_User.upload_text,
+                });
+            }
+        } );
+
+        $( '.st-profile-avatar').each( function(){
+            var $cover = $( this);
+            var is_can_change = $cover.data('change') ||  false;
+            if ( is_can_change ) {
+                new STCropPic( $cover, {
+                    modal : false,
+                    zoom : false,
+                    type : 'avatar',
+                    'button_text': ST_User.avatar_text,
+                    'remove_text': ST_User.remove_text,
+                    'upload_text':  ST_User.upload_text,
+                } );
+            }
+
+        } );
+
+    }
+
+
 });
+
+
+
 
 
 //credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
