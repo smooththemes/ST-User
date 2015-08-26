@@ -78,6 +78,52 @@ jQuery(document).ready(function($) {
     });
 
 
+    // load singup modal
+
+    $('.st-singup-btn, .st-login-btn').click( function( event ) {
+        var target = $( event.target );
+        var is_login = target.is('.st-login-btn');
+
+        if ( is_login  ) {
+            if ( target.data('is-logged') ) {
+                return true;
+            }
+        }
+
+        if ($('.st-user-modal').length > 0 ) {
+            $('.st-user-modal').addClass('is-visible');
+            $('body').trigger('st_user_before_open');
+            if ( is_login ) {
+                $('body').trigger('login_selected');
+            } else {
+                $('body').trigger('signup_selected');
+            }
+
+        } else {
+            var data = { action :'st_user_ajax', 'act' : 'modal-template' };
+            $.ajax({
+                data: data,
+                url: ST_User.ajax_url,
+                type: 'GET',
+                success: function( html ) {
+                    html = $( html );
+                    $('body').append( html );
+                    __init( html );
+                    $('body').trigger('st_user_before_open');
+                    $('.st-user-modal').addClass('is-visible');
+                    if ( is_login ) {
+                        $('body').trigger('login_selected');
+                    } else {
+                        $('body').trigger('signup_selected');
+                    }
+                }
+            });
+        }
+
+        return false;
+    } );
+
+
 	function __init( w ) {
         if ( typeof w === 'undefined' ) {
             w = $('body');
