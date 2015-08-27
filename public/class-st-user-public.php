@@ -163,7 +163,7 @@ class ST_User_Public {
      * Display profile header
      * @param $user
      */
-    public static function profile_header( $user ){
+    public static function profile_header( $user, $current_user, $is_edit =  false ){
 
         $image_url = ST_User()->get_user_media('cover', 'url',  $user );
         $edited_image_url = ST_User()->get_user_media('cover-img', 'url',  $user);
@@ -176,8 +176,7 @@ class ST_User_Public {
         if ( !$edited_avatar_url ) {
             $edited_avatar_url = $avatar_url;
         }
-
-        $is_edit = ( isset( $_REQUEST['st_edit'] ) ) ?  true : false;
+        
         ?>
         <div id="st-profile-cover" data-change="<?php echo $is_edit ? 'true' : 'false'; ?>" class="st-profile-cover coppic" style="background-image: url('<?php echo esc_attr( $edited_image_url ); ?>');" data-cover="<?php echo ( $image_url ) ? $image_url : '';  ?>"></div>
 

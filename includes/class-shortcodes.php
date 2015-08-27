@@ -165,22 +165,23 @@ class ST_User_Shortcodes{
     public function profile( $atts, $content = "" ) {
         // if user not logged in display login form instead
         if ( $this->instance->settings['view_other_profiles'] != 'any' ) {
-            if ( !is_user_logged_in() ) {
+            if ( ! is_user_logged_in() ) {
                 return self::login( $atts, $content );
             }
         }
 
-
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
         ), $atts );
+
         $atts['action'] = 'profile-template';
+
         extract( $atts );
         $content ='';
         if ( st_is_true ( $atts['ajax_load'] ) ) {
             // leave content empty and load it via ajax
         } else {
-            $content =  $this->instance->get_template_content('profile.php') ;
+            $content =  $this->instance->get_template_content( 'profile.php' ) ;
         }
         return '<div class="st-user-wrapper st-profile-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }

@@ -51,6 +51,7 @@ class ST_User_Activator {
             'logout_redirect_url'   => '',
             'show_term'             => '',
             'term_mgs'              => '',
+            'view_other_profiles'        =>'any', // logged,
             'form_login_header'          => 0,
             'form_register_header'       => 0,
             'form_reset_header'          => 1,
