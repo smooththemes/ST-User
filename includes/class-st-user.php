@@ -79,6 +79,17 @@ class ST_User {
 
         add_action( 'set_current_user', 'csstricks_hide_admin_bar' );
 
+
+        $rules = get_option( 'rewrite_rules' );
+        if ( ! isset( $rules['^'.$this->settings['profile_rewrite'].'/([^/]*)/?'] ) ) {
+
+        }
+
+        //flush_rewrite_rules() ;
+
+        $this->profile_rewrite();
+        $this->profile_rewrite_tag();
+
         // disable admin toolbar
         if ( ! current_user_can( 'edit_posts' ) ) {
             show_admin_bar( false );
@@ -87,6 +98,42 @@ class ST_User {
         do_action( 'st_user_init', $this );
 
 	}
+
+    public function profile_rewrite() {
+
+        $string =  'index.php?page_id='.intval( $this->settings['account_page'] ).'&st_user_name=$matches[1]';
+
+        add_rewrite_rule( '^'.$this->settings['profile_rewrite'].'/([^/]*)/?', $string , 'top');
+        //echo $string;
+    }
+
+    public function profile_rewrite_tag() {
+         add_rewrite_tag('%st_user_name%', '([^&]+)');
+    }
+
+    public function get_user_profile( ){
+        global $wp_query;
+        if ( isset ( $wp_query->query_vars['st_user_name'] ) &&  $wp_query->query_vars['st_user_name'] != '' ) {
+            $user_data = get_user_by( 'login', $wp_query->query_vars['st_user_name'] );
+            return ( $user_data ) ?  $user_data->data : false;
+        } else {
+            return wp_get_current_user();
+        }
+    }
+
+    public function get_profile_link( $user ){
+        global $wp_rewrite;
+        if ( $wp_rewrite->using_permalinks() ){
+            return trailingslashit( site_url() ).$this->settings['profile_rewrite'].'/'.$user->user_login;
+        } else {
+            return add_query_arg( array( 'st_user_name' => $user->user_login ), $this->settings['url']  );
+        }
+    }
+
+    public function get_edit_profile_link( $user ){
+        return add_query_arg( array( 'st_edit' => 1 ), $this->get_profile_link( $user )  );
+    }
+
 
 	/**
 	 * Load the required dependencies for this plugin.
@@ -225,11 +272,13 @@ class ST_User {
 
         $default = array(
             'account_page'          => '',
+            'profile_rewrite'       => 'user',
             'disable_default_login' => '',
             'login_redirect_url'    => '',
             'logout_redirect_url'   => '',
             'show_term'             => '',
             'term_mgs'              => '',
+            'view_other_profiles'        =>'any', // logged,
             'form_login_header'          => 0,
             'form_register_header'       => 0,
             'form_reset_header'          => 0,
@@ -447,7 +496,7 @@ class ST_User {
         } else {
             // If neither the child nor parent theme have overridden the template,
             // we load the template from the 'templates' directory if this plugin
-            return ST_USER_PATH . 'public/partials/'.$this->settings['theme'].'/'.$template;
+            return ST_USER_PATH . 'public/templates/'.$template;
         }
     }
 
@@ -464,6 +513,7 @@ class ST_User {
         ob_start();
         $old_content = ob_get_clean();
         ob_start();
+        do_action( 'st_user_before_content_load', $template , $custom_data );
         if ( is_file( $template ) ) {
             if ( is_array( $custom_data ) ) {
                 extract( $custom_data);
@@ -471,6 +521,7 @@ class ST_User {
             //load_template();
             require $template  ;
         }
+        do_action( 'st_user_after_content_load', $template , $custom_data );
         $content = ob_get_clean();
         echo $old_content;
         return $content;
@@ -496,11 +547,11 @@ class ST_User {
      * @param string $type url|path
      * @return bool|string
      */
-    public static function get_user_media( $media_type = 'avatar', $type = 'url' ){
-        if ( ! is_user_logged_in() ){
-            return false;
+    public static function get_user_media( $media_type = 'avatar', $type = 'url' ,  $user  = false ){
+
+        if ( ! $user ) {
+            $user =  wp_get_current_user();
         }
-        $user =  wp_get_current_user();
         $media  = get_user_meta( $user->ID, 'st-user-'.$media_type , true );
         if ( ! $media ) {
             return false;

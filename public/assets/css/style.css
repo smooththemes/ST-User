@@ -1,3 +1,7 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
 .st-user-wrapper {
     font-size: 14px;
 }
@@ -6,7 +10,6 @@
     clear: both;
     display: block;
 }
-
 
 /* --------------------------------
 
@@ -92,6 +95,24 @@ xsigin/signup popup
     float: left;
 }
 
+.form-fields label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+}
+.form-fields .fieldset {
+    display: block;
+    margin-bottom: 15px;
+}
+.form-fields .fieldset .full-width{
+    width: 100%;
+}
+.form-fields .fieldset input[readonly=readonly] {
+    background: #ededed;
+}
+.form-fields .fieldset:after {
+    content: ' '; clear: both; display: block;
+}
 
 .custom-terms .st-accept-terms {
     float: left;
@@ -224,11 +245,6 @@ xsigin/signup popup
     float: right;
 }
 
-.st-form-header {
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #DCDCDC;
-}
 .st-form-header h3 {
     font-size: 24px;
     margin-top: 0px;
@@ -254,7 +270,7 @@ NAV helper - Use for menu conditions
 
 /* Profile from */
 .st-form-header {
-    border: 1px solid #ededed;
+
 }
 .st-profile-cover {
     width: 100%;
@@ -286,6 +302,12 @@ NAV helper - Use for menu conditions
     left: 0px;
     right: auto;
     border: 1px solid #ededed;
+}
+
+.st-form-profile .st-form-header {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #DCDCDC;
 }
 
 .st-profile-avatar {
@@ -337,14 +359,16 @@ NAV helper - Use for menu conditions
     width: 100%;
     float: left;
 }
-.st-form-sidebar {
+.st-form-body .st-form-sidebar {
     margin: 0px;
     padding: 0px;
 }
-.st-form-sidebar li {
+.st-form-body .st-form-sidebar li {
     list-style: none;
     border-bottom: 0px none;
     margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 .st-form-sidebar li:last-child {
     margin-bottom: 0px;
@@ -358,39 +382,69 @@ NAV helper - Use for menu conditions
 }
 
 /* Responsive & Sidebar Profile */
-.sidebar .st-form-header .st-profile-avatar{
+.sidebar .st-profile-avatar.coppic,
+.widget-area .st-profile-avatar.coppic {
+    width: 90px;
+    height: 90px;
+}
+.sidebar .st-form-header .st-profile-avatar,
+.widget-area .st-form-header .st-profile-avatar
+{
     float: none;
     margin-left: auto;
     margin-right: auto;
 }
-.sidebar .st-form-header  .st-profile-meta-info {
+.sidebar .st-form-header .st-profile-meta-info,
+.widget-area .st-form-header .st-profile-meta-info {
     padding: 0px;
     float: none;
     text-align: center;
 }
-.sidebar .st-form-header .st-user-socials {
+.sidebar .st-form-header .st-user-socials,
+.widget-area .st-form-header .st-user-socials {
     padding: 0px;
     float: none;
     text-align: center;
 }
-.sidebar .st-form-body .st-form-sidebar {
+.sidebar .st-form-body .st-form-sidebar ,
+.widget-area .st-form-body .st-form-sidebar {
     width: 100%;
     float: none;
+    margin-bottom: 20px;
 }
-.sidebar  .st-form-body .st-form-sidebar + .st-form-profile {
+.sidebar .st-form-body .st-form-sidebar li ,
+.widget-area .st-form-body .st-form-sidebar li {
+    margin-left: 0px;
+}
+.sidebar .form-fields.viewing-info .fieldset span,
+.widget-area .form-fields.viewing-info .fieldset span {
+    display: block;
+    clear: both;
+}
+.sidebar  .st-form-body .st-form-sidebar + .st-form-profile ,
+.widget-area  .st-form-body .st-form-sidebar + .st-form-profile {
     float: none;
     padding: 0px;
     width: 100%;
 }
 
-@media only screen and (max-width: 736px) {
+/*
+MEDIA QUERY
+--------------------------------------------
+*/
+@media only screen and (max-width: 763px) {
 
-    .st-form-header .st-profile-avatar{
+    .st-profile-avatar.coppic {
+        width: 90px;
+        height: 90px;
+    }
+    .st-form-header .st-profile-avatar
+    {
         float: none;
         margin-left: auto;
         margin-right: auto;
     }
-     .st-form-header  .st-profile-meta-info {
+    .st-form-header .st-profile-meta-info {
         padding: 0px;
         float: none;
         text-align: center;
@@ -403,6 +457,14 @@ NAV helper - Use for menu conditions
     .st-form-body .st-form-sidebar {
         width: 100%;
         float: none;
+        margin-bottom: 20px;
+    }
+    .st-form-body .st-form-sidebar li {
+        margin-left: 0px;
+    }
+    .form-fields.viewing-info .fieldset span {
+        display: block;
+        clear: both;
     }
     .st-form-body .st-form-sidebar + .st-form-profile {
         float: none;

@@ -25,7 +25,7 @@ class ST_User_Action{
         }
 
         if ( trim( $creds['user_password'] ) == '' ) {
-            $msgs['st_pwd'] =  __( 'The password you entered for the username <strong>admin</strong> is incorrect.', 'st-user');
+            $msgs['st_pwd'] =  __( 'Please enter your password', 'st-user');
         }
 
         if ( is_email( $creds['user_login'] ) ) {

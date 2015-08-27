@@ -92,7 +92,7 @@ if ( ! is_user_logged_in() ) {
                  </div>
              </div>
              <div class="st-ui st-user-links">
-                 <a href="<?php echo esc_attr( apply_filters( 'st_user_url', '#' ) ) ?>"><?php _e( 'Profile', 'st-user' ) ?></a>
+                 <a href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Profile', 'st-user' ) ?></a>
                  <a href="<?php echo wp_logout_url() ; ?>"><?php _e( 'Logout', 'st-user' ) ?></a>
                  <?php do_action( 'st_user_logged_in_links',  $user ); ?>
              </div>

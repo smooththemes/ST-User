@@ -164,9 +164,12 @@ class ST_User_Shortcodes{
      */
     public function profile( $atts, $content = "" ) {
         // if user not logged in display login form instead
-        if ( !is_user_logged_in() ) {
-            return self::login( $atts, $content );
+        if ( $this->instance->settings['view_other_profiles'] != 'any' ) {
+            if ( !is_user_logged_in() ) {
+                return self::login( $atts, $content );
+            }
         }
+
 
         $atts = shortcode_atts(array(
             'ajax_load' => 'false' ,
@@ -225,6 +228,7 @@ class ST_User_Shortcodes{
      */
     public  function singup_button( $atts ) {
         // disable when user logged in
+
         if ( is_user_logged_in() ) {
             return '';
         }
@@ -257,17 +261,23 @@ class ST_User_Shortcodes{
      * @return string
      */
     public  function user( $atts, $content ='' ) {
-        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'lost-pass' ) {
-            return $this->reset_password( $atts, $content );
-        }
-        if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'register' ) {
-            return $this->register( $atts, $content );
-        }
-        if ( is_user_logged_in() ) {
+
+        if ( $this->instance->settings['view_other_profiles'] == 'any' ) {
             return $this->profile( $atts, $content );
-        } else {
-            return $this->login( $atts, $content );
+        } else{
+            if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'lost-pass' ) {
+                return $this->reset_password( $atts, $content );
+            }
+            if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'register' ) {
+                return $this->register( $atts, $content );
+            }
+            if ( is_user_logged_in() ) {
+                return $this->profile( $atts, $content );
+            } else {
+                return $this->login( $atts, $content );
+            }
         }
+
     }
 
 }

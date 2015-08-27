@@ -55,7 +55,7 @@ class ST_User_Activator {
             'form_register_header'       => 0,
             'form_reset_header'          => 1,
             'form_change_pass_header'    => 0,
-            'form_profile_header'        => 0,
+            'form_profile_header'        => 1,
         );
 
         update_option( 'st_user_settings', $default );

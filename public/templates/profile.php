@@ -1,6 +1,6 @@
 <?php
 /**
- * The Template for displaying Lost Password form
+ * The Template for displaying Profile form
  *
  * Override template in your theme by copying it to:
  * YOUR_THEME_DIR/templates/profile.php
@@ -12,73 +12,83 @@
  */
 
 
-$is_edit = ( isset( $_REQUEST['st_edit'] ) ) ?  true : false;
+$user = ST_User()->get_user_profile();
 
-if ( !is_user_logged_in() ) {
 
-} else {
-    $user = wp_get_current_user();
-?>
-<div class="st-form st-form-profile" >
-
-    <?php if( ST_User()->settings['form_profile_header'] ) {
-
-        ?>
-    <div class="st-form-header">
-        <?php do_action( 'st_user_profile_header' , $user, $is_edit );  ?>
+if ( ! $user ) {
+    ?>
+    <div class="st-user-not-found">
+        <h2><?php _e( 'Nothing found', 'st-user' ); ?></h2>
     </div>
-    <?php } ?>
+    <?php
+} else {
+
+
+$current_user = wp_get_current_user();
+
+$is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( $_REQUEST['st_edit'] ) ) ?  true : false;
+?>
+<div class="st-profile-wrapper st-form-profile" >
+
+    <div class="st-form-header">
+        <?php do_action( 'st_user_profile_header' , $user, $current_user , $is_edit );  ?>
+    </div>
 
     <div class="st-form-body clear-fix">
 
-        <?php do_action( 'st_user_profile_before_form_body', $user, $is_edit );  ?>
+        <?php
+        do_action( 'st_user_profile_before_form_body', $user, $current_user , $is_edit );
+        ?>
+        <?php if ( !$is_edit ) {
 
-        <?php if ( !$is_edit ) { ?>
+            ?>
         <div class="st-form-profile clear-fix"  >
 
             <div class="form-fields viewing-info">
                 <p class="fieldset st-username">
-                    <label class=""><?php _e( 'User Name', 'st-user' ); ?></label>
+                    <label class=""><?php _e( 'User Name:', 'st-user' ); ?></label>
                     <span>
                         <?php echo esc_html( $user->user_login ); ?>
                     </span>
                 </p>
 
                 <p class="fieldset st-email">
-                    <label class=" "><?php _e( 'E-mail', 'st-user' ); ?></label>
+                    <label class=""><?php _e( 'E-mail:', 'st-user' ); ?></label>
                     <span>
                         <?php echo esc_html( $user->user_email ); ?>
                     </span>
                 </p>
 
                 <p class="fieldset st-firstname">
-                    <label class=""><?php _e( 'First Name', 'st-user' ); ?></label>
+                    <label class=""><?php _e( 'First Name:', 'st-user' ); ?></label>
                     <span class="">
-                        <?php echo esc_html( get_user_meta( $user->ID, 'first_name', true ) ); ?>
+                        <?php
+
+                        echo esc_html( get_user_meta( $user->ID, 'first_name', true ) ); ?>
                     </span>
                 </p>
                 <p class="fieldset st-lastname">
-                    <label class=""><?php _e( 'Last Name', 'st-user' ); ?></label>
+                    <label class=""><?php _e( 'Last Name:', 'st-user' ); ?></label>
                     <span class="">
                         <?php echo  esc_html( get_user_meta( $user->ID, 'last_name', true ) ); ?>
                     </span>
                 </p>
 
                 <p class="fieldset">
-                    <label class=""><?php _e( 'Display Name', 'st-user' ); ?></label>
+                    <label class=""><?php _e( 'Display Name:', 'st-user' ); ?></label>
                     <span><?php  echo esc_html( $user->display_name );  ?></span>
                 </p>
 
 
                 <p class="fieldset st-website">
-                    <label class="" for="signin-password"><?php _e( 'Website', 'st-user' ); ?></label>
+                    <label class="" for="signin-password"><?php _e( 'Website:', 'st-user' ); ?></label>
                     <span class="">
                         <?php echo esc_html( $user->user_url ); ?>
                     </span>
                 </p>
 
                 <p class="fieldset">
-                    <label class=""><?php _e( 'Bio', 'st-user' ); ?></label>
+                    <label class=""><?php _e( 'Bio:', 'st-user' ); ?></label>
                     <span>
                         <?php echo  esc_html( get_user_meta( $user->ID, 'description', true ) ); ?>
                     </span>
@@ -126,20 +136,20 @@ if ( !is_user_logged_in() ) {
                 </p>
 
                 <p class="fieldset st-pwd pass1">
-                    <label class=" " for="signin-password"><?php _e( 'New Password', 'st-user' ); ?></label>
-                    <input name="st_user_data[user_pass]" autocomplete="off" class="input full-width has-padding has-border" id="signin-password" type="password"  placeholder="<?php echo esc_attr__( 'New Password', 'st-user' ) ; ?>">
+                    <label class=" " for="signin-password-new"><?php _e( 'New Password', 'st-user' ); ?></label>
+                    <input name="st_user_data[user_pass]" autocomplete="off" class="input full-width has-padding has-border" id="signin-password-new" type="password"  placeholder="<?php echo esc_attr__( 'New Password', 'st-user' ) ; ?>">
                     <a href="#0" class="hide-password"><?php _e('Show','st-user') ?></a>
                     <span class="st-error-message"></span>
                 </p>
                 <p class="fieldset st-pwd pass2">
-                    <label class="" for="signin-password"><?php _e( 'Comfirm New Password', 'st-user' ); ?></label>
-                    <input name="st_user_pwd2" autocomplete="off" class="input full-width has-padding has-border" id="signin-password" type="password"  placeholder="<?php echo esc_attr__( 'Confirm New Password','st-user' ) ; ?>">
+                    <label class="" for="signin-password-confirm"><?php _e( 'Comfirm New Password', 'st-user' ); ?></label>
+                    <input name="st_user_pwd2" autocomplete="off" class="input full-width has-padding has-border" id="signin-password-confirm" type="password"  placeholder="<?php echo esc_attr__( 'Confirm New Password','st-user' ) ; ?>">
                     <a href="#0" class="hide-password"><?php _e( 'Show', 'st-user' ) ?></a>
                     <span class="st-error-message"></span>
                 </p>
                 <p class="fieldset st-website">
-                    <label class="" for="signin-password"><?php _e( 'Bio', 'st-user' ); ?></label>
-                    <textarea name="st_user_data[description]"><?php echo esc_attr( get_user_meta( $user->ID, 'description', true ) ); ?></textarea>
+                    <label><?php _e( 'Bio', 'st-user' ); ?></label>
+                    <textarea class="full-width" name="st_user_data[description]"><?php echo esc_attr( get_user_meta( $user->ID, 'description', true ) ); ?></textarea>
                 </p>
                 <p class="fieldset st-firstname">
                     <label><?php _e( 'Facebook URL', 'st-user' ); ?></label>
@@ -158,7 +168,7 @@ if ( !is_user_logged_in() ) {
                 /**
                  * Hook to add more setting for profile if want
                  */
-                do_action( 'st_user_profile_more_fields', $user, $is_edit );
+                do_action( 'st_user_profile_more_fields', $user, $current_user, $is_edit );
                 ?>
                 <p class="fieldset">
                     <input class="button btn" type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Update Profile','st-user' ); ?>">
@@ -167,7 +177,10 @@ if ( !is_user_logged_in() ) {
         </form>
         <?php } ?>
 
-        <?php do_action( 'st_user_profile_after_form_body' , $user, $is_edit ) ?>
+        <?php do_action( 'st_user_profile_after_form_body' , $user, $current_user, $is_edit ) ?>
     </div>
 </div>
-<?php } ?>
+
+<?php
+
+}

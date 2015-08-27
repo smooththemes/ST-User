@@ -138,11 +138,7 @@ $settings = wp_parse_args( $settings,  $default );
                     <label >
                         <input type="checkbox" <?php checked ( $settings['form_change_pass_header'], 1 ) ?> value="1"  name="st_user_settings[form_change_pass_header]">
                         <?php _e( 'Show change password form header', 'st-user' ); ?>
-                    </label><br>
-                    <label >
-                        <input type="checkbox" <?php checked ( $settings['form_profile_header'] , 1 ) ?> value="1"  name="st_user_settings[form_profile_header]">
-                        <?php _e( 'Show profile form header', 'st-user' ); ?>
-                    </label><br>
+                    </label>
 
                 </fieldset>
             </td>

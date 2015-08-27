@@ -69,8 +69,9 @@ class ST_User_Public {
 		$this->st_user = $this->instance->get_st_user();
 		$this->version = $this->instance->get_version();
 
-        add_action( 'st_user_profile_header', array( $this, 'profile_header' ) );
-        add_action( 'st_user_profile_before_form_body', array( $this, 'profile_sidebar' ) );
+        add_action( 'st_user_profile_header', array( $this, 'profile_header' ), 15, 3 );
+        add_action( 'st_user_profile_before_form_body', array( $this, 'profile_sidebar' ), 15, 3 );
+        //add_action( 'st_user_before_content_load', array( $this, 'profile_setup' ) );
 
 	}
 
@@ -93,14 +94,13 @@ class ST_User_Public {
 		 * class.
 		 */
 
+        wp_register_style( $this->st_user, ST_USER_URL.'public/assets/css/style.css' );
 
-        wp_register_style( $this->st_user, ST_USER_URL.'public/partials/'.$this->instance->settings['theme'].'/css/style.css' );
-        wp_enqueue_style( $this->st_user );
-
-        if ( is_user_logged_in() ) {
+        if ( is_page( $this->instance->settings['account_page'] ) ) {
             wp_enqueue_style( 'dashicons' );
-            wp_enqueue_style( 'croppic' , ST_USER_URL.'croppic/croppic.css'  );
+            wp_enqueue_style( 'croppic' , ST_USER_URL.'public/assets//js/croppic/croppic.css'  );
         }
+        wp_enqueue_style( $this->st_user );
 	}
 
 	/**
@@ -126,11 +126,11 @@ class ST_User_Public {
         wp_enqueue_script( 'json2' );
 
         if ( is_user_logged_in() ) {
-            wp_enqueue_script( 'croppic' , ST_USER_URL.'croppic/croppic.js', array('jquery'), false, true  );
+            wp_enqueue_script( 'croppic' , ST_USER_URL.'public/assets/js/croppic/croppic.js', array('jquery'), false, true  );
         }
 
         // wp_enqueue_script( 'modernizr', ST_USER_URL.'public/js/modernizr.js', array('jquery'), '2.7.1', true  );
-        wp_enqueue_script( $this->st_user , ST_USER_URL.'public/partials/'.$this->instance->settings['theme'].'/js/user.js', array('jquery'), '1.0', true  );
+        wp_enqueue_script( $this->st_user , ST_USER_URL.'public/assets/js/user.js', array('jquery'), '1.0', true  );
 
         wp_localize_script( $this->st_user , 'ST_User',
             apply_filters('st_user_localize_script', array(
@@ -149,6 +149,8 @@ class ST_User_Public {
 
     }
 
+
+
     /**
      *  Display modal
      * @since 1.0
@@ -163,15 +165,14 @@ class ST_User_Public {
      */
     public static function profile_header( $user ){
 
-        $image_url = ST_User()->get_user_media('cover');
-        $edited_image_url = ST_User()->get_user_media('cover-img');
+        $image_url = ST_User()->get_user_media('cover', 'url',  $user );
+        $edited_image_url = ST_User()->get_user_media('cover-img', 'url',  $user);
         if ( !$edited_image_url ) {
             $edited_image_url = $image_url;
         }
 
-
-        $avatar_url = ST_User()->get_user_media('avatar');
-        $edited_avatar_url = ST_User()->get_user_media('avatar-img');
+        $avatar_url = ST_User()->get_user_media( 'avatar', 'url',  $user );
+        $edited_avatar_url = ST_User()->get_user_media( 'avatar-img', 'url',  $user  );
         if ( !$edited_avatar_url ) {
             $edited_avatar_url = $avatar_url;
         }
@@ -186,7 +187,9 @@ class ST_User_Public {
             <div class="st-profile-meta-info">
                 <span class="st-display-name"><?php echo esc_html( $user->display_name ); ?></span>
 
-                    <span class="user-join-date"><?php
+                    <span class="user-join-date">
+                        <span class="dashicons dashicons-calendar-alt"></span>
+                        <?php
                         printf( __( 'Joined %s', 'st-user' ),  date_i18n( get_option('date_format'), strtotime( $user->user_registered ) ) );
                         ?>
                     </span>
@@ -207,11 +210,13 @@ class ST_User_Public {
      * Display profile sidebar
      * @param $user
      */
-    public static function profile_sidebar( $user ){
+    public static function profile_sidebar( $user, $current_user, $is_edit = false ){
         ?>
         <ul class="st-form-sidebar">
-            <li><a class="st-profile-link" href="<?php echo  apply_filters( 'st_user_url', '#' ) ; ?>"><?php _e( 'Public profile', 'st-user' ); ?></a></li>
-            <li><a class="st-edit-link" href="<?php echo add_query_arg( array( 'st_edit' => 1 ) , apply_filters( 'st_user_url', '#' )  ); ?>"><?php _e( 'Edit profile', 'st-user' ); ?></a></li>
+            <li><a class="st-profile-link" href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Public profile', 'st-user' ); ?></a></li>
+            <?php if ( $current_user && $user && $user->ID == $current_user->ID ){ ?>
+            <li><a class="st-edit-link" href="<?php echo ST_User()->get_edit_profile_link( $user ); ?>"><?php _e( 'Edit profile', 'st-user' ); ?></a></li>
+            <?php } ?>
         </ul>
         <?php
     }
