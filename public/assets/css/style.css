@@ -109,6 +109,12 @@ xsigin/signup popup
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 10px;
+    font-size: 14px;
+}
+.forgetmenot.fieldset label{
+    width: auto;
+    display: inline-block;
+    font-weight: normal;
 }
 .form-fields .fieldset {
     display: block;
@@ -132,9 +138,6 @@ xsigin/signup popup
     margin-left: 20px;
 }
 
-.st-form label {
-    font-size: 14px;
-}
 .st-form input.full-width {
     width: 100%;
     box-sizing: border-box;
