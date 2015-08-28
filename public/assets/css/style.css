@@ -135,13 +135,9 @@ xsigin/signup popup
     float: left;
     margin: 5px 0 5px 5px;
 }
-<<<<<<< Updated upstream
+
 .stuser-form .custom-terms .st-term-mgs {
     margin-left: 25px;
-=======
-.custom-terms .st-term-mgs {
-    margin-left: 20px;
->>>>>>> Stashed changes
 }
 
 .stuser-form input.full-width {
