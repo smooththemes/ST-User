@@ -404,6 +404,7 @@ NAV helper - Use for menu conditions
 .widget-area .st-profile-avatar.coppic {
     width: 90px;
     height: 90px;
+    margin-top: -45px;
 }
 .sidebar .st-form-header .st-profile-avatar,
 .widget-area .st-form-header .st-profile-avatar
@@ -455,6 +456,7 @@ MEDIA QUERY
     .st-profile-avatar.coppic {
         width: 90px;
         height: 90px;
+        margin-top: -45px;
     }
     .st-form-header .st-profile-avatar
     {
