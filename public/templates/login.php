@@ -76,10 +76,7 @@ if ( ! is_user_logged_in() ) {
         <div class="st-form-header">
             <?php do_action( 'st_user_profile_header' , $user, false , false );  ?>
         </div>
-        <div class="st-form-body">
-
-        </div>
-        <div class="st-ui st-user-links">
+        <div class="st-form-body st-user-links">
             <a href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Profile', 'st-user' ) ?></a>
             <a href="<?php echo wp_logout_url() ; ?>"><?php _e( 'Logout', 'st-user' ) ?></a>
             <?php do_action( 'st_user_logged_in_links',  $user ); ?>

@@ -258,7 +258,12 @@ xsigin/signup popup
 .st-form-footer p:last-child {
     margin-bottom: 0px;
 }
-
+.st-logged-in .st-user-links {
+    text-align: center;
+}
+.st-logged-in .st-user-links a {
+    margin: 0px 5px;
+}
 /* --------------------------------
 
 NAV helper - Use for menu conditions
@@ -381,7 +386,7 @@ NAV helper - Use for menu conditions
     padding: 5px;
 }
 .st-form-sidebar li.active  a {
-    background: #cecac5;
+    background: #F0F0F0;
 }
 
 /* Responsive & Sidebar Profile */
