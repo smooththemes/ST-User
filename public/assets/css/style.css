@@ -177,12 +177,11 @@ xsigin/signup popup
     left: -5px;
     bottom: -35px;
     background: rgba(215, 102, 102, 0.9);
-    padding: .8em;
+    padding: 5px 10px;
     z-index: 2;
     color: #FFF;
     font-size: 13px;
     font-size: 0.8125rem;
-    border-radius: 0.25em;
     /* prevent click and touch events */
     pointer-events: none;
     visibility: hidden;
@@ -331,7 +330,7 @@ NAV helper - Use for menu conditions
     border-top: 0px none transparent;
     border-bottom: 0px solid #DCDCDC;
 }
-.stuser-form-profile .stuser-form-header .st-profile-meta {
+.stuser-form-profile .stuser-form-header .st-profile-meta, .st-profile-mini .st-profile-meta {
     border-left: 1px solid #DCDCDC;
     border-right: 1px solid #DCDCDC;
     border-bottom: 1px solid #DCDCDC;
