@@ -396,7 +396,7 @@ NAV helper - Use for menu conditions
     padding: 5px;
 }
 .st-form-sidebar li.active  a {
-    background: #F0F0F0;
+    background: #e0e0e0;
 }
 
 /* Responsive & Sidebar Profile */
