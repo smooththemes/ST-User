@@ -107,7 +107,7 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
 
         <?php  } else {  ?>
 
-        <form class="stuser-form-profile" action="<?php echo site_url('/'); ?>" method="post" >
+        <form class="stuser-form-profile stuser-form" action="<?php echo site_url('/'); ?>" method="post" >
             <p class="st-user-msg <?php echo isset( $_REQUEST['st_profile_updated'] ) &&  $_REQUEST['st_profile_updated']  == 1 ? 'st-show' : ''; ?>"><?php _e( 'Your profile updated.', 'st-user' ); ?></p>
             <p class="st-user-msg st-errors-msg"></p>
 

@@ -112,11 +112,13 @@ xsigin/signup popup
     display: block;
     margin-bottom: 15px;
 }
-.stuser-form-fields .fieldset input[type="text"],
-.stuser-form-fields .fieldset input[type="select"],
-.stuser-form-fields .fieldset input[type="password"],
-.stuser-form-fields .fieldset input[type="textarea"] {
+.stuser-form .fieldset input[type="text"],
+.stuser-form .fieldset input[type="select"],
+.stuser-form .fieldset input[type="email"],
+.stuser-form .fieldset input[type="password"],
+.stuser-form .fieldset textarea {
     width: 100%;
+    padding: 10px 10px;
 }
 .stuser-form-body .fieldset input[type="checkbox"] {
     margin: 5px 5px 5px 0px;

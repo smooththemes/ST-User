@@ -140,7 +140,6 @@ jQuery(document).ready(function($) {
 
         $form_modal.addClass('st-loaded');
 
-
         $('body').on('st_user_before_open', function() {
             hide_all_errors();
         });
@@ -379,7 +378,7 @@ jQuery(document).ready(function($) {
                                     if ( $('.st-error-message', p ).length <= 0 ) {
                                         p.append( '<span class="st-error-message"></span>' );
                                     }
-                                    $('.st-error-message', p).html( msg).addClass( 'is-visible' );
+                                    $('.st-error-message', p).html( msg ).addClass( 'is-visible' );
                                     p.find('input').toggleClass('has-error');
                                 }
                             } );
