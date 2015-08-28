@@ -74,6 +74,15 @@ xsigin/signup popup
     position: relative;
 }
 
+.st-form .st-form-header {
+    border-bottom: 1px solid #dcdcdc;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+.st-form .st-form-body p {
+    margin-bottom: 15px;
+}
+
 .st-form .fieldset {
     position: relative;
     margin: 15px 0;
@@ -95,10 +104,11 @@ xsigin/signup popup
     float: left;
 }
 
-.form-fields label {
+.form-fields label, .fieldset label {
     display: block;
     font-size: 12px;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 .form-fields .fieldset {
     display: block;
