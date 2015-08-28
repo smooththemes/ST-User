@@ -17,7 +17,7 @@ class ST_User_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-        $account_slug   = 'account';
+        $account_slug   = 'user';
         $shortcode_base = 'st_user';
         $page = array(
             'post_title'   => __('Account','st-user'),

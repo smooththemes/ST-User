@@ -69,7 +69,7 @@ xsigin/signup popup
     transition-duration: 0.3s;
 }
 
-.st-form {
+.st-user-modal .st-form {
     padding: 20px;
     position: relative;
 }
@@ -104,7 +104,7 @@ xsigin/signup popup
     display: block;
     margin-bottom: 15px;
 }
-.form-fields .fieldset .full-width{
+.form-fields .fieldset input, .form-fields .fieldset select {
     width: 100%;
 }
 .form-fields .fieldset input[readonly=readonly] {
@@ -379,6 +379,9 @@ NAV helper - Use for menu conditions
     display: block;
     border-bottom: 0px none;
     padding: 5px;
+}
+.st-form-sidebar li.active  a {
+    background: #cecac5;
 }
 
 /* Responsive & Sidebar Profile */

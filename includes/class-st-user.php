@@ -134,6 +134,16 @@ class ST_User {
         return add_query_arg( array( 'st_edit' => 1 ), $this->get_profile_link( $user )  );
     }
 
+    /**
+     * Check if is currrent user
+     *
+     * @param $user
+     * @param $user2
+     */
+    public function is_current_user( $user, $user2 = false ){
+        return ( $user &&  $user2 && $user->ID >0  && $user->ID ==  $user2->ID ) ? true : false;
+    }
+
 
 	/**
 	 * Load the required dependencies for this plugin.

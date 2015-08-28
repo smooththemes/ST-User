@@ -195,9 +195,15 @@ class ST_User_Public {
             </div>
 
             <div class="st-user-socials">
+                <?php if (  get_user_meta( $user->ID, 'facebook', true )   != '' ) {  ?>
                 <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'facebook', true ) ); ?>"><span class="dashicons dashicons-facebook-alt"></span></a>
+                <?php } ?>
+                <?php if (  get_user_meta( $user->ID, 'twitter', true )   != '' ) {  ?>
                 <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'twitter', true ) ); ?>"><span class="dashicons dashicons-twitter"></span></a>
+                <?php } ?>
+                <?php if (  get_user_meta( $user->ID, 'google', true )   != '' ) {  ?>
                 <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'google', true ) ); ?>"><span class="dashicons dashicons-googleplus"></span></a>
+                <?php } ?>
             </div>
             <?php do_action('st_user_profile_meta'); ?>
 
@@ -212,9 +218,9 @@ class ST_User_Public {
     public static function profile_sidebar( $user, $current_user, $is_edit = false ){
         ?>
         <ul class="st-form-sidebar">
-            <li><a class="st-profile-link" href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Public profile', 'st-user' ); ?></a></li>
+            <li class="<?php echo $is_edit ? '' : 'active'; ?>"><a class="st-profile-link" href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Public profile', 'st-user' ); ?></a></li>
             <?php if ( $current_user && $user && $user->ID == $current_user->ID ){ ?>
-            <li><a class="st-edit-link" href="<?php echo ST_User()->get_edit_profile_link( $user ); ?>"><?php _e( 'Edit profile', 'st-user' ); ?></a></li>
+            <li class="<?php echo $is_edit ? 'active' : ''; ?>"><a class="st-edit-link" href="<?php echo ST_User()->get_edit_profile_link( $user ); ?>"><?php _e( 'Edit profile', 'st-user' ); ?></a></li>
             <?php } ?>
         </ul>
         <?php

@@ -50,48 +50,57 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
                         <?php echo esc_html( $user->user_login ); ?>
                     </span>
                 </p>
-
+                <?php if ( ST_User()->is_current_user( $user, $current_user ) ){ ?>
                 <p class="fieldset st-email">
                     <label class=""><?php _e( 'E-mail:', 'st-user' ); ?></label>
                     <span>
                         <?php echo esc_html( $user->user_email ); ?>
                     </span>
                 </p>
+                <?php } ?>
 
+                <?php if (  get_user_meta( $user->ID, 'first_name', true ) != '' ){ ?>
                 <p class="fieldset st-firstname">
                     <label class=""><?php _e( 'First Name:', 'st-user' ); ?></label>
                     <span class="">
                         <?php
-
                         echo esc_html( get_user_meta( $user->ID, 'first_name', true ) ); ?>
                     </span>
                 </p>
+                <?php } ?>
+
+                <?php if (  get_user_meta( $user->ID, 'last_name', true ) != '' ){ ?>
                 <p class="fieldset st-lastname">
                     <label class=""><?php _e( 'Last Name:', 'st-user' ); ?></label>
                     <span class="">
                         <?php echo  esc_html( get_user_meta( $user->ID, 'last_name', true ) ); ?>
                     </span>
                 </p>
+                <?php } ?>
 
+                <?php if (  $user->display_name!= '' ){ ?>
                 <p class="fieldset">
                     <label class=""><?php _e( 'Display Name:', 'st-user' ); ?></label>
                     <span><?php  echo esc_html( $user->display_name );  ?></span>
                 </p>
+                <?php } ?>
 
-
+                <?php if ( $user->user_url  != '' ){ ?>
                 <p class="fieldset st-website">
                     <label class="" for="signin-password"><?php _e( 'Website:', 'st-user' ); ?></label>
                     <span class="">
                         <?php echo esc_html( $user->user_url ); ?>
                     </span>
                 </p>
-
+                <?php } ?>
+                <?php if (  get_user_meta( $user->ID, 'description', true ) != '' ){ ?>
                 <p class="fieldset">
                     <label class=""><?php _e( 'Bio:', 'st-user' ); ?></label>
                     <span>
                         <?php echo  esc_html( get_user_meta( $user->ID, 'description', true ) ); ?>
                     </span>
                 </p>
+                <?php } ?>
 
             </div>
         </div>

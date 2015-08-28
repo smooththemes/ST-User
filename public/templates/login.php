@@ -71,33 +71,19 @@ if ( ! is_user_logged_in() ) {
     // user logged in info
     $user = wp_get_current_user();
     ?>
-    <div  class="st-form-w st-logged-in"> <!-- log in form -->
-        <h3><?php echo sprintf( __( 'Welcome <span class="display-name">%s</span>', 'st-user' ), $user->display_name ); ?></h3>
-         <div class="st-user-info">
-             <div class="st-ui st-username">
-                 <?php
-                 echo get_avatar( $user->ID, 40 );
-                 ?>
-                 <div class="logged-info">
-                     <p><?php
-                     echo sprintf(
-                         __( 'Logged in as <a href="%1$s"><strong>%2$s</strong></a>' ),
-                         apply_filters( 'st_user_url', '#' ),
-                         $user->user_login
-                         );
-                     ?></p>
-                     <p><?php
-                          echo sprintf( __( 'Member since <strong>%1$s</strong>', 'st-user' ), date_i18n( get_option( 'date_format' ),  strtotime( $user->user_registered ) ) );
-                         ?></p>
-                 </div>
-             </div>
-             <div class="st-ui st-user-links">
-                 <a href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Profile', 'st-user' ) ?></a>
-                 <a href="<?php echo wp_logout_url() ; ?>"><?php _e( 'Logout', 'st-user' ) ?></a>
-                 <?php do_action( 'st_user_logged_in_links',  $user ); ?>
-             </div>
-             <?php do_action( 'st_user_logged_in_info',  $user ); ?>
 
-         </div>
-    </div> <!-- st-login -->
+    <div class="st-logged-in st-profile-mini" >
+        <div class="st-form-header">
+            <?php do_action( 'st_user_profile_header' , $user, false , false );  ?>
+        </div>
+        <div class="st-form-body">
+
+        </div>
+        <div class="st-ui st-user-links">
+            <a href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Profile', 'st-user' ) ?></a>
+            <a href="<?php echo wp_logout_url() ; ?>"><?php _e( 'Logout', 'st-user' ) ?></a>
+            <?php do_action( 'st_user_logged_in_links',  $user ); ?>
+        </div>
+    </div>
+
 <?php }?>
