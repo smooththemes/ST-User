@@ -262,8 +262,9 @@ class ST_User_Shortcodes{
      * @return string
      */
     public  function user( $atts, $content ='' ) {
+        $user = ST_User()->get_user_profile();
 
-        if ( $this->instance->settings['view_other_profiles'] == 'any' ) {
+        if ( $user && $this->instance->settings['view_other_profiles'] == 'any' ) {
             return $this->profile( $atts, $content );
         } else{
             if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'lost-pass' ) {
@@ -272,7 +273,7 @@ class ST_User_Shortcodes{
             if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'register' ) {
                 return $this->register( $atts, $content );
             }
-            if ( is_user_logged_in() ) {
+            if ( $user ) {
                 return $this->profile( $atts, $content );
             } else {
                 return $this->login( $atts, $content );

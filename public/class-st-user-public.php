@@ -176,7 +176,7 @@ class ST_User_Public {
         if ( !$edited_avatar_url ) {
             $edited_avatar_url = $avatar_url;
         }
-        
+
         ?>
         <div id="st-profile-cover" data-change="<?php echo $is_edit ? 'true' : 'false'; ?>" class="st-profile-cover coppic" style="background-image: url('<?php echo esc_attr( $edited_image_url ); ?>');" data-cover="<?php echo ( $image_url ) ? $image_url : '';  ?>"></div>
 

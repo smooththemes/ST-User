@@ -115,9 +115,9 @@ class ST_User {
         global $wp_query;
         if ( isset ( $wp_query->query_vars['st_user_name'] ) &&  $wp_query->query_vars['st_user_name'] != '' ) {
             $user_data = get_user_by( 'login', $wp_query->query_vars['st_user_name'] );
-            return ( $user_data ) ?  $user_data->data : false;
+            return ( $user_data && $user_data->data->ID > 0 ) ?  $user_data->data : false;
         } else {
-            return wp_get_current_user();
+            return is_user_logged_in() ? wp_get_current_user() : false;
         }
     }
 
