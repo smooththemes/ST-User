@@ -79,13 +79,14 @@ class ST_User {
 
         add_action( 'set_current_user', 'csstricks_hide_admin_bar' );
 
-
+        /*
         $rules = get_option( 'rewrite_rules' );
         if ( ! isset( $rules['^'.$this->settings['profile_rewrite'].'/([^/]*)/?'] ) ) {
 
         }
+        */
 
-        //flush_rewrite_rules() ;
+        flush_rewrite_rules() ;
 
         $this->profile_rewrite();
         $this->profile_rewrite_tag();
@@ -99,18 +100,30 @@ class ST_User {
 
 	}
 
+    /**
+     * Add rewrite rule
+     * Example the link:  http://yoursite.com/user/admin
+     */
     public function profile_rewrite() {
-
         $string =  'index.php?page_id='.intval( $this->settings['account_page'] ).'&st_user_name=$matches[1]';
-
         add_rewrite_rule( '^'.$this->settings['profile_rewrite'].'/([^/]*)/?', $string , 'top');
         //echo $string;
     }
 
+    /**
+     * Add Write tags
+     *
+     * @usage: $wp_query->query_vars['st_user_name']
+     */
     public function profile_rewrite_tag() {
          add_rewrite_tag('%st_user_name%', '([^&]+)');
     }
 
+    /**
+     * Get user profile data
+     *
+     * @return bool|object|stdClass|WP_User
+     */
     public function get_user_profile( ){
         global $wp_query;
         if ( isset ( $wp_query->query_vars['st_user_name'] ) &&  $wp_query->query_vars['st_user_name'] != '' ) {
@@ -121,6 +134,14 @@ class ST_User {
         }
     }
 
+    /**
+     * Get user Profile link
+     *
+     * @see wp_get_current_user
+     *
+     * @param object $user
+     * @return string
+     */
     public function get_profile_link( $user ){
         global $wp_rewrite;
         if ( $wp_rewrite->using_permalinks() ){
@@ -130,15 +151,25 @@ class ST_User {
         }
     }
 
+    /**
+     * Get user edit link
+     *
+     * @see wp_get_current_user
+     *
+     * @param object $user
+     * @return string
+     */
     public function get_edit_profile_link( $user ){
         return add_query_arg( array( 'st_edit' => 1 ), $this->get_profile_link( $user )  );
     }
 
     /**
-     * Check if is currrent user
+     * Check if is current user
      *
-     * @param $user
-     * @param $user2
+     * @see wp_get_current_user
+     *
+     * @param object $user
+     * @param object $user2
      */
     public function is_current_user( $user, $user2 = false ){
         return ( $user &&  $user2 && $user->ID >0  && $user->ID ==  $user2->ID ) ? true : false;
