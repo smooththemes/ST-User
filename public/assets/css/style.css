@@ -112,11 +112,9 @@ xsigin/signup popup
     display: block;
     margin-bottom: 15px;
 }
-.stuser-form .fieldset input[type="text"],
-.stuser-form .fieldset input[type="select"],
-.stuser-form .fieldset input[type="email"],
-.stuser-form .fieldset input[type="password"],
-.stuser-form .fieldset textarea {
+
+.stuser-form .fieldset input:not([type=submit]):not([type=checkbox]),
+.stuser-form .fieldset textarea  {
     width: 100%;
     padding: 10px 10px;
 }
