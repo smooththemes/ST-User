@@ -328,7 +328,14 @@ NAV helper - Use for menu conditions
 .stuser-form-profile .stuser-form-header {
     padding-bottom: 15px;
     margin-bottom: 15px;
-    border: 1px solid #DCDCDC;
+    border-top: 0px none transparent;
+    border-bottom: 0px solid #DCDCDC;
+}
+.stuser-form-profile .stuser-form-header .st-profile-meta {
+    border-left: 1px solid #DCDCDC;
+    border-right: 1px solid #DCDCDC;
+    border-bottom: 1px solid #DCDCDC;
+    padding-bottom: 20px;
 }
 
 .st-profile-avatar {
