@@ -108,31 +108,29 @@ xsigin/signup popup
     display: inline-block;
     font-weight: normal;
 }
-.stuser-form-fields .fieldset {
+.stuser-form .fieldset {
     display: block;
     margin-bottom: 15px;
 }
-
 .stuser-form .fieldset input:not([type=submit]):not([type=checkbox]),
 .stuser-form .fieldset textarea  {
     width: 100%;
     padding: 10px 10px;
 }
-.stuser-form-body .fieldset input[type="checkbox"] {
+.stuser-form .fieldset input[type="checkbox"] {
     margin: 5px 5px 5px 0px;
 }
-.stuser-form-fields .fieldset input[readonly=readonly] {
+.stuser-form .fieldset input[readonly=readonly] {
     background: #ededed;
 }
-.stuser-form-fields .fieldset:after {
+.stuser-form .fieldset:after {
     content: ' '; clear: both; display: block;
 }
-
-.custom-terms .st-accept-terms {
+.stuser-form .custom-terms .st-accept-terms {
     float: left;
     margin: 5px 0 5px 5px;
 }
-.custom-terms .st-term-mgs {
+.stuser-form .custom-terms .st-term-mgs {
     margin-left: 25px;
 }
 
@@ -166,7 +164,6 @@ xsigin/signup popup
     /* space left for the HIDE button */
     padding-right: 65px;
 }
-
 .stuser-form .hide-password {
    display: none;
 }
