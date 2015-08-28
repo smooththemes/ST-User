@@ -30,7 +30,7 @@ function st_user_nav_menu_link_attributes( $atts, $item, $args = array(), $depth
             //$title =  get_post_meta( $item->ID, '_logout_title', true );
             $atts['href']               =  wp_login_url( $atts['href'] );
             $atts['data-st-user-login'] = 'true';
-            $atts['class']              = 'st-login-btn';
+            $atts['class']              = 'stuser-login-btn';
         }
 
     }

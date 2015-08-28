@@ -15,8 +15,8 @@ if ( ! isset( $current_action ) ) {
     $current_action = false;
 }
 ?>
-<div class="st-user-modal st-user-wrapper"> <!-- this is the entire modal form, including the background -->
-    <div class="st-user-modal-container"> <!-- this is the container wrapper -->
+<div class="st-user-modal stuser-wrapper"> <!-- this is the entire modal form, including the background -->
+    <div class="stuser-modal-container"> <!-- this is the container wrapper -->
         <?php
         echo $this->get_template_content( 'login.php', array( 'in_modal' => true ) );
         echo $this->get_template_content( 'register.php', array( 'in_modal' => true ) );
@@ -26,5 +26,5 @@ if ( ! isset( $current_action ) ) {
         }
         ?>
         <a href="#0" class="st-close-form"><?php _e('Close','st-user'); ?></a>
-    </div> <!-- st-user-modal-container -->
+    </div> <!-- stuser-modal-container -->
 </div> <!-- st-user-modal -->

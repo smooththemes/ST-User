@@ -52,11 +52,11 @@ jQuery(document).ready(function($) {
         $('.st-user-modal').addClass('is-visible');
         $('body').trigger('st_user_before_open');
         $('body').trigger('login_selected');
-        $('#st-login').removeClass('is-selected');
+        $('#stuser-login').removeClass('is-selected');
         $('#st-change-password').addClass('is-selected');
     }
 
-    $('.st-user-wrapper').each(function() {
+    $('.stuser-wrapper').each(function() {
         var w = $(this);
         if ( w.data('ajax-load') !== true ) {
             return ;
@@ -80,9 +80,9 @@ jQuery(document).ready(function($) {
 
     // load singup modal
 
-    $('.st-singup-btn, .st-login-btn').click( function( event ) {
+    $('.st-singup-btn, .stuser-login-btn').click( function( event ) {
         var target = $( event.target );
-        var is_login = target.is('.st-login-btn');
+        var is_login = target.is('.stuser-login-btn');
 
         if ( is_login  ) {
             if ( target.data('is-logged') ) {
@@ -129,11 +129,11 @@ jQuery(document).ready(function($) {
             w = $('body');
         }
         var $form_modal = ( $('.st-user-modal' , w).not('.st-loaded').length >0 )  ?  $('.st-user-modal' , w).not('.st-loaded') :  $('.st-user-modal').not('.st-loaded'),
-            $form_login = $form_modal.find('#st-login'),
+            $form_login = $form_modal.find('#stuser-login'),
             $form_signup = $form_modal.find('#st-signup'  ),
             $form_forgot_password = $form_modal.find('#st-reset-password'),
             $form_change_password = $form_modal.find('#st-change-password'),
-            $login_link = $form_modal.find( '.st-login-link' ),
+            $login_link = $form_modal.find( '.stuser-login-link' ),
             $signup_link = $form_modal.find( '.st-register-link' ),
             $forgot_password_link = $form_login.find('.st-lost-pwd-link'),
             $back_to_login_link = $form_modal.find('.st-back-to-login');
@@ -251,7 +251,7 @@ jQuery(document).ready(function($) {
 
         function hide_all_errors() {
             // hide all errors fields when load
-            $('.st-form .fieldset' ).click( function( ) {
+            $('.stuser-form .fieldset' ).click( function( ) {
                 var p = $(this);
                 p.find('input').removeClass('has-error');
                 p.find('span').removeClass('is-visible');
@@ -259,21 +259,21 @@ jQuery(document).ready(function($) {
         }
 
         // hide error of input field
-        $('.st-form .fieldset input', w ).click( function( ) {
+        $('.stuser-form .fieldset input', w ).click( function( ) {
             var p = $(this).parents('.fieldset');
             $(this).removeClass('has-error');
             p.find('span').removeClass('is-visible');
         });
 
         function remove_loading() {
-            $('.st-form .st-loading', w ).remove();
+            $('.stuser-form .st-loading', w ).remove();
             $form_modal.removeClass('st-disabled');
         }
 
         /**
          * Login form submit
          */
-        $('.st-login-form', w ).submit( function() {
+        $('.stuser-login-form', w ).submit( function() {
             //return false;
             var form = $(this);
             var formData = form.serializeObject();
@@ -318,7 +318,7 @@ jQuery(document).ready(function($) {
 
         // Back to login Link
         if ( $('.st-register-form' , w ).hasClass('in-st-modal') ) {
-            $('.st-login-link', w ).click(function() {
+            $('.stuser-login-link', w ).click(function() {
                 login_selected();
                 return false;
             });
@@ -394,7 +394,7 @@ jQuery(document).ready(function($) {
         } );
 
         // Lost pwd form submit
-        $('.st-form-reset-password', w ).submit( function() {
+        $('.stuser-form-reset-password', w ).submit( function() {
             var form = $(this);
             var formData = form.serializeObject();
             formData.action = 'st_user_ajax';
@@ -452,7 +452,7 @@ jQuery(document).ready(function($) {
 
 
         // change pwd form submit
-        $('.st-form-change-password', w).submit( function() {
+        $('.stuser-form-change-password', w).submit( function() {
 
             var form = $(this);
             var formData = form.serializeObject();
@@ -508,7 +508,7 @@ jQuery(document).ready(function($) {
         } );
 
         // Profile Submit
-        $( 'form.st-form-profile', w ).submit( function() {
+        $( 'form.stuser-form-profile', w ).submit( function() {
 
             var form = $(this);
             var formData = form.serializeObject();

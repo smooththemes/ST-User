@@ -55,7 +55,7 @@ class ST_User_Shortcodes{
         extract( $atts );
 
         $content =  $this->instance->get_template_content( 'login.php', $atts ) ;
-        $html = '<div '.st_user_array_to_html_atts( $atts ).' class="st-user-wrapper st-login-wrapper">'.$content.'</div>';
+        $html = '<div '.st_user_array_to_html_atts( $atts ).' class="stuser-wrapper stuser-login-wrapper">'.$content.'</div>';
         return $html;
     }
 
@@ -86,7 +86,7 @@ class ST_User_Shortcodes{
             $content = $this->instance->get_template_content('register.php') ;
         }
 
-        return '<div class="st-user-wrapper st-register-wrapper" ' . st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
+        return '<div class="stuser-wrapper st-register-wrapper" ' . st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
     /**
@@ -118,7 +118,7 @@ class ST_User_Shortcodes{
             $content =  $this->instance->get_template_content('reset.php') ;
         }
 
-        return '<div class="st-user-wrapper st-reset-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
+        return '<div class="stuser-wrapper st-reset-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
     /**
@@ -150,7 +150,7 @@ class ST_User_Shortcodes{
             $content =  $this->instance->get_template_content('change-password.php') ;
         }
 
-        return '<div class="st-user-wrapper st-change-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
+        return '<div class="stuser-wrapper st-change-password-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
     /**
@@ -183,7 +183,7 @@ class ST_User_Shortcodes{
         } else {
             $content =  $this->instance->get_template_content( 'profile.php' ) ;
         }
-        return '<div class="st-user-wrapper st-profile-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
+        return '<div class="stuser-wrapper st-profile-wrapper" '.st_user_array_to_html_atts( $atts ).'>'.$content.'</div>';
     }
 
     /**
@@ -204,7 +204,7 @@ class ST_User_Shortcodes{
             'logout_text'   => __("Logout", 'st-user'),
         ), $atts );
         extract( $atts );
-        $atts['class'].=' st-login-btn';
+        $atts['class'].=' stuser-login-btn';
 
         if ( is_user_logged_in() ) {
             $url = wp_logout_url();

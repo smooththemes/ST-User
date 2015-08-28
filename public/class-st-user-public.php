@@ -217,7 +217,7 @@ class ST_User_Public {
      */
     public static function profile_sidebar( $user, $current_user, $is_edit = false ){
         ?>
-        <ul class="st-form-sidebar">
+        <ul class="stuser-form-sidebar">
             <li class="<?php echo $is_edit ? '' : 'active'; ?>"><a class="st-profile-link" href="<?php echo ST_User()->get_profile_link( $user ); ?>"><?php _e( 'Public profile', 'st-user' ); ?></a></li>
             <?php if ( $current_user && $user && $user->ID == $current_user->ID ){ ?>
             <li class="<?php echo $is_edit ? 'active' : ''; ?>"><a class="st-edit-link" href="<?php echo ST_User()->get_edit_profile_link( $user ); ?>"><?php _e( 'Edit profile', 'st-user' ); ?></a></li>

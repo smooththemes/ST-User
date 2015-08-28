@@ -27,13 +27,13 @@ $current_user = wp_get_current_user();
 
 $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( $_REQUEST['st_edit'] ) ) ?  true : false;
 ?>
-<div class="st-profile-wrapper st-form-profile" >
+<div class="st-profile-wrapper stuser-form-profile" >
 
-    <div class="st-form-header">
+    <div class="stuser-form-header">
         <?php do_action( 'st_user_profile_header' , $user, $current_user , $is_edit );  ?>
     </div>
 
-    <div class="st-form-body clear-fix">
+    <div class="stuser-form-body clear-fix">
 
         <?php
         do_action( 'st_user_profile_before_form_body', $user, $current_user , $is_edit );
@@ -41,17 +41,17 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
         <?php if ( !$is_edit ) {
 
             ?>
-        <div class="st-form-profile clear-fix"  >
+        <div class="stuser-form-profile clear-fix"  >
 
-            <div class="form-fields viewing-info">
-                <p class="fieldset st-username">
+            <div class="stuser-form-fields viewing-info">
+                <p class="fieldset stuser_input st-username">
                     <label class=""><?php _e( 'User Name:', 'st-user' ); ?></label>
                     <span>
                         <?php echo esc_html( $user->user_login ); ?>
                     </span>
                 </p>
                 <?php if ( ST_User()->is_current_user( $user, $current_user ) ){ ?>
-                <p class="fieldset st-email">
+                <p class="fieldset stuser_input st-email">
                     <label class=""><?php _e( 'E-mail:', 'st-user' ); ?></label>
                     <span>
                         <?php echo esc_html( $user->user_email ); ?>
@@ -60,7 +60,7 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
                 <?php } ?>
 
                 <?php if (  get_user_meta( $user->ID, 'first_name', true ) != '' ){ ?>
-                <p class="fieldset st-firstname">
+                <p class="fieldset stuser_input st-firstname">
                     <label class=""><?php _e( 'First Name:', 'st-user' ); ?></label>
                     <span class="">
                         <?php
@@ -70,7 +70,7 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
                 <?php } ?>
 
                 <?php if (  get_user_meta( $user->ID, 'last_name', true ) != '' ){ ?>
-                <p class="fieldset st-lastname">
+                <p class="fieldset stuser_input st-lastname">
                     <label class=""><?php _e( 'Last Name:', 'st-user' ); ?></label>
                     <span class="">
                         <?php echo  esc_html( get_user_meta( $user->ID, 'last_name', true ) ); ?>
@@ -79,14 +79,14 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
                 <?php } ?>
 
                 <?php if (  $user->display_name!= '' ){ ?>
-                <p class="fieldset">
+                <p class="fieldset stuser_input">
                     <label class=""><?php _e( 'Display Name:', 'st-user' ); ?></label>
                     <span><?php  echo esc_html( $user->display_name );  ?></span>
                 </p>
                 <?php } ?>
 
                 <?php if ( $user->user_url  != '' ){ ?>
-                <p class="fieldset st-website">
+                <p class="fieldset stuser_input st-website">
                     <label class="" for="signin-password"><?php _e( 'Website:', 'st-user' ); ?></label>
                     <span class="">
                         <?php echo esc_html( $user->user_url ); ?>
@@ -94,7 +94,7 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
                 </p>
                 <?php } ?>
                 <?php if (  get_user_meta( $user->ID, 'description', true ) != '' ){ ?>
-                <p class="fieldset">
+                <p class="fieldset stuser_input">
                     <label class=""><?php _e( 'Bio:', 'st-user' ); ?></label>
                     <span>
                         <?php echo  esc_html( get_user_meta( $user->ID, 'description', true ) ); ?>
@@ -107,67 +107,67 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
 
         <?php  } else {  ?>
 
-        <form class="st-form-profile" action="<?php echo site_url('/'); ?>" method="post" >
+        <form class="stuser-form-profile" action="<?php echo site_url('/'); ?>" method="post" >
             <p class="st-user-msg <?php echo isset( $_REQUEST['st_profile_updated'] ) &&  $_REQUEST['st_profile_updated']  == 1 ? 'st-show' : ''; ?>"><?php _e( 'Your profile updated.', 'st-user' ); ?></p>
             <p class="st-user-msg st-errors-msg"></p>
 
-            <div class="form-fields">
-                <p class="fieldset st-username">
+            <div class="stuser-form-fields">
+                <p class="fieldset stuser_input st-username">
                     <label class="" for="signin-password"><?php _e( 'User Name', 'st-user' ); ?></label>
                     <input value="<?php echo esc_attr( $user->user_login ); ?>" readonly="readonly" class="input full-width has-padding has-border" id="signin-password" type="text"  placeholder="<?php echo esc_attr__( 'Your username', 'st-user' ) ; ?>">
                 </p>
 
-                <p class="fieldset st-email">
+                <p class="fieldset stuser_input st-email">
                     <label class=" " for="signup-email"><?php _e( 'E-mail', 'st-user' ); ?></label>
                     <input name="st_user_data[user_email]" value="<?php echo esc_attr( $user->user_email ); ?>" class="full-width has-padding has-border" id="signup-email" type="email" placeholder="<?php echo esc_attr__( 'E-mail', 'st-user' ); ?>">
                     <span class="st-error-message"></span>
                 </p>
 
-                <p class="fieldset st-firstname">
+                <p class="fieldset stuser_input st-firstname">
                     <label class="" for="signin-password"><?php _e( 'First Name', 'st-user' ); ?></label>
                     <input name="st_user_data[first_name]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'first_name', true ) ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__( 'First name', 'st-user' ) ; ?>">
                 </p>
 
-                <p class="fieldset st-lastname">
+                <p class="fieldset stuser_input st-lastname">
                     <label class="" for="signin-password"><?php _e( 'Last Name', 'st-user' ); ?></label>
                     <input name="st_user_data[last_name]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'last_name', true ) ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__('Last name','st-user') ; ?>">
                 </p>
 
-                <p class="fieldset st-display-name">
+                <p class="fieldset stuser_input st-display-name">
                     <label class=" " for="signin-password"><?php _e( 'Display Name', 'st-user' ); ?></label>
                     <input name="st_user_data[display_name]" value="<?php echo esc_attr( $user->display_name ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__( 'Display name','st-user' ) ; ?>">
                 </p>
 
-                <p class="fieldset st-website">
+                <p class="fieldset stuser_input st-website">
                     <label class="" for="signin-password"><?php _e( 'Website', 'st-user' ); ?></label>
                     <input name="st_user_data[user_url]" value="<?php echo esc_attr( $user->user_url ); ?>" class="input full-width has-padding has-border" id="signin-password" type="text"  placeholder="<?php echo esc_attr__( 'Website', 'st-user' ) ; ?>">
                 </p>
 
-                <p class="fieldset st-pwd pass1">
+                <p class="fieldset stuser_input st-pwd pass1">
                     <label class=" " for="signin-password-new"><?php _e( 'New Password', 'st-user' ); ?></label>
                     <input name="st_user_data[user_pass]" autocomplete="off" class="input full-width has-padding has-border" id="signin-password-new" type="password"  placeholder="<?php echo esc_attr__( 'New Password', 'st-user' ) ; ?>">
                     <a href="#0" class="hide-password"><?php _e('Show','st-user') ?></a>
                     <span class="st-error-message"></span>
                 </p>
-                <p class="fieldset st-pwd pass2">
+                <p class="fieldset stuser_input st-pwd pass2">
                     <label class="" for="signin-password-confirm"><?php _e( 'Comfirm New Password', 'st-user' ); ?></label>
                     <input name="st_user_pwd2" autocomplete="off" class="input full-width has-padding has-border" id="signin-password-confirm" type="password"  placeholder="<?php echo esc_attr__( 'Confirm New Password','st-user' ) ; ?>">
                     <a href="#0" class="hide-password"><?php _e( 'Show', 'st-user' ) ?></a>
                     <span class="st-error-message"></span>
                 </p>
-                <p class="fieldset st-website">
+                <p class="fieldset stuser_input st-website">
                     <label><?php _e( 'Bio', 'st-user' ); ?></label>
                     <textarea class="full-width" name="st_user_data[description]"><?php echo esc_attr( get_user_meta( $user->ID, 'description', true ) ); ?></textarea>
                 </p>
-                <p class="fieldset st-firstname">
+                <p class="fieldset stuser_input st-firstname">
                     <label><?php _e( 'Facebook URL', 'st-user' ); ?></label>
                     <input name="st_user_data[facebook]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'facebook', true ) ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__( 'Facebook URL', 'st-user' ) ; ?>">
                 </p>
-                <p class="fieldset st-firstname">
+                <p class="fieldset stuser_input st-firstname">
                     <label><?php _e( 'Twitter URL', 'st-user' ); ?></label>
                     <input name="st_user_data[twitter]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'twitter', true ) ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__( 'Twitter URL', 'st-user' ) ; ?>">
                 </p>
-                <p class="fieldset st-firstname">
+                <p class="fieldset stuser_input st-firstname">
                     <label ><?php _e( 'Google+ URL', 'st-user' ); ?></label>
                     <input name="st_user_data[google]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'google', true ) ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__( 'Google+ URL', 'st-user' ) ; ?>">
                 </p>
