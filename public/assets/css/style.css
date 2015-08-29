@@ -76,8 +76,8 @@ xsigin/signup popup
 
 .stuser-form .stuser-form-header {
     border-bottom: 1px solid #dcdcdc;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 .stuser-form .stuser-form-body p {
     margin-bottom: 15px;
@@ -263,11 +263,12 @@ xsigin/signup popup
     font-size: 24px;
     margin-top: 0px;
     margin-bottom: 0px;
+    line-height: 1;
 }
 .stuser-form-footer {
     border-top: 1px solid #DCDCDC;
-    padding-top: 15px;
-    margin-top: 15px;
+    padding-top: 20px;
+    margin-top: 20px;
 }
 .stuser-form-footer p:last-child {
     margin-bottom: 0px;
@@ -339,6 +340,7 @@ NAV helper - Use for menu conditions
     border-right: 1px solid #DCDCDC;
     border-bottom: 1px solid #DCDCDC;
     padding-bottom: 20px;
+    padding-top: 10px;
 }
 
 .st-profile-avatar {
@@ -354,9 +356,14 @@ NAV helper - Use for menu conditions
     clear: both; content: ""; display: block;
 }
 .st-display-name {
-    font-size: 20px;
+    font-size: 23px;
     display: block;
     font-weight: bold;
+    margin-bottom: 5px;
+}
+.user-join-date span {
+    font-size: 15px;
+    margin-top: 4px;
 }
 .stuser-form-body .stuser-form-sidebar {
     width: 17%;
@@ -372,8 +379,8 @@ NAV helper - Use for menu conditions
 }
 .st-user-socials{
     float: right;
-    margin-top: 15px;
-    padding-right: 15px;
+    margin-top: 20px;
+    padding-right: 20px;
 }
 .st-user-socials a {
     text-decoration: none;
@@ -384,6 +391,9 @@ NAV helper - Use for menu conditions
     border: 1px solid #ededed;
     border-radius: 50%;
 
+}
+.st-user-socials a span {
+    padding-top: 1.5px;
 }
 .st-user-socials a span:before {
     vertical-align: middle;

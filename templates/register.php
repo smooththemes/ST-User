@@ -71,7 +71,11 @@ $id = uniqid('r-');
                 </div>
             <?php } ?>
             <p class="fieldset">
+<<<<<<< HEAD:templates/register.php
                 <input class="<?php echo esc_attr( apply_filters( 'st_user_form_submit_btn_class', 'signup-submit button btn' ) ); ?>"  type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Sign Up', 'st-user' ); ?>">
+=======
+                <input class="st-submit full-width has-padding"  type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Sign Up', 'st-user' ); ?>">
+>>>>>>> origin/master:public/templates/register.php
             </p>
         </div>
 

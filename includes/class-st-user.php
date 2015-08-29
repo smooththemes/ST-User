@@ -343,7 +343,7 @@ class ST_User {
         }
 
         if ( $this->settings['register_header_title'] == '' ) {
-            $this->settings['register_header_title'] =  __( 'Singup', 'st-user' );
+            $this->settings['register_header_title'] =  __( 'Sign up', 'st-user' );
         }
 
         if ( $this->settings['reset_header_title'] == '' ) {
