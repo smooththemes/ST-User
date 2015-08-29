@@ -22,7 +22,7 @@ $id = uniqid('r-');
 
     <?php if( ST_User()->settings['form_register_header'] ) { ?>
     <div class="stuser-form-header">
-        <h3><?php _e( 'Singup', 'st-user' ); ?></h3>
+        <h3><?php _e( 'Sign Up', 'st-user' ); ?></h3>
     </div>
     <?php } ?>
 
@@ -71,7 +71,7 @@ $id = uniqid('r-');
                 </div>
             <?php } ?>
             <p class="fieldset">
-                <input class="st-submit full-width has-padding"  type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Sing Up', 'st-user' ); ?>">
+                <input class="st-submit full-width has-padding"  type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Sign Up', 'st-user' ); ?>">
             </p>
         </div>
 
