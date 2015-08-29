@@ -18,12 +18,16 @@ $default = array(
     'login_redirect_url'    => '',
     'logout_redirect_url'   => '',
     'show_term'             => '',
-    'term_mgs'             => '',
+    'term_mgs'              => '',
     'form_login_header'          => 0,
     'form_register_header'       => 0,
     'form_reset_header'          => 0,
     'form_change_pass_header'    => 0,
     'form_profile_header'        => 0,
+    'login_header_title'         => '',
+    'register_header_title'      => '',
+    'reset_header_title'         => '',
+    'change_pass_header_title'   => '',
 );
 
 if ( isset( $_POST['submit'] ) ) {
@@ -87,7 +91,7 @@ $settings = wp_parse_args( $settings,  $default );
             <th scope="row"><label for="st_user_login_redirect_url"><?php _e('Login Redirect (URL)', 'st-user'); ?></label></th>
             <td>
                 <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['login_redirect_url'] ); ?>" id="st_user_login_redirect_url" name="st_user_settings[login_redirect_url]">
-                <p class="description"><?php _e( 'The url will redirect when you logged in, leave empty to redirect home page.', 'st-user' ); ?></p>
+                <p class="description"><?php _e( 'The url will redirect when you logged in, leave empty to redirect current page.', 'st-user' ); ?></p>
             </td>
         </tr>
 
@@ -95,10 +99,9 @@ $settings = wp_parse_args( $settings,  $default );
             <th scope="row"><label for="st_user_logout_redirect_url"><?php _e( 'Logout Redirect (URL)', 'st-user' ); ?></label></th>
             <td>
                 <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['logout_redirect_url'] ); ?>" id="st_user_logout_redirect_url" name="st_user_settings[logout_redirect_url]">
-                <p class="description"><?php _e( 'The url will redirect when you logout, leave empty to redirect home page.', 'st-user' ); ?></p>
+                <p class="description"><?php _e( 'The url will redirect when you logout.', 'st-user' ); ?></p>
             </td>
         </tr>
-
 
         <tr>
             <th scope="row"><label for="st_user_term_page"><?php _e('Terms and Conditions','st-user'); ?></label></th>
@@ -115,7 +118,6 @@ $settings = wp_parse_args( $settings,  $default );
                     'textarea_rows' => 6
                 )  );
                 ?>
-
             </td>
         </tr>
 
@@ -128,17 +130,41 @@ $settings = wp_parse_args( $settings,  $default );
                         <?php _e( 'Show Login form header', 'st-user' ); ?>
                     </label><br>
                     <label >
+                        <?php _e( 'Login form header title', 'st-user' ); ?><br/>
+                        <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['login_header_title']  ); ?>"  name="st_user_settings[login_header_title]">
+                    </label><br>
+
+
+                    <label >
                         <input type="checkbox" <?php checked ( $settings['form_register_header'] , 1 ) ?> value="1"  name="st_user_settings[form_register_header]">
                         <?php _e( 'Show Register form header', 'st-user' ); ?>
                     </label><br>
+
+                    <label >
+                        <?php _e( 'Register form header title', 'st-user' ); ?><br/>
+                        <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['register_header_title']  ); ?>"  name="st_user_settings[register_header_title]">
+                    </label><br>
+
+
                     <label >
                         <input type="checkbox" <?php checked ( $settings['form_reset_header'] , 1 ) ?> value="1"  name="st_user_settings[form_reset_header]">
                         <?php _e( 'Show reset form header', 'st-user' ); ?>
                     </label><br>
                     <label >
+                        <?php _e( 'Reset form header title', 'st-user' ); ?><br/>
+                        <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['reset_header_title']  ); ?>"  name="st_user_settings[reset_header_title]">
+                    </label><br>
+
+
+                    <label >
                         <input type="checkbox" <?php checked ( $settings['form_change_pass_header'], 1 ) ?> value="1"  name="st_user_settings[form_change_pass_header]">
                         <?php _e( 'Show change password form header', 'st-user' ); ?>
-                    </label>
+                    </label><br/>
+
+                    <label >
+                        <?php _e( 'Change password form header title', 'st-user' ); ?><br/>
+                        <input type="text" class="regular-text" value="<?php echo esc_attr( $settings['change_pass_header_title']  ); ?>"  name="st_user_settings[change_pass_header_title]">
+                    </label><br>
 
                 </fieldset>
             </td>

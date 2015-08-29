@@ -117,8 +117,9 @@ xsigin/signup popup
     margin-bottom: 15px;
 }
 
-.stuser-form .fieldset input:not([type=submit]):not([type=checkbox]),
-.stuser-form .fieldset textarea  {
+.stuser-form .fieldset input:not([type=checkbox]),
+.stuser-form .fieldset textarea,
+.stuser-form .btn{
     width: 100%;
     padding: 10px 10px;
 }

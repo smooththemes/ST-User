@@ -18,7 +18,7 @@ $id = uniqid('f');
 <form  id="st-reset-password" class="stuser-form stuser-form-reset-password" action="" method="post" >
     <?php if( ST_User()->settings['form_reset_header'] ) { ?>
     <div class="stuser-form-header">
-        <h3><?php _e('Reset your password', 'st-user'); ?></h3>
+        <h3><?php echo esc_html( ST_User()->settings['reset_header_title'] ); ?></h3>
     </div>
     <?php } ?>
 
@@ -32,7 +32,7 @@ $id = uniqid('f');
                 <span class="st-error-message"></span>
             </p>
             <p class="fieldset">
-                <input class="full-width has-padding st-submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" type="submit" value="<?php echo esc_attr__( 'Submit', 'st-user' ); ?>">
+                <input class="<?php echo esc_attr( apply_filters( 'st_user_form_submit_btn_class', 'reset-submit button btn' ) ); ?>" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" type="submit" value="<?php echo esc_attr__( 'Submit', 'st-user' ); ?>">
             </p>
         </div>
     </div>

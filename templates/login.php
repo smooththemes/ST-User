@@ -26,7 +26,7 @@ if ( ! is_user_logged_in() ) {
 <form id="stuser-login" class="stuser-form stuser-login-form" action="<?php echo site_url('/'); ?>" method="post">
     <?php if( ST_User()->settings['form_login_header'] ) { ?>
     <div class="stuser-form-header">
-        <h3><?php _e( 'Login', 'st-user' ); ?></h3>
+        <h3><?php echo esc_html( ST_User()->settings['login_header_title'] ); ?></h3>
     </div>
     <?php } ?>
 
@@ -50,7 +50,7 @@ if ( ! is_user_logged_in() ) {
         </p>
         <?php do_action('st_user_before_submit_login_form'); ?>
         <p class="fieldset">
-            <input class="full-width" type="submit" value="<?php echo esc_attr__( 'Login', 'st-user' ); ?>">
+            <input class="<?php echo esc_attr( apply_filters( 'st_user_form_submit_btn_class', 'login-submit button btn' ) ); ?>" type="submit" value="<?php echo esc_attr__( 'Login', 'st-user' ); ?>">
             <input type="hidden" value="<?php echo apply_filters( 'st_user_logged_in_redirect_to', $login_redirect_url ); ?>" name="st_redirect_to" >
         </p>
 

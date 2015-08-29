@@ -113,45 +113,45 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
 
             <div class="stuser-form-fields">
                 <p class="fieldset stuser_input st-username">
-                    <label class="" for="signin-password"><?php _e( 'User Name', 'st-user' ); ?></label>
-                    <input value="<?php echo esc_attr( $user->user_login ); ?>" readonly="readonly" class="input full-width has-padding has-border" id="signin-password" type="text"  placeholder="<?php echo esc_attr__( 'Your username', 'st-user' ) ; ?>">
+                    <label><?php _e( 'User Name', 'st-user' ); ?></label>
+                    <input value="<?php echo esc_attr( $user->user_login ); ?>" readonly="readonly" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__( 'Your username', 'st-user' ) ; ?>">
                 </p>
 
                 <p class="fieldset stuser_input st-email">
-                    <label class=" " for="signup-email"><?php _e( 'E-mail', 'st-user' ); ?></label>
-                    <input name="st_user_data[user_email]" value="<?php echo esc_attr( $user->user_email ); ?>" class="full-width has-padding has-border" id="signup-email" type="email" placeholder="<?php echo esc_attr__( 'E-mail', 'st-user' ); ?>">
+                    <label><?php _e( 'E-mail', 'st-user' ); ?></label>
+                    <input name="st_user_data[user_email]" value="<?php echo esc_attr( $user->user_email ); ?>" class="full-width has-padding has-border" type="email" placeholder="<?php echo esc_attr__( 'E-mail', 'st-user' ); ?>">
                     <span class="st-error-message"></span>
                 </p>
 
                 <p class="fieldset stuser_input st-firstname">
-                    <label class="" for="signin-password"><?php _e( 'First Name', 'st-user' ); ?></label>
+                    <label><?php _e( 'First Name', 'st-user' ); ?></label>
                     <input name="st_user_data[first_name]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'first_name', true ) ); ?>" class="input full-width has-padding has-border" type="text"  placeholder="<?php echo esc_attr__( 'First name', 'st-user' ) ; ?>">
                 </p>
 
                 <p class="fieldset stuser_input st-lastname">
-                    <label class="" for="signin-password"><?php _e( 'Last Name', 'st-user' ); ?></label>
+                    <label><?php _e( 'Last Name', 'st-user' ); ?></label>
                     <input name="st_user_data[last_name]" value="<?php echo esc_attr( get_user_meta( $user->ID, 'last_name', true ) ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__('Last name','st-user') ; ?>">
                 </p>
 
-                <p class="fieldset stuser_input st-display-name">
-                    <label class=" " for="signin-password"><?php _e( 'Display Name', 'st-user' ); ?></label>
+                <p class="fieldset stuser_input st-input-display-name">
+                    <label><?php _e( 'Display Name', 'st-user' ); ?></label>
                     <input name="st_user_data[display_name]" value="<?php echo esc_attr( $user->display_name ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__( 'Display name','st-user' ) ; ?>">
                 </p>
 
                 <p class="fieldset stuser_input st-website">
-                    <label class="" for="signin-password"><?php _e( 'Website', 'st-user' ); ?></label>
-                    <input name="st_user_data[user_url]" value="<?php echo esc_attr( $user->user_url ); ?>" class="input full-width has-padding has-border" id="signin-password" type="text"  placeholder="<?php echo esc_attr__( 'Website', 'st-user' ) ; ?>">
+                    <label><?php _e( 'Website', 'st-user' ); ?></label>
+                    <input name="st_user_data[user_url]" value="<?php echo esc_attr( $user->user_url ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__( 'Website', 'st-user' ) ; ?>">
                 </p>
 
                 <p class="fieldset stuser_input st-pwd pass1">
-                    <label class=" " for="signin-password-new"><?php _e( 'New Password', 'st-user' ); ?></label>
-                    <input name="st_user_data[user_pass]" autocomplete="off" class="input full-width has-padding has-border" id="signin-password-new" type="password"  placeholder="<?php echo esc_attr__( 'New Password', 'st-user' ) ; ?>">
+                    <label><?php _e( 'New Password', 'st-user' ); ?></label>
+                    <input name="st_user_data[user_pass]" autocomplete="off" class="input full-width has-padding has-border" type="password"  placeholder="<?php echo esc_attr__( 'New Password', 'st-user' ) ; ?>">
                     <a href="#0" class="hide-password"><?php _e('Show','st-user') ?></a>
                     <span class="st-error-message"></span>
                 </p>
                 <p class="fieldset stuser_input st-pwd pass2">
-                    <label class="" for="signin-password-confirm"><?php _e( 'Comfirm New Password', 'st-user' ); ?></label>
-                    <input name="st_user_pwd2" autocomplete="off" class="input full-width has-padding has-border" id="signin-password-confirm" type="password"  placeholder="<?php echo esc_attr__( 'Confirm New Password','st-user' ) ; ?>">
+                    <label><?php _e( 'Comfirm New Password', 'st-user' ); ?></label>
+                    <input name="st_user_pwd2" autocomplete="off" class="input full-width has-padding has-border" type="password"  placeholder="<?php echo esc_attr__( 'Confirm New Password','st-user' ) ; ?>">
                     <a href="#0" class="hide-password"><?php _e( 'Show', 'st-user' ) ?></a>
                     <span class="st-error-message"></span>
                 </p>
@@ -179,7 +179,7 @@ $is_edit = ( $current_user && $user && $current_user->ID == $user->ID && isset( 
                 do_action( 'st_user_profile_more_fields', $user, $current_user, $is_edit );
                 ?>
                 <p class="fieldset">
-                    <input class="button btn" type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Update Profile','st-user' ); ?>">
+                    <input class="<?php echo esc_attr( apply_filters( 'st_user_form_submit_btn_class', 'profile-submit button btn' ) ); ?>" type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Update Profile','st-user' ); ?>">
                 </p>
             </div>
         </form>

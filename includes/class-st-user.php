@@ -325,12 +325,35 @@ class ST_User {
             'form_reset_header'          => 0,
             'form_change_pass_header'    => 0,
             'form_profile_header'        => 0,
+
+            'login_header_title'         => '',
+            'register_header_title'      => '',
+            'reset_header_title'         => '',
+            'change_pass_header_title'   => '',
+
             'upload_dir'                 =>  WP_CONTENT_DIR . '/uploads/st-users/',
             'upload_url'                 =>  WP_CONTENT_URL . '/uploads/st-users/'
         );
 
         $this->settings = (array) get_option( 'st_user_settings' );
         $this->settings = wp_parse_args( $this->settings,  $default );
+
+        if ( $this->settings['login_header_title'] == '' ) {
+            $this->settings['login_header_title'] =  __( 'Login', 'st-user' );
+        }
+
+        if ( $this->settings['register_header_title'] == '' ) {
+            $this->settings['register_header_title'] =  __( 'Singup', 'st-user' );
+        }
+
+        if ( $this->settings['reset_header_title'] == '' ) {
+            $this->settings['reset_header_title'] =  __( 'Reset your password', 'st-user' );
+        }
+
+        if ( $this->settings['change_pass_header_title'] == '' ) {
+            $this->settings['change_pass_header_title'] =  __( 'Change your password', 'st-user' );
+        }
+
 
         /**
          * The url of St User page
@@ -341,7 +364,7 @@ class ST_User {
         $this->settings['url'] = $page_url;
 
         if ( $this->settings['logout_redirect_url'] == '' ) {
-            $this->settings['logout_redirect_url'] = $this->settings['url'];
+            $this->settings['logout_redirect_url'] = '';
         }
 
         if ( $this->settings['login_redirect_url'] != '' ) {
@@ -537,7 +560,7 @@ class ST_User {
         } else {
             // If neither the child nor parent theme have overridden the template,
             // we load the template from the 'templates' directory if this plugin
-            return ST_USER_PATH . 'public/templates/'.$template;
+            return ST_USER_PATH . 'templates/'.$template;
         }
     }
 

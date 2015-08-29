@@ -21,7 +21,7 @@ $id =  uniqid('f');
 
     <?php if( ST_User()->settings['form_change_pass_header'] ) { ?>
     <div class="stuser-form-header">
-        <h3><?php _e( 'Change your password', 'st-user' ); ?></h3>
+        <h3><?php echo esc_html( ST_User()->settings['change_pass_header_title'] ); ?></h3>
     </div>
     <?php } ?>
 
@@ -42,7 +42,7 @@ $id =  uniqid('f');
                 <span class="st-error-message"></span>
             </p>
             <p class="fieldset">
-                <input class="full-width has-padding st-submit" type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Reset password','st-user' ); ?>">
+                <input class="<?php echo esc_attr( apply_filters( 'st_user_form_submit_btn_class', 'change-pwd-submit button btn' ) ); ?>" type="submit" data-loading-text="<?php echo esc_attr__( 'Loading...', 'st-user' ); ?>" value="<?php echo esc_attr__( 'Reset password','st-user' ); ?>">
                 <?php foreach ( $_GET as $k => $v ) {
                     ?>
                     <input type="hidden" name="<?php echo esc_attr( $k ); ?>" value="<?php echo esc_attr( (string) $v ); ?>">
