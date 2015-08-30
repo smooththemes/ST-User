@@ -142,7 +142,13 @@ class ST_User {
      * @param object $user
      * @return string
      */
-    public function get_profile_link( $user ){
+    public function get_profile_link( $user = null ){
+        if ( ! is_user_logged_in() ) {
+            return wp_login_url();
+        }
+        if (  ! $user ) {
+            $user = wp_get_current_user();
+        }
         global $wp_rewrite;
         if ( $wp_rewrite->using_permalinks() ){
             return trailingslashit( site_url() ).$this->settings['profile_rewrite'].'/'.$user->user_login;
