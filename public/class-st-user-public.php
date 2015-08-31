@@ -69,8 +69,8 @@ class ST_User_Public {
 		$this->st_user = $this->instance->get_st_user();
 		$this->version = $this->instance->get_version();
 
-        add_action( 'st_user_profile_header', array( $this, 'profile_header' ), 15, 3 );
-        add_action( 'st_user_profile_before_form_body', array( $this, 'profile_sidebar' ), 15, 3 );
+        add_action( 'st_user_profile_header', array( __CLASS__, 'profile_header' ), 15, 3 );
+        add_action( 'st_user_profile_before_form_body', array( __CLASS__, 'profile_sidebar' ), 15, 3 );
         //add_action( 'st_user_before_content_load', array( $this, 'profile_setup' ) );
 
 	}
