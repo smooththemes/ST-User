@@ -166,7 +166,7 @@ class ST_User {
      * @return string
      */
     public function get_edit_profile_link( $user ){
-        return add_query_arg( array( 'st_edit' => 1 ), $this->get_profile_link( $user )  );
+        return add_query_arg( array( 'st_action' => 'edit' ), $this->get_profile_link( $user )  );
     }
 
     /**
