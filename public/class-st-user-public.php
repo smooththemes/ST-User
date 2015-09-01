@@ -73,6 +73,7 @@ class ST_User_Public {
         add_action( 'st_user_profile_before_form_body', array( __CLASS__, 'profile_sidebar' ), 15, 3 );
         add_action( 'st_user_profile_form_body', array( __CLASS__, 'profile_content' ), 15, 3 );
         add_action( 'the_content', array( __CLASS__, 'account_content' ), 99  );
+        add_action( 'st_user_profile_meta', array( __CLASS__, 'socials' ), 15  );
 
 	}
 
@@ -207,6 +208,19 @@ class ST_User_Public {
             <div class="st-profile-meta-info">
                 <span class="st-display-name"><?php echo esc_html( $user->display_name ); ?></span>
 
+                     <span class="user-join-date">
+                        <span class="dashicons dashicons-admin-site"></span>
+                         <?php
+                         $country = get_user_meta( $user->ID, 'country', true );
+                         $name = ST_User()->get_country_name( $country );
+                         if ( ! $name ){
+                             _e( 'N/A', 'st-user' );
+                         } else {
+                             echo $name;
+                         }
+                         ?>
+                    </span>
+
                     <span class="user-join-date">
                         <span class="dashicons dashicons-calendar-alt"></span>
                         <?php
@@ -215,19 +229,24 @@ class ST_User_Public {
                     </span>
             </div>
 
-            <div class="st-user-socials">
-                <?php if (  get_user_meta( $user->ID, 'facebook', true )   != '' ) {  ?>
-                <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'facebook', true ) ); ?>"><span class="dashicons dashicons-facebook-alt"></span></a>
-                <?php } ?>
-                <?php if (  get_user_meta( $user->ID, 'twitter', true )   != '' ) {  ?>
-                <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'twitter', true ) ); ?>"><span class="dashicons dashicons-twitter"></span></a>
-                <?php } ?>
-                <?php if (  get_user_meta( $user->ID, 'google', true )   != '' ) {  ?>
-                <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'google', true ) ); ?>"><span class="dashicons dashicons-googleplus"></span></a>
-                <?php } ?>
-            </div>
-            <?php do_action('st_user_profile_meta'); ?>
+            <?php do_action( 'st_user_profile_meta',  $user ); ?>
 
+        </div>
+        <?php
+    }
+
+    public static function socials( $user ){
+        ?>
+        <div class="st-user-socials">
+            <?php if (  get_user_meta( $user->ID, 'facebook', true )   != '' ) {  ?>
+                <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'facebook', true ) ); ?>"><span class="dashicons dashicons-facebook-alt"></span></a>
+            <?php } ?>
+            <?php if (  get_user_meta( $user->ID, 'twitter', true )   != '' ) {  ?>
+                <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'twitter', true ) ); ?>"><span class="dashicons dashicons-twitter"></span></a>
+            <?php } ?>
+            <?php if (  get_user_meta( $user->ID, 'google', true )   != '' ) {  ?>
+                <a href="<?php echo esc_attr( get_user_meta( $user->ID, 'google', true ) ); ?>"><span class="dashicons dashicons-googleplus"></span></a>
+            <?php } ?>
         </div>
         <?php
     }
@@ -318,6 +337,7 @@ class ST_User_Public {
                         </span>
                     </p>
                 <?php } ?>
+
                 <?php if (  get_user_meta( $user->ID, 'description', true ) != '' ){ ?>
                     <p class="fieldset stuser_input">
                         <label class=""><?php _e( 'Bio:', 'st-user' ); ?></label>
@@ -343,8 +363,7 @@ class ST_User_Public {
      */
     public static function settings( $user ){
         ?>
-
-        <form class="stuser-form-profile stuser-form" action="<?php echo site_url('/'); ?>" method="post" >
+        <form class="stuser-form-profile stuser-form form ui" action="<?php echo site_url('/'); ?>" method="post" >
             <p class="st-user-msg <?php echo isset( $_REQUEST['st_profile_updated'] ) &&  $_REQUEST['st_profile_updated']  == 1 ? 'st-show' : ''; ?>"><?php _e( 'Your profile updated.', 'st-user' ); ?></p>
             <p class="st-user-msg st-errors-msg"></p>
 
@@ -379,6 +398,26 @@ class ST_User_Public {
                     <label><?php _e( 'Website', 'st-user' ); ?></label>
                     <input name="st_user_data[user_url]" value="<?php echo esc_attr( $user->user_url ); ?>" class="input full-width has-padding has-border"  type="text"  placeholder="<?php echo esc_attr__( 'Website', 'st-user' ) ; ?>">
                 </p>
+
+                <p class="fieldset stuser_input st-website">
+                    <label><?php _e( 'Country', 'st-user' ); ?></label>
+                    <select name="st_user_data[country]">
+                        <option value=""><?php _e( 'Select your country', 'st-user' ); ?></option>
+                        <?php
+                        $country = get_user_meta( $user->ID, 'country', true ) ;
+                        foreach ( ST_User()->get_countries() as $region_name => $region ) {
+                            echo  '<optgroup label="'.esc_attr( $region_name ).'">';
+                            foreach( $region as $code => $name ) {
+                                echo  "<option ".selected( $country, $code, false )." value='".esc_attr( $code )."'>".esc_html( $name )."</option>";
+                            }
+                            echo '</optgroup>';
+                        }
+                        ?>
+                    </select>
+
+                </p>
+
+
 
                 <p class="fieldset stuser_input st-pwd pass1">
                     <label><?php _e( 'New Password', 'st-user' ); ?></label>

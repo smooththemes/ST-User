@@ -23,7 +23,7 @@ $id = uniqid('f');
 if ( ! is_user_logged_in() ) {
 ?>
 
-<form id="stuser-login" class="stuser-form stuser-login-form" action="<?php echo site_url('/'); ?>" method="post">
+<form id="stuser-login" class="stuser-form stuser-login-form form ui" action="<?php echo site_url('/'); ?>" method="post">
     <?php if( ST_User()->settings['form_login_header'] ) { ?>
     <div class="stuser-form-header">
         <h3><?php echo esc_html( ST_User()->settings['login_header_title'] ); ?></h3>

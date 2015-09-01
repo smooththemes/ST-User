@@ -15,7 +15,7 @@ if ( !isset( $in_modal ) ) {
 }
 $id = uniqid('f');
 ?>
-<form  id="st-reset-password" class="stuser-form stuser-form-reset-password" action="" method="post" >
+<form  id="st-reset-password" class="stuser-form stuser-form-reset-password form ui" action="" method="post" >
     <?php if( ST_User()->settings['form_reset_header'] ) { ?>
     <div class="stuser-form-header">
         <h3><?php echo esc_html( ST_User()->settings['reset_header_title'] ); ?></h3>

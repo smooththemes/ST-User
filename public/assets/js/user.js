@@ -278,7 +278,7 @@ jQuery(document).ready(function($) {
             var formData = form.serializeObject();
             formData.action = 'st_user_ajax';
             formData.act = 'do_login';
-            form.addClass( 'st-loading' );
+            form.addClass( 'st-loading loading' );
             $( '.st-error-message', form ).removeClass( 'is-visible' );
             $( '.has-error', form ).removeClass( 'has-error' );
 
@@ -287,7 +287,7 @@ jQuery(document).ready(function($) {
                 data: formData,
                 type: 'POST',
                 success: function( response ) {
-                    form.removeClass( 'st-loading' );
+                    form.removeClass( 'st-loading loading' );
                     if ( response === 'logged_success' ) {
                         var redirect_url = ( typeof formData.st_redirect_to !== undefined  & formData.st_redirect_to != '' ) ? formData.st_redirect_to : document.location.toString();
                         window.location = redirect_url;
@@ -345,7 +345,7 @@ jQuery(document).ready(function($) {
                 submit_btn.attr('disabled', 'disabled');
             }
 
-            form.addClass( 'st-loading' );
+            form.addClass( 'st-loading loading' );
             $( '.st-error-message', form ).removeClass( 'is-visible' );
             $( '.has-error', form ).removeClass( 'has-error' );
 
@@ -355,7 +355,7 @@ jQuery(document).ready(function($) {
                 type: 'POST',
                 success: function( response ) {
 
-                    form.removeClass( 'st-loading' );
+                    form.removeClass( 'st-loading loading' );
 
                     submit_btn.val( submit_btn.data('default-text') ) ;
                     submit_btn.removeAttr('disabled');
@@ -407,7 +407,7 @@ jQuery(document).ready(function($) {
                 submit_btn.attr('disabled', 'disabled');
             }
 
-            form.addClass( 'st-loading' );
+            form.addClass( 'st-loading loading' );
             $( '.st-error-message', form ).removeClass( 'is-visible' );
             $( '.has-error', form ).removeClass( 'has-error' );
 
@@ -416,7 +416,7 @@ jQuery(document).ready(function($) {
                 data: formData,
                 type: 'POST',
                 success: function( response ) {
-                    form.removeClass( 'st-loading' );
+                    form.removeClass( 'st-loading loading' );
                     submit_btn.val( submit_btn.data('default-text') ) ;
                     submit_btn.removeAttr('disabled');
                     if ( response == 'sent' ) {
@@ -467,7 +467,7 @@ jQuery(document).ready(function($) {
             }
 
             $('.st-user-msg', form).hide(1);
-            form.addClass( 'st-loading' );
+            form.addClass( 'st-loading loading' );
             $( '.has-error', form ).removeClass( 'has-error' );
 
             $.ajax({
@@ -475,7 +475,7 @@ jQuery(document).ready(function($) {
                 data: formData,
                 type: 'POST',
                 success: function( response ) {
-                    form.removeClass( 'st-loading' );
+                    form.removeClass( 'st-loading loading' );
                     submit_btn.val( submit_btn.data('default-text') ) ;
                     submit_btn.removeAttr('disabled');
 
@@ -524,7 +524,7 @@ jQuery(document).ready(function($) {
 
             $('.st-user-msg', form).hide(1);
 
-            form.addClass( 'st-loading' );
+            form.addClass( 'st-loading loading' );
 
             $.ajax({
                 url: ST_User.ajax_url,
@@ -532,7 +532,7 @@ jQuery(document).ready(function($) {
                 type: 'POST',
                 success: function( response ) {
 
-                    form.removeClass( 'st-loading' );
+                    form.removeClass( 'st-loading loading' );
 
                     submit_btn.val( submit_btn.data('default-text') ) ;
                     submit_btn.removeAttr('disabled');

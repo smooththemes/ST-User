@@ -17,7 +17,7 @@ if ( !isset( $in_modal ) ) {
 $id =  uniqid('f');
 ?>
 
-<form  id="st-change-password" class="stuser-form stuser-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?>" action="<?php echo site_url('/'); ?>" method="post" >
+<form  id="st-change-password" class="stuser-form stuser-form-change-password<?php echo $in_modal ? ' in-st-modal' : ''; ?> form ui" action="<?php echo site_url('/'); ?>" method="post" >
 
     <?php if( ST_User()->settings['form_change_pass_header'] ) { ?>
     <div class="stuser-form-header">

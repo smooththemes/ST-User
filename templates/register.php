@@ -18,7 +18,7 @@ if ( !isset( $in_modal ) ) {
 
 $id = uniqid('r-');
 ?>
-<form id="st-signup" class="stuser-form st-register-form<?php echo $in_modal ? ' in-st-modal' : ''; ?>"  action="<?php echo site_url('/'); ?>" method="post">
+<form id="st-signup" class="stuser-form st-register-form<?php echo $in_modal ? ' in-st-modal' : ''; ?> form ui"  action="<?php echo site_url('/'); ?>" method="post">
 
     <?php if( ST_User()->settings['form_register_header'] ) { ?>
     <div class="stuser-form-header">
