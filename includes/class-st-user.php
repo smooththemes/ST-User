@@ -105,9 +105,12 @@ class ST_User {
      * Example the link:  http://yoursite.com/user/admin
      */
     public function profile_rewrite() {
+        // for paging
+        $string =  'index.php?page_id='.intval( $this->settings['account_page'] ).'&st_user_name=$matches[1]&st_paged=$matches[2]';
+        add_rewrite_rule( '^'.$this->settings['profile_rewrite'].'/([^/]*)/page/?([0-9]{1,})/?', $string , 'top');
+
         $string =  'index.php?page_id='.intval( $this->settings['account_page'] ).'&st_user_name=$matches[1]';
         add_rewrite_rule( '^'.$this->settings['profile_rewrite'].'/([^/]*)/?', $string , 'top');
-        //echo $string;
     }
 
     /**
@@ -117,6 +120,7 @@ class ST_User {
      */
     public function profile_rewrite_tag() {
          add_rewrite_tag('%st_user_name%', '([^&]+)');
+         add_rewrite_tag('%st_paged%', '([^&]+)');
     }
 
     /**
