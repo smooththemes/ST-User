@@ -153,9 +153,6 @@ jQuery(document).ready(function($) {
             forgot_password_selected();
         });
 
-        $('body').on('st_remove_loading_form', function() {
-            remove_loading();
-        });
 
         //close modal
         $('.st-user-modal').on('click', function(event) {
@@ -264,10 +261,6 @@ jQuery(document).ready(function($) {
             p.find('span').removeClass('is-visible');
         });
 
-        function remove_loading() {
-            $('.stuser-form .st-loading', w ).remove();
-            $form_modal.removeClass('st-disabled');
-        }
 
         /**
          * Login form submit
