@@ -339,7 +339,7 @@ NAV helper - Use for menu conditions
     border-top: 0px none transparent;
     border-bottom: 0px solid #DCDCDC;
 }
-.stuser-form-profile .stuser-form-header .st-profile-meta, .st-profile-mini .st-profile-meta {
+.stuser-form-profile .st-profile-meta, .st-profile-mini .st-profile-meta {
     border-left: 1px solid #DCDCDC;
     border-right: 1px solid #DCDCDC;
     border-bottom: 1px solid #DCDCDC;
@@ -365,7 +365,7 @@ NAV helper - Use for menu conditions
     font-weight: bold;
     margin-bottom: 5px;
 }
-.user-join-date span {
+.list-meta-info i {
     font-size: 15px;
     margin-top: 4px;
 }

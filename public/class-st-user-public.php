@@ -207,26 +207,27 @@ class ST_User_Public {
 
             <div class="st-profile-meta-info">
                 <span class="st-display-name"><?php echo esc_html( $user->display_name ); ?></span>
-
-                     <span class="user-join-date">
-                        <span class="dashicons dashicons-admin-site"></span>
-                         <?php
-                         $country = get_user_meta( $user->ID, 'country', true );
-                         $name = ST_User()->get_country_name( $country );
-                         if ( ! $name ){
-                             _e( 'N/A', 'st-user' );
-                         } else {
-                             echo $name;
-                         }
-                         ?>
+                <div class="list-meta-info">
+                    <span class="user-country">
+                        <i class="dashicons dashicons-admin-site"></i>
+                        <?php
+                        $country = get_user_meta( $user->ID, 'country', true );
+                        $name = ST_User()->get_country_name( $country );
+                        if ( ! $name ){
+                            _e( 'N/A', 'st-user' );
+                        } else {
+                            echo $name;
+                        }
+                        ?>
                     </span>
 
                     <span class="user-join-date">
-                        <span class="dashicons dashicons-calendar-alt"></span>
+                        <i class="dashicons dashicons-calendar-alt"></i>
                         <?php
                         printf( __( 'Joined %s', 'st-user' ),  date_i18n( get_option('date_format'), strtotime( $user->user_registered ) ) );
                         ?>
                     </span>
+                </div>
             </div>
 
             <?php do_action( 'st_user_profile_meta',  $user ); ?>
