@@ -133,6 +133,7 @@ class ST_User {
         if ( isset ( $wp_query->query_vars['st_user_name'] ) &&  $wp_query->query_vars['st_user_name'] != '' ) {
             $user_data = get_user_by( 'login', $wp_query->query_vars['st_user_name'] );
             return ( $user_data && $user_data->data->ID > 0 ) ?  $user_data->data : false;
+
         } else {
             return is_user_logged_in() ? wp_get_current_user() : false;
         }
@@ -912,7 +913,6 @@ class ST_User {
                 "CZ" => "Czech Republic",
                 "DK" => "Denmark",
                 "DD" => "East Germany",
-                "EN" => "England",
                 "EE" => "Estonia",
                 "FO" => "Faroe Islands",
                 "FI" => "Finland",

@@ -195,7 +195,7 @@ class ST_User_Public {
 
         $avatar_url = ST_User()->get_user_media( 'avatar', 'url',  $user );
         $edited_avatar_url = ST_User()->get_user_media( 'avatar-img', 'url',  $user  );
-        if ( !$edited_avatar_url ) {
+        if ( ! $edited_avatar_url ) {
             $edited_avatar_url = $avatar_url;
         }
 

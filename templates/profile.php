@@ -14,6 +14,7 @@
 
 $user = ST_User()->get_user_profile();
 
+
 if ( ! $user ) {
     ?>
     <div class="st-user-not-found">

@@ -273,7 +273,7 @@ class ST_User_Shortcodes{
             if ( isset( $_REQUEST['st_action'] )  && $_REQUEST['st_action']  == 'register' ) {
                 return $this->register( $atts, $content );
             }
-            if ( $user ) {
+            if ( $user || is_user_logged_in() ) {
                 return $this->profile( $atts, $content );
             } else {
                 return $this->login( $atts, $content );
