@@ -208,18 +208,16 @@ class ST_User_Public {
             <div class="st-profile-meta-info">
                 <span class="st-display-name"><?php echo esc_html( $user->display_name ); ?></span>
                 <div class="list-meta-info">
+                    <?php
+                    $country = get_user_meta( $user->ID, 'country', true );
+                    $name = ST_User()->get_country_name( $country );
+                    if ( ! $name ){
+                    ?>
                     <span class="user-country">
                         <i class="dashicons dashicons-admin-site"></i>
-                        <?php
-                        $country = get_user_meta( $user->ID, 'country', true );
-                        $name = ST_User()->get_country_name( $country );
-                        if ( ! $name ){
-                            _e( 'N/A', 'st-user' );
-                        } else {
-                            echo $name;
-                        }
-                        ?>
+                        <?php echo $name; ?>
                     </span>
+                    <?php } ?>
 
                     <span class="user-join-date">
                         <i class="dashicons dashicons-calendar-alt"></i>
