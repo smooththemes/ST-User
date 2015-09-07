@@ -219,8 +219,13 @@ xsigin/signup popup
     line-height: 1.4;
     display: none;
 }
-.st-user-msg.st-show {
-    display: block;
+.st-user-msg.st-show,
+.form .st-user-msg.st-show,
+.ui.form .error.message.st-show,
+.ui.form .info.message.st-show,
+.ui.form .success.message.st-show,
+.ui.form .warning.message.st-show {
+    display: block ;
 }
 
 .st-close-form {

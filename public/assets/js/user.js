@@ -640,6 +640,9 @@ jQuery(document).ready(function($) {
             $( '.cp-btn', that.settingsObj ).click( function(){
                $( '.cp-actions', that.settingsObj ).toggleClass('cp-active');
             });
+            if ( that.loadImg == '' ) {
+                $( '.cp-remove' , that.settingsObj).remove();
+            }
             $( '.cp-remove' , that.settingsObj).click( that.removeImg );
 
             $(document).mouseup(function (e)

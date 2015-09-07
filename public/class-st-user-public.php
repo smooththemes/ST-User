@@ -168,7 +168,6 @@ class ST_User_Public {
     }
 
 
-
     /**
      *  Display modal
      * @since 1.0
@@ -187,23 +186,21 @@ class ST_User_Public {
             $is_edit =  true;
         }
 
-        $image_url = ST_User()->get_user_media('cover', 'url',  $user );
-        $edited_image_url = ST_User()->get_user_media('cover-img', 'url',  $user);
-        if ( !$edited_image_url ) {
-            $edited_image_url = $image_url;
-        }
-
+        $image_url = ST_User()->get_user_media( 'cover', 'url',  $user );
         $avatar_url = ST_User()->get_user_media( 'avatar', 'url',  $user );
-        $edited_avatar_url = ST_User()->get_user_media( 'avatar-img', 'url',  $user  );
-        if ( ! $edited_avatar_url ) {
-            $edited_avatar_url = $avatar_url;
+
+        $is_avatar = true;
+
+        if ( $avatar_url == '' ){
+            $is_avatar = false;
+            $avatar_url = get_avatar_url( $user->user_email, array( 'size'=> 150, 'default'=> 'mystery' ) );
         }
 
         ?>
-        <div id="st-profile-cover" data-change="<?php echo $is_edit ? 'true' : 'false'; ?>" class="st-profile-cover coppic" style="background-image: url('<?php echo esc_attr( $edited_image_url ); ?>');" data-cover="<?php echo ( $image_url ) ? $image_url : '';  ?>"></div>
+        <div id="st-profile-cover" data-change="<?php echo $is_edit ? 'true' : 'false'; ?>" class="st-profile-cover coppic" <?php echo ( $image_url !='' ) ? ' style="background-image: url(\''.esc_attr( $image_url ).'\');"' : '';   ?> data-cover="<?php echo ( $image_url ) ? $image_url : '';  ?>"></div>
 
         <div class="st-profile-meta clear-fix">
-            <div data-change="<?php echo $is_edit ? 'true' : 'false'; ?>" style="background-image: url('<?php echo esc_attr( $edited_avatar_url ); ?>');" data-cover="<?php echo ( $edited_avatar_url ) ? $edited_avatar_url : '';  ?>" class="st-profile-avatar coppic"></div>
+            <div data-change="<?php echo $is_edit ? 'true' : 'false'; ?>"  <?php echo ( $avatar_url !='' ) ? ' style="background-image: url(\''.esc_attr( $avatar_url ).'\');"' : '';   ?>  data-cover="<?php echo ( $avatar_url && $is_avatar ) ? $avatar_url : '';  ?>" class="st-profile-avatar coppic"></div>
 
             <div class="st-profile-meta-info">
                 <span class="st-display-name"><?php echo esc_html( $user->display_name ); ?></span>
@@ -363,7 +360,10 @@ class ST_User_Public {
     public static function settings( $user ){
         ?>
         <form class="stuser-form-profile stuser-form form ui" action="<?php echo site_url('/'); ?>" method="post" >
-            <p class="st-user-msg <?php echo isset( $_REQUEST['st_profile_updated'] ) &&  $_REQUEST['st_profile_updated']  == 1 ? 'st-show' : ''; ?>"><?php _e( 'Your profile updated.', 'st-user' ); ?></p>
+            <div class="st-user-msg <?php echo isset( $_REQUEST['st_profile_updated'] ) &&  $_REQUEST['st_profile_updated']  == 1 ? 'st-show' : ''; ?> ui success message">
+                <i class="close icon right"></i>
+                <div class="header"><?php _e( 'Your profile updated.', 'st-user' ); ?></div>
+            </div>
             <p class="st-user-msg st-errors-msg"></p>
 
             <div class="stuser-form-fields">

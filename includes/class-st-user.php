@@ -627,21 +627,26 @@ class ST_User {
         if ( ! $user ) {
             $user =  wp_get_current_user();
         }
+        $media_type =  strtolower( $media_type );
+        $type = strtolower( $type );
         $media  = get_user_meta( $user->ID, 'st-user-'.$media_type , true );
-        if ( ! $media ) {
-            return false;
-        }
 
-        $path = ST_User()->settings['upload_dir'].$media;
-        if ( file_exists( $path ) ) {
-            if ( strtolower( $type ) !== 'path' ) {
-                return  ST_User()->settings['upload_url'].$media;
-            } else {
-                return $path;
+        $r = false;
+
+        if ( $media ) {
+            $path = ST_User()->settings['upload_dir'] . $media;
+            if (file_exists($path)) {
+                if ($type !== 'path') {
+                    $r = ST_User()->settings['upload_url'] . $media;
+                } else {
+                    $r = $path;
+                }
             }
         }
 
-        return false;
+        $r =  apply_filters( 'st_user_get_user_media', $r, $media_type, $type, $user );
+
+        return $r;
 
     }
 
