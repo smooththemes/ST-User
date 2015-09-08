@@ -207,12 +207,13 @@ class ST_User_Public {
                 <div class="list-meta-info">
                     <?php
                     $country = get_user_meta( $user->ID, 'country', true );
-                    $name = ST_User()->get_country_name( $country );
-                    if ( ! $name ){
+                    $c_name = ST_User()->get_country_name( $country );
+                   
+                    if (  $c_name ){
                     ?>
                     <span class="user-country">
                         <i class="dashicons dashicons-admin-site"></i>
-                        <?php echo $name; ?>
+                        <?php echo $c_name; ?>
                     </span>
                     <?php } ?>
 
