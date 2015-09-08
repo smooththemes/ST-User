@@ -60,7 +60,7 @@ if ( ! is_user_logged_in() ) {
     <div class="stuser-form-footer">
         <p>
         <?php
-            printf( __( 'Don\'t have an account ? <a  class="st-register-link" href="%1$s">Sing Up</a>', 'st-user'  ), wp_registration_url() );
+            printf( __( 'Don\'t have an account ? <a  class="st-register-link" href="%1$s">Sign Up</a>', 'st-user'  ), wp_registration_url() );
         ?>
         </p>
     </div>

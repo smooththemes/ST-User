@@ -208,7 +208,7 @@ class ST_User_Public {
                     <?php
                     $country = get_user_meta( $user->ID, 'country', true );
                     $c_name = ST_User()->get_country_name( $country );
-                   
+
                     if (  $c_name ){
                     ?>
                     <span class="user-country">
